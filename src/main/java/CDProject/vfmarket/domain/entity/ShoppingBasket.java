@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class ShoppingBasket {
+public class ShoppingBasket extends BaseTimeEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

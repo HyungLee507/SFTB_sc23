@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Table(name = "ORDERS")
 @NoArgsConstructor
-public class Order {
+public class Order extends BaseTimeEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Orders_Id")
     private Long id;

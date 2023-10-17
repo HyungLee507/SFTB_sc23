@@ -8,7 +8,7 @@ import lombok.Setter;
 @Entity
 @Getter@Setter
 @NoArgsConstructor
-public class StyleShot {
+public class StyleShot extends BaseTimeEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

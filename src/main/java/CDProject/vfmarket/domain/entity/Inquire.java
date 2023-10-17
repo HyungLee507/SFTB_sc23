@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter@Setter
 @NoArgsConstructor
-public class Inquire {
+public class Inquire extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,6 +22,7 @@ public class Inquire {
     @OneToMany(mappedBy = "inquire")
     private List<Comment> comments = new ArrayList<>();
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Admin admin;
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Member_id")
@@ -34,7 +34,6 @@ public class Member {
     private List<StyleShot> styleShots = new ArrayList<>();
     @OneToMany(mappedBy = "member")
     private List<ShoppingBasket> shoppingBaskets = new ArrayList<>();
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Admin admin;
+
 
 }

@@ -12,14 +12,12 @@ import java.util.List;
 @Entity
 @Getter@Setter
 @NoArgsConstructor
-public class Admin {
+public class Admin extends BaseTimeEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long memberId;
+    private String adminID;
     private String password;
     private String name;
     @Enumerated(EnumType.STRING)
     private MemberRoll memberRoll = MemberRoll.ADMIN;
-
-
 }

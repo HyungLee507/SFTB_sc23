@@ -8,7 +8,7 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class Comment {
+public class Comment extends BaseTimeEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Comment_Id")
     private Long id;
@@ -33,4 +33,6 @@ public class Comment {
     @JoinColumn(name="item_ID")
     private Item item;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Admin admin;
 }

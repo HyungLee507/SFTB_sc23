@@ -11,13 +11,19 @@ import java.util.List;
 @Entity
 @Getter@Setter
 @NoArgsConstructor
-public class Review {
+public class Review extends BaseTimeEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long itemId;
     private Long memberId;
     @Column(name="orders")
     private int order;
+    @Enumerated(EnumType.STRING)
+    private WriteStatus writeStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Admin admin;
+
     private String detail;
     private String image1;
     private String image2;
