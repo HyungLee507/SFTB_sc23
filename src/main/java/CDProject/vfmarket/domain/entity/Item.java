@@ -30,7 +30,7 @@ public class Item extends BaseTimeEntity {
     private String image3;
     private String image4;
     private String image5;
-
+    @Lob
     private String description;
 
     private String category;
@@ -42,7 +42,7 @@ public class Item extends BaseTimeEntity {
     private Refund refund;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private ShoppingBasket shoppingBasket;
+    private Cart shoppingBasket;
 
     @OneToMany(mappedBy = "item")
     private List<Comment> comment = new ArrayList<>();
