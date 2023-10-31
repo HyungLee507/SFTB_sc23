@@ -43,8 +43,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // 여기에서 formLogin을 비활성화합니다.
-//                .formLogin(AbstractHttpConfigurer::disable) // FormLogin 사용 X
                 .formLogin(formLogin -> {
                             formLogin
                                     .loginPage("/login-Form.html")
@@ -89,8 +87,8 @@ public class SecurityConfig {
 //                .userInfoEndpoint().userService(customOAuth2UserService); // customUserService 설정
                 .oauth2Login(oauth2Login -> {
                     oauth2Login
-                            .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
-                            .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
+                            .successHandler(oAuth2LoginSuccessHandler)
+                            .failureHandler(oAuth2LoginFailureHandler)
                             .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(
                                     customOAuth2UserService)); // customUserService 설정
                 });
