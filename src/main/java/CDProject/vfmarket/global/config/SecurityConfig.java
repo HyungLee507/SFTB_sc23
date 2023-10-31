@@ -44,7 +44,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 // 여기에서 formLogin을 비활성화합니다.
-                .formLogin(AbstractHttpConfigurer::disable) // FormLogin 사용 X
+//                .formLogin(AbstractHttpConfigurer::disable) // FormLogin 사용 X
+                .formLogin(formLogin -> {
+                            formLogin
+                                    .loginPage("/login-Form.html")
+                                    .successHandler(new LoginSuccessHandler(jwtService, userRepository))
+                                    .failureHandler(new LoginFailureHandler());
+                        }
+                )
                 .httpBasic(AbstractHttpConfigurer::disable) // httpBasic 사용 X
                 .csrf(AbstractHttpConfigurer::disable) // csrf 보안 사용 X
                 .headers(headers -> headers
@@ -70,7 +77,8 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/js/**"),
                                 new AntPathRequestMatcher("/h2-console/**"),
                                 new AntPathRequestMatcher("/profile/**"),
-                                new AntPathRequestMatcher("/sign-up")
+                                new AntPathRequestMatcher("/sign-up"),
+                                new AntPathRequestMatcher("/static/**")
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
