@@ -50,18 +50,15 @@ public class SecurityConfig {
                                     .failureHandler(new LoginFailureHandler());
                         }
                 )
-                .httpBasic(AbstractHttpConfigurer::disable) // httpBasic 사용 X
-                .csrf(AbstractHttpConfigurer::disable) // csrf 보안 사용 X
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers
                         .frameOptions(FrameOptionsConfig::disable) // X-Frame-Options 비활성화
                 )
                 // 세션 사용하지 않으므로 STATELESS로 설정
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                //== URL별 권한 관리 옵션 ==//
-//                .authorizeRequests()
 
-                // 아이콘, css, js 관련
                 // 기본 페이지, css, image, js 하위 폴더에 있는 자료들은 모두 접근 가능, h2-console에 접근 가능
 //                .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll()
 //                .requestMatchers("/sign-up").permitAll() // 회원가입 접근 가능
@@ -121,17 +118,11 @@ public class SecurityConfig {
         return new ProviderManager(provider);
     }
 
-    /**
-     * 로그인 성공 시 호출되는 LoginSuccessJWTProviderHandler 빈 등록
-     */
     @Bean
     public LoginSuccessHandler loginSuccessHandler() {
         return new LoginSuccessHandler(jwtService, userRepository);
     }
 
-    /**
-     * 로그인 실패 시 호출되는 LoginFailureHandler 빈 등록
-     */
     @Bean
     public LoginFailureHandler loginFailureHandler() {
         return new LoginFailureHandler();
