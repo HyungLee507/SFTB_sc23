@@ -1,6 +1,6 @@
 <template>
   <div class="container d-flex justify-content-center">
-    <b-form @submit="submitForm" @reset="onReset" v-if="show">
+    <b-form @submit="submitForm" v-if="show">
       <b-form-group
         id="input-group-1"
         label="User Email:"
@@ -20,7 +20,7 @@
         <b-form-input type="password" v-model="form.password" id="input-2" aria-describedby="password-help-block" placeholder="Enter Password" required></b-form-input>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">로그인</b-button>
+      <b-button type="submit" variant="primary">로그인</b-button> <b-button href="/account/join" variant="primary">회원가입</b-button> 
 
       <!-- Error message display -->
       <div v-if="error" class="alert alert-danger">
@@ -32,7 +32,7 @@
 
 <script>
 import axios from 'axios';
-import router from 'vue-router'; 
+
 
 export default {
   data() {
@@ -50,13 +50,24 @@ export default {
       try {
         const response = await axios.post('/account/login', this.form);
 
-        if (response.status === 200) {
+        if (response.status == 200) {
           alert("로그인에 성공했습니다");
-          router.push('/');
-        } 
+          //로그인 성공
+          //로그인 유지를 위한 토큰 생성
+          const token = response.headers['Authorization'];
+          localStorage.setItem('token',token);
+          
+          //로그인 상태 업데이트
+          this.isLoggedIn = true;
+          
+        }
+        else{
+          alert("로그인에 실패했습니다!");
+        }
+        
       } catch (error) {
-        // Handle the error and show an alert to the user
-        alert("로그인에 실패했습니다");
+        
+        alert("로그인에 실패했습니다!");
         console.error(error);
       }
     },

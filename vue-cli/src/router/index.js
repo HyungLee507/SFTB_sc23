@@ -11,12 +11,15 @@ export default new Router({
     routes: [
         {
             path: '/account/login',
-            component: LoginPage
+            component: LoginPage,
+            
+            
             
         },
         {
             path: '/account/join',
-            component: RegisterPage 
+            component: RegisterPage,
+            
         }
     ]
 });
