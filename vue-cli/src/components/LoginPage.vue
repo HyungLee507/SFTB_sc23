@@ -3,12 +3,12 @@
     <b-form @submit="submitForm" v-if="show">
       <b-form-group
         id="input-group-1"
-        label="User Email:"
+        label="Email:"
         label-for="input-1"
       >
         <b-form-input
           type="email"
-          v-model="form.userEmail"
+          v-model="form.Email"
           id="input-1"
           aria-describedby="email-help-block"
           placeholder="Enter Email"
@@ -39,7 +39,7 @@ export default {
     return {
       show: true,
       form: {
-        userEmail: '',
+        Email: '',
         password: '',
       },
       error: null,
@@ -47,29 +47,14 @@ export default {
   },
   methods: {
     async submitForm() {
-      try {
-        const response = await axios.post('/account/login', this.form);
-
-        if (response.status == 200) {
-          alert("로그인에 성공했습니다");
-          //로그인 성공
-          //로그인 유지를 위한 토큰 생성
-          const token = response.headers['Authorization'];
-          localStorage.setItem('token',token);
-          
-          //로그인 상태 업데이트
-          this.isLoggedIn = true;
-          
-        }
-        else{
-          alert("로그인에 실패했습니다!");
-        }
-        
-      } catch (error) {
-        
-        alert("로그인에 실패했습니다!");
-        console.error(error);
-      }
+      
+        await axios.post('/account/login', this.form)
+        .then(() => {
+          alert("로그인 성공")
+          this.$router.push('/account/login');
+        }).catch(()=>{
+          alert("로그인 실패")
+        });
     },
   },
 };
