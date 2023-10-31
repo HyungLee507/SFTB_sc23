@@ -44,6 +44,7 @@ public class JwtService {
 
     public String createAccessToken(String email) {
         Date now = new Date();
+        log.info("create token");
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
