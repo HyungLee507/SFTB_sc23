@@ -8,7 +8,7 @@
     </div>
     <div class="form-group">
         <label for="text-password">인증번호 입력</label>
-            <b-form-input v-model="form.Password"  type="number" @input="inputVerificationCode" id="text-verificationcode" aria-describedby="verificationcode-help-block" required></b-form-input>
+            <b-form-input v-model="VerificationCode"  type="number" @input="inputVerificationCode" id="text-verificationcode" aria-describedby="verificationcode-help-block" required></b-form-input>
             <b-button @click="VerificationCheck" variant="info" style="margin-left: 10px;">확인</b-button>
     </div>
     
