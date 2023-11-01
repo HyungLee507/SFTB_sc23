@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -34,5 +36,15 @@ public class UserService {
         userRepository.save(user);
     }
 
-
+    public void findPassword(String email, String newPassword) throws Exception{
+        System.out.println(email);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            throw new Exception("존재하지 않는 이메일입니다.");
+        } else{
+            User user = optionalUser.get();
+            user.updatePassword(newPassword, passwordEncoder);
+            userRepository.save(user);
+        }
+    }
 }
