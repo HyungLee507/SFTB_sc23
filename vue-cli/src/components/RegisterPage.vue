@@ -47,9 +47,9 @@ export default {
                 FootSize: '',
             },
 
-            VerificationCode:'',
+            VerificationCode:'',//사용자가 입력한 인증번호
             isVisable: false,
-            emailkey: '',
+            emailkey: '',//서버로 부터 받은 인증번호
         
         };
     },
@@ -73,7 +73,7 @@ export default {
                         alert(res.data.exist)//중복확인
                     }
                     else if(res.status == 200){
-                        alert('이메일이 발송되었습니다');//이메일 발솔
+                        alert('이메일이 발송되었습니다');//이메일 발송
                         const key = res.data.key;
                         alert(key);
                         this.emailkey = key;//api로부터 전달받은 key값저장
