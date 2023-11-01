@@ -20,10 +20,10 @@
 
 
           
-            <b-nav-item href="/account/login">로그인</b-nav-item>
+            <b-nav-item to="/account/login">로그인</b-nav-item>
           
           
-            <b-nav-item href="/account/join">회원가입</b-nav-item>
+            <b-nav-item to="/account/join">회원가입</b-nav-item>
           
 
 

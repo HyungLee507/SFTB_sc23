@@ -6,9 +6,11 @@
         <b-form-input v-model="form.Email" type="email" id="text-email" aria-describedby="email-help-block" required></b-form-input>
         <b-button @click="sendVerificationCode" variant="info" style="margin-left: 10px;">인증번호 발송</b-button>
     </div>
+    <div class="form-group">
         <label for="text-password">인증번호 입력</label>
-            <b-form-input v-model="form.Password"  type="verificationcode" id="text-verificationcode" aria-describedby="verificationcode-help-block" required></b-form-input>
-
+            <b-form-input v-model="form.Password"  type="number" @input="inputVerificationCode" id="text-verificationcode" aria-describedby="verificationcode-help-block" required></b-form-input>
+            <b-button @click="VerificationCheck" variant="info" style="margin-left: 10px;">확인</b-button>
+    </div>
     
         <label for="text-password">비밀번호</label>
         <b-form-input v-model="form.Password"  type="password" id="text-password" aria-describedby="password-help-block" required></b-form-input>
@@ -20,11 +22,11 @@
         <label for="text-birthday">생일</label>
         <b-form-input v-model="form.BirthDay" type="text" id="text-birthday" aria-describedby="birthday-help-block" required></b-form-input>
         <b-form-text id="birthday-help-block">
-        생일은 YYYY-MM-DD 형식으로 입력해 주세요
+        생일은 YYYYMMDD 형식으로 입력해 주세요
         </b-form-text>
         <label for="text-birthday">발 사이즈</label>
-        <b-form-input v-model="form.Footsize" type="number" id="text-footsize" aria-describedby="footsize-help-block" required></b-form-input>
-        <b-button type="submit" variant="primary">회원가입</b-button>
+        <b-form-input v-model="form.FootSize" type="number" id="text-footsize" aria-describedby="footsize-help-block" required></b-form-input>
+        <b-button type="submit" v-show="isVisable" variant="primary">회원가입</b-button>
         </b-form>
         
     </div>
@@ -42,18 +44,68 @@ export default {
                 Password: '',
                 NickName: '',
                 BirthDay: '',
-                Footsize: '',
+                FootSize: '',
             },
 
             VerificationCode:'',
+            isVisable: false,
+            emailkey: '',
         
         };
     },
     methods: {
     
     sendVerificationCode(){
+        
+        if(this.form.Email ==''){
+            alert('이메일을 입력하세요')
+        }
+        else if(!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/.test(this.form.Email)){
+            alert('올바른 이메일 주소를 입력하세요.');
+            return;
+        }
+        else{
+            const eform = new FormData();
+            eform.append('Email',this.form.Email);//이메일 저장
+            this.$axios.post('#',eform)//이메일 인증api 호출 form의 형태로 이메일 전달
+                .then(function(res){
+                    if(res.data.exist){
+                        alert(res.data.exist)//중복확인
+                    }
+                    else if(res.status == 200){
+                        alert('이메일이 발송되었습니다');//이메일 발솔
+                        const key = res.data.key;
+                        alert(key);
+                        this.emailkey = key;//api로부터 전달받은 key값저장
+                    }
+                    else{
+                        alert('잘못된 이메일입니다');
+                    }
+                })
+        }
+        
 
     },
+
+    inputVerificationCode(event){
+        this.VerificationCode = event.target.value;
+    },
+    VerificationCheck(){
+        if(this.VerificationCode==''){
+            alert('인증번호를 입력하세요');
+        }
+        else{
+            if (this.VerificationCode === this.emailkey) {
+                    alert('인증 성공');
+                    this.isVisable = true;
+                }
+                else {
+                    alert('인증번호가 일치하지 않습니다');
+                }
+        }
+        
+    },
+
     submitForm() {
 
             if (!this.form.Email || !this.form.Password || !this.form.NickName || !this.form.BirthDay) {
