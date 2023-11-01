@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios';//태스트
 
 
 export default {
