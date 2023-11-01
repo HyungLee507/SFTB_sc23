@@ -19,7 +19,8 @@
         <b-form-input type="password" v-model="form.Password" id="input-2" aria-describedby="Password-help-block" required></b-form-input>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">로그인</b-button> <b-button to="/account/join" variant="primary">회원가입</b-button> 
+      <b-button type="submit" variant="primary">로그인</b-button> <b-button to="/account/join" variant="primary">회원가입</b-button>
+      <div id="naver_id_login"></div> 
 
       <!-- Error message display -->
       <div v-if="error" class="alert alert-danger">
@@ -55,6 +56,14 @@ export default {
           alert("로그인 실패")
         });
     },
+  },
+  mounted(){
+    const naver_id_login = new window.naver_id_login("Client Id", "callback URL");
+    const state = naver_id_login.getUniqState();
+    naver_id_login.setButton("white", 2, 40); // 버튼 설정
+    naver_id_login.setState(state);
+    // naver_id_login.setPopup(); // popup 설정을 위한 코드
+    naver_id_login.init_naver_id_login();
   },
 };
 </script>

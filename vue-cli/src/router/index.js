@@ -20,6 +20,10 @@ export default new Router({
             path: '/account/join',
             component: RegisterPage,
             
-        }
+        },
+        {
+            path: '/account/naver',
+            //component: CallbackPage,
+        },
     ]
 });
