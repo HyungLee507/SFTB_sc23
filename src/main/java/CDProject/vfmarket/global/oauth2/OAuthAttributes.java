@@ -8,7 +8,6 @@ import CDProject.vfmarket.global.oauth2.userinfo.KakaoOAuth2UserInfo;
 import CDProject.vfmarket.global.oauth2.userinfo.NaverOAuth2UserInfo;
 import CDProject.vfmarket.global.oauth2.userinfo.OAuth2UserInfo;
 import java.util.Map;
-import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -69,7 +68,7 @@ public class OAuthAttributes {
         return User.builder()
                 .socialType(socialType)
                 .socialId(oauth2UserInfo.getId())
-                .email(UUID.randomUUID() + "@socialUser.com")
+                .email(oauth2UserInfo.getEmail())
                 .name(oauth2UserInfo.getName())
                 .mobile(oauth2UserInfo.getMobile())
                 .age(oauth2UserInfo.getAge())

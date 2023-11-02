@@ -70,7 +70,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         userRepository.findByRefreshToken(refreshToken)
                 .ifPresent(user -> {
                     String reIssuedRefreshToken = reIssueRefreshToken(user);
-                    jwtService.sendAccessAndRefreshToken(response, jwtService.createAccessToken(user.getEmail()),
+                    jwtService.sendAccessAndRefreshToken(response,
+                            jwtService.createAccessToken(user.getId(), user.getEmail(), user.getRole()),
                             reIssuedRefreshToken);
                 });
     }
@@ -80,7 +81,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
      * Flush
      */
     private String reIssueRefreshToken(User user) {
-        String reIssuedRefreshToken = jwtService.createRefreshToken();
+
+        String reIssuedRefreshToken = jwtService.createRefreshToken(user.getId(), user.getEmail(), user.getRole());
         user.updateRefreshToken(reIssuedRefreshToken);
         userRepository.saveAndFlush(user);
         return reIssuedRefreshToken;
@@ -119,7 +121,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         if (password == null) { // 소셜 로그인 유저의 비밀번호 임의로 설정 하여 소셜 로그인 유저도 인증 되도록 설정
             password = PasswordUtil.generateRandomPassword();
         }
-
+        log.info("권한 설정 완료");
         UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
                 .username(myUser.getEmail())
                 .password(password)

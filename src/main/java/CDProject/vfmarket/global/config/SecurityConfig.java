@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -43,6 +44,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(Customizer.withDefaults())
                 .formLogin(formLogin -> {
                             formLogin
                                     .loginPage("/login-Form.html")
@@ -52,6 +54,7 @@ public class SecurityConfig {
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .headers(headers -> headers
                         .frameOptions(FrameOptionsConfig::disable) // X-Frame-Options 비활성화
                 )
@@ -75,8 +78,17 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/sign-up"),
                                 new AntPathRequestMatcher("/static/**")
                         ).permitAll()
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/controller")
+                        ).hasRole("ADMIN")
                         .anyRequest().authenticated()
-                )
+                )//유저 권한 있는 놈들만
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers(
+//                                new AntPathRequestMatcher("/controller")
+//                        ).hasRole("ADIMN")
+//                        .anyRequest().authenticated()
+//                )
                 //== 소셜 로그인 설정 ==//
 //                .oauth2Login()
 //                .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
