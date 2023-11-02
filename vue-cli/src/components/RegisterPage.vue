@@ -16,8 +16,8 @@
         <b-form-input v-model="form.password"  type="password" id="text-password" aria-describedby="password-help-block" required></b-form-input>
         
         
-        <label for="text-nickname">닉네임</label>
-        <b-form-input v-model="form.nickname"  type="text" id="text-nickname" aria-describedby="nickname-help-block" required></b-form-input>
+        <label for="text-name">닉네임</label>
+        <b-form-input v-model="form.name"  type="text" id="text-name" aria-describedby="name-help-block" required></b-form-input>
 
         <label for="text-birthday">생일</label>
         <b-form-input v-model="form.birthday" type="text" id="text-birthday" aria-describedby="birthday-help-block" required></b-form-input>
@@ -42,7 +42,7 @@ export default {
             form: {
                 email: '',
                 password: '',
-                nickname: '',
+                name: '',
                 birthday: '',
                 footsize: '',
             },
@@ -67,7 +67,7 @@ export default {
         else{   
             const eform = new FormData();
             eform.append('email',this.form.email);//이메일 저장
-            this.$axios.post('#',eform)//이메일 인증api 호출 form의 형태로 이메일 전달
+            this.$axios.post('/mail-verify',eform)//이메일 인증api 호출 form의 형태로 이메일 전달
                 .then(function(res){
                     if(res.data.exist){
                         alert(res.data.exist)//중복확인
@@ -108,7 +108,7 @@ export default {
 
     submitForm() {
 
-            if (!this.form.email || !this.form.password || !this.form.nickname || !this.form.birthday) {
+            if (!this.form.email || !this.form.password || !this.form.name || !this.form.birthday) {
                 alert('모든 항목을 입력하세요.');
                 return;
             }
@@ -129,7 +129,7 @@ export default {
             }
 
             
-            axios.post('/register', this.form).then(() => {
+            axios.post('/sign-up', this.form).then(() => {
                 alert('회원가입이 완료되었습니다.');
             }).catch(() => {
                 alert('회원가입에 실패했습니다. 다시 시도해주세요.');

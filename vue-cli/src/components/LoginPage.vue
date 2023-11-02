@@ -29,7 +29,7 @@
         {{ error }}
       </div>
     </b-form>
-    <button href="/oauth2/authorization/naver">img(src="C:\Users\kwjeon98\Documents\SFTB_sc23\vue-cli\src\assets\naverlogo.png)</button>
+    <button href="">img(src="../assets/img/naverlogo.png")</button>
   </div>
 </template>
 
