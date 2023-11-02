@@ -69,12 +69,9 @@ export default {
             eform.append('email',this.form.email);//이메일 저장
             this.$axios.post('/mail-verify',eform)//이메일 인증api 호출 form의 형태로 이메일 전달
                 .then(function(res){
-                    if(res.data.exist){
-                        alert(res.data.exist)//중복확인
-                    }
-                    else if(res.status == 200){
+                    if(res.status == 200){
                         alert('이메일이 발송되었습니다');//이메일 발송
-                        const key = res.data.key;
+                        const key = res.data.sendCode;
                         alert(key);
                         this.emailkey = key;//api로부터 전달받은 key값저장
                     }
