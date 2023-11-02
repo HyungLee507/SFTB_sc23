@@ -1,8 +1,11 @@
 package CDProject.vfmarket.global.jwt.Service;
 
+import CDProject.vfmarket.domain.entity.Role;
 import CDProject.vfmarket.repository.UserRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -42,20 +45,29 @@ public class JwtService {
     private String refreshHeader;
 
 
-    public String createAccessToken(String email) {
+    public String createAccessToken(Long id, String email, Role role) {
         Date now = new Date();
         log.info("create token");
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
                 .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
+                .withClaim("userId", id)
+                .withClaim("role", role.name())
                 .withClaim(EMAIL_CLAIM, email)
                 .sign(Algorithm.HMAC512(secretKey));
     }
 
-    public String createRefreshToken() {
+    public String createRefreshToken(Long id, String email, Role role) {
         Date now = new Date();
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("role", role);
+        claims.put("userId", id);
+
         return JWT.create()
                 .withSubject(REFRESH_TOKEN_SUBJECT)
+                .withClaim("userId", id)
+                .withClaim("role", role.toString())
+                .withClaim(EMAIL_CLAIM, email)
                 .withExpiresAt(new Date(now.getTime() + refreshTokenExpirationPeriod))
                 .sign(Algorithm.HMAC512(secretKey));
     }
