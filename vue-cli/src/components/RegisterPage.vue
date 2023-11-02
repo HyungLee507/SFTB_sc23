@@ -14,18 +14,8 @@
     
         <label for="text-password">비밀번호</label>
         <b-form-input v-model="form.password"  type="password" id="text-password" aria-describedby="password-help-block" required></b-form-input>
-        
-        
-        <label for="text-name">닉네임</label>
-        <b-form-input v-model="form.name"  type="text" id="text-name" aria-describedby="name-help-block" required></b-form-input>
 
-        <label for="text-birthday">생일</label>
-        <b-form-input v-model="form.birthday" type="text" id="text-birthday" aria-describedby="birthday-help-block" required></b-form-input>
-        <b-form-text id="birthday-help-block">
-        생일은 YYYYMMDD 형식으로 입력해 주세요
-        </b-form-text>
-        <label for="text-birthday">발 사이즈</label>
-        <b-form-input v-model="form.footsize" type="number" id="text-footsize" aria-describedby="footsize-help-block" required></b-form-input>
+
         <b-button type="submit" v-show="isVisable" variant="primary">회원가입</b-button>
         </b-form>
         
@@ -42,9 +32,6 @@ export default {
             form: {
                 email: '',
                 password: '',
-                name: '',
-                birthday: '',
-                footsize: '',
             },
 
             VerificationCode:'',//사용자가 입력한 인증번호
@@ -105,7 +92,7 @@ export default {
 
     submitForm() {
 
-            if (!this.form.email || !this.form.password || !this.form.name || !this.form.birthday) {
+            if (!this.form.email || !this.form.password) {
                 alert('모든 항목을 입력하세요.');
                 return;
             }
@@ -116,15 +103,7 @@ export default {
             }
 
             
-            if (!/^\d{4}\d{2}\d{2}$/.test(this.form.birthday)) {
-                alert('올바른 생일을 입력하세요.');
-                return;
-            }
-            if (!/^\d{3}$/.test(this.form.footsize)) {
-                alert('올바른 발사이즈를 입력하세요');
-                return;
-            }
-
+        
             
             axios.post('/sign-up', this.form).then(() => {
                 alert('회원가입이 완료되었습니다.');
