@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="verifyform" method="post" action="/user/verify">
+    <div>입력하신 이메일로 인증번호가 전송되었습니다.</div>
+    <div>인증번호를 입력하세요</div>
+    <input name="sentCode" type="hidden" value="">
+    <input name="inputCode" type="text">
+    <input type="submit" value="인증">
+    <input type="button" value="취소" onclick="window.close()">
+</form>
+</body>
+</html>

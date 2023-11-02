@@ -14,7 +14,7 @@ public class Comment extends BaseTimeEntity{
     private Long id;
 
     private Long memberId;
-
+    @Lob
     private String description;
     @Column(name = "orders")
     private Integer order;

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form id="joinform" name="joinform" action="/user/join" method="post" onsubmit="return confirm()">
+    <input type="hidden" name="isConfirmed" value="0">
+    <div><input type="text" name="email" placeholder="이메일" oninput="unConfirm()"></div>
+    <div><input type="password" name="password" placeholder="비밀번호"></div>
+    <div><input type="text" name="name" placeholder="닉네임"></div>
+    <input type="button" value="이메일 인증" onclick="checkEmail()">
+    <input type="submit" value="회원 가입">
+</form>
+<script src="/js/mail.js"></script>
+</body>
+</html>

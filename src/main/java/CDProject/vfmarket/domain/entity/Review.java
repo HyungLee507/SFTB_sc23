@@ -23,7 +23,7 @@ public class Review extends BaseTimeEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Admin admin;
-
+    @Lob
     private String detail;
     private String image1;
     private String image2;

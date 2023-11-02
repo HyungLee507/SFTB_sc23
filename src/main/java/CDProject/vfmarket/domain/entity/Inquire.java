@@ -17,6 +17,7 @@ public class Inquire extends BaseTimeEntity{
     private Long id;
     private Long memberId;
     private String itemId;
+    @Lob
     private String detail;
 
     @OneToMany(mappedBy = "inquire")
