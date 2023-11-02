@@ -22,10 +22,7 @@ export default new Router({
             component: RegisterPage,
             
         },
-        {
-            path: '/account/naver',
-            //component: CallbackPage,
-        },
+        
         {
             path: '/account/findpassword',
             component:FindPassword,
