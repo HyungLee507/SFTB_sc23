@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import LoginPage from '@/components/LoginPage'
 import RegisterPage from '@/components/RegisterPage'
+import FindPassword from '@/components/FindPassword'
 
 
 Vue.use(Router); // VueRouter를 사용하겠다.
@@ -24,6 +25,10 @@ export default new Router({
         {
             path: '/account/naver',
             //component: CallbackPage,
+        },
+        {
+            path: '/account/findpassword',
+            component:FindPassword,
         },
     ]
 });

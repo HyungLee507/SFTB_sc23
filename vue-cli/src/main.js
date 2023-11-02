@@ -5,11 +5,13 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import App from './App.vue'
 import router from './router'
+import VueCookie from 'vue-cookie'
 
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
-Vue.use(Router);
+Vue.use(Router)
+Vue.use(VueCookie)
 Vue.config.productionTip = false
 
 

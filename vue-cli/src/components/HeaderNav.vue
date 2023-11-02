@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand to="#">VFMarket</b-navbar-brand>
+      <b-navbar-brand to="/">VFMarket</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -40,6 +40,22 @@
 <script>
 
 export default {
-  name: "HeaderNav"
+
+  name: "HeaderNav",
+  data() {
+    return {
+      isCookie: null,
+    };
+  },
+  created() {
+    this.isCookie = document.cookie;
+  },
+  methods: {
+    deleteCookie() {
+      this.$cookie.delete("accesstoken");
+      this.isCookie = document.cookie;
+      alert("로그아웃 되었습니다.");
+    },
+  },
 };
 </script>
