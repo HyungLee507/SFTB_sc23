@@ -3,7 +3,10 @@ import Router from 'vue-router';
 import LoginPage from '@/components/LoginPage'
 import RegisterPage from '@/components/RegisterPage'
 import FindPassword from '@/components/FindPassword'
-import ProductRegistration from '@/components/ProductRegistration'
+import ProductregistrationPage from '@/components/ProductregistrationPage'
+import ProductinformationPage from '@/components/ProductinformationPage'
+import ProductlistPage from '@/components/ProductlistPage'
+
 
 Vue.use(Router); // VueRouter를 사용하겠다.
 
@@ -24,7 +27,15 @@ export default new Router({
         },
         {
             path: '/product/registration',
-            component: ProductRegistration,
+            component: ProductregistrationPage,
         },
+        { path: '/product/list/:id', 
+        component: ProductinformationPage },
+        {
+            path: '/product/list',
+            component: ProductlistPage,
+        },
+        
+        
     ]
 });

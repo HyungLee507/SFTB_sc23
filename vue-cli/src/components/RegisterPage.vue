@@ -67,7 +67,7 @@ export default {
                     }
                     console.log(res.data.sendCode)
                 }).catch((err)=>{
-                  console.log(err)
+                console.log(err)
             })
         }
         

@@ -22,6 +22,9 @@
       <b-button type="submit" variant="primary">로그인</b-button> 
       <b-button to="/account/join" variant="primary">회원가입</b-button>
       <b-button to="/account/findpassword" variant="primary">비밀번호 찾기</b-button>
+      <button @click="loginWithNaver">
+      <img src="https://static.nid.naver.com/oauth/small_g_in.PNG" alt="naver login" class="naver-logo" />
+    </button>
       
 
       <!-- Error message display -->
@@ -29,7 +32,7 @@
         {{ error }}
       </div>
     </b-form>
-    <button href="">img(src="../assets/img/naverlogo.png")</button>
+    
   </div>
 </template>
 
@@ -37,38 +40,41 @@
 import axios from 'axios';
 import router from '@/router';
 
-
 export default {
   data() {
     return {
-      show: true,
+      show: true, // 이 부분을 확인해보세요.
       form: {
         email: '',
         password: '',
-        token: '',
       },
       error: null,
     };
   },
   methods: {
     async submitForm() {
-      
-        await axios.post('/account/login', this.form)
-        .then((res) => {
-          if(res.status===200){
-            console.log(res.data);
-            this.token = this.res.data.data.token;
-            console.log("토큰:"+this.token);
-            this.$cookie.set("accesstoken",res.data.data.token,1);
-            axios.defaults.headers.common["x-access-token"] = res.data.data.token;
-            alert("로그인 성공");
-            router.push("/");
-          }
-        }).catch((err)=>{
-          alert("로그인 실패" + err)
-        });
+      try {
+        const response = await axios.post('#', this.form);
+        localStorage.setItem('token', response.data.token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+        router.push('/');
+      } catch (error) {
+        console.error(error);
+      }
     },
+    loginWithNaver() {
+      window.location.href = '/oauth2/authorization/naver';
+    }
   },
   
 };
 </script>
+<style scoped>
+.naver-logo {
+  width: 100px;
+  
+  height: auto;
+  
+  
+}
+</style>

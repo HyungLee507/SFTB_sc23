@@ -1,12 +1,15 @@
 package CDProject.vfmarket.global.oauth2.handler;
 
 import CDProject.vfmarket.domain.entity.Role;
+import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.global.jwt.Service.JwtService;
 import CDProject.vfmarket.global.oauth2.CustomOAuth2User;
+import CDProject.vfmarket.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+    private final UserRepository userRepository;
 
     private final JwtService jwtService;
 
@@ -30,7 +34,10 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             // User의 Role이 GUEST일 경우 처음 요청한 회원이므로 회원가입 페이지로 리다이렉트
             if (oAuth2User.getRole() == Role.GUEST) {
-                String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
+                Optional<User> findUser = userRepository.findByEmail(oAuth2User.getEmail());
+                String accessToken = jwtService.createAccessToken(findUser.get().getId(), findUser.get().getEmail(),
+                        findUser.get()
+                                .getRole());
                 response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
                 response.sendRedirect("oauth2/sign-up"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
 
@@ -47,10 +54,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     }
 
-    // TODO : 소셜 로그인 시에도 무조건 토큰 생성하지 말고 JWT 인증 필터처럼 RefreshToken 유/무에 따라 다르게 처리해보기
+    //  소셜 로그인 시에도 무조건 토큰 생성하지 말고 JWT 인증 필터처럼 RefreshToken 유/무에 따라 다르게 처리해보기
     private void loginSuccess(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
-        String accessToken = jwtService.createAccessToken(oAuth2User.getEmail());
-        String refreshToken = jwtService.createRefreshToken();
+        Optional<User> user = userRepository.findByEmail(oAuth2User.getEmail());
+        String accessToken = jwtService.createAccessToken(user.get().getId(), user.get().getEmail(),
+                user.get().getRole());
+        String refreshToken = jwtService.createRefreshToken(user.get().getId(), user.get().getEmail(),
+                user.get().getRole());
         response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
         response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
 
