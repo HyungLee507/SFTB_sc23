@@ -25,6 +25,7 @@ public class UserController {
     private String senderEmail;
 
     @PostMapping("/sign-up")
+    @CrossOrigin(origins = "http://localhost:3000/")
     public String signUp(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
         userService.signUp(userSignUpDto);
         return "회원 가입 성공";
@@ -35,19 +36,13 @@ public class UserController {
         return "jwtTest 요청 성공";
     }
 
-    @GetMapping("/mail-verify")
-    public ResponseEntity mailVerify(String email, HttpServletResponse response){
+    @PostMapping("/mail-verify")
+    @CrossOrigin(origins = "http://localhost:3000/")
+    public ResponseEntity mailVerify(String email){
         int sendCode = mailService.createNumber();
-        String accessToken = jwtService.createAccessToken(senderEmail);
-        String refreshToken = jwtService.createRefreshToken(); // JwtService의 createRefreshToken을 사용하여 RefreshToken 발급
-
-        jwtService.sendAccessAndRefreshToken(response,
-                accessToken, refreshToken); // 응답 헤더에 AccessToken, RefreshToken 실어서 응답
 
         EmailVerificationResponseDto emailVerificationResponse =
                 EmailVerificationResponseDto.builder()
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
                         .email(senderEmail)
                         .sendCode(sendCode)
                         .message("입력하신 이메일로 인증번호가 전송되었습니다.\n인증번호를 입력하세요.")
@@ -66,14 +61,14 @@ public class UserController {
 //                "        <input type=\"button\" value=\"취소\" onclick=\"window.close()\">\n" +
 //                "    </form>";
     }
-    @PostMapping("/mail-verify")
-    public String mailVerify(String sentCode, String inputCode){
-        if (sentCode.equals(inputCode)){
-            return "이메일 인증에 성공했습니다.\n창을 닫고 회원 가입을 계속 진행하시면 됩니다.";
-        }else{
-            return "이메일 인증에 실패했습니다.\n창을 닫고 인증을 다시 진행하시기 바랍니다.";
-        }
-    }
+//    @GetMapping("/mail-verify")
+//    public String mailVerify(String sentCode, String inputCode){
+//        if (sentCode.equals(inputCode)){
+//            return "이메일 인증에 성공했습니다.\n창을 닫고 회원 가입을 계속 진행하시면 됩니다.";
+//        }else{
+//            return "이메일 인증에 실패했습니다.\n창을 닫고 인증을 다시 진행하시기 바랍니다.";
+//        }
+//    }
 
     @PostMapping("/find-password")
     public String findPassword(String email){

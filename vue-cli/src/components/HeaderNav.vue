@@ -7,7 +7,7 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item to="#">Link</b-nav-item>
+          <b-nav-item to="/product/registration">Link</b-nav-item>
           <b-nav-item to="#" disabled>Disabled</b-nav-item>
         </b-navbar-nav>
 
