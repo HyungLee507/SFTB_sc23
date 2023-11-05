@@ -37,14 +37,26 @@ public class UserService {
     }
 
     public void findPassword(String email, String newPassword) throws Exception{
-        System.out.println(email);
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty()) {
             throw new Exception("존재하지 않는 이메일입니다.");
         } else{
             User user = optionalUser.get();
-            user.updatePassword(newPassword, passwordEncoder);
-            userRepository.save(user);
+            updatePassword(user, newPassword);
+        }
+    }
+
+    public void updatePassword(User user, String password) throws Exception{
+        user.updatePassword(password, passwordEncoder);
+        userRepository.save(user);
+    }
+
+    public User findEmail(String email) throws Exception{
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            throw new Exception("존재하지 않는 이메일입니다.");
+        } else{
+            return optionalUser.get();
         }
     }
 }

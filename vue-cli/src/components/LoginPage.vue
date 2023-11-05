@@ -54,10 +54,10 @@ export default {
   methods: {
     async submitForm() {
       try {
-        const response = await axios.post('#', this.form);
+        const response = await axios.post('http://localhost:8080/login', this.form);
         localStorage.setItem('token', response.data.token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-        router.push('/');
+        await router.push('/');
       } catch (error) {
         console.error(error);
       }
