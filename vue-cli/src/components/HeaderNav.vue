@@ -7,8 +7,8 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item to="#">Link</b-nav-item>
-          <b-nav-item to="#" disabled>Disabled</b-nav-item>
+          <b-nav-item v-if="isTokenPresent" to="/product/registration">상품등록</b-nav-item>
+          <b-nav-item to="/product/list">상품리스트</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -18,18 +18,10 @@
             <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
           </b-nav-form>
 
-
-          
-            <b-nav-item to="/account/login">로그인</b-nav-item>
-          
-          
-            <b-nav-item to="/account/join">회원가입</b-nav-item>
-          
-
-
-
-
-
+          <b-nav-item v-if="!isTokenPresent" to="/account/login">로그인</b-nav-item>
+          <b-nav-item v-if="!isTokenPresent" to="/account/join">회원가입</b-nav-item>
+          <b-nav-item v-if="isTokenPresent" @click="logout">로그아웃</b-nav-item>
+          <b-nav-item v-if="isTokenPresent" to="/mypage">마이페이지</b-nav-item>
 
 
         </b-navbar-nav>
@@ -42,20 +34,18 @@
 export default {
 
   name: "HeaderNav",
-  data() {
-    return {
-      isCookie: null,
-    };
-  },
-  created() {
-    this.isCookie = document.cookie;
+  computed: {
+    isTokenPresent() {
+      return !!localStorage.getItem('token');
+    }
   },
   methods: {
-    deleteCookie() {
-      this.$cookie.delete("accesstoken");
-      this.isCookie = document.cookie;
-      alert("로그아웃 되었습니다.");
+    logout() {
+      localStorage.removeItem('token'); // 로컬 스토리지에서 토큰 삭제
+      this.$router.push('/account/login'); // 로그인 페이지로 리다이렉트
     },
-  },
+  }
+
+
 };
 </script>
