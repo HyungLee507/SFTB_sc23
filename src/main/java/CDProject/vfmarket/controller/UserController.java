@@ -1,28 +1,17 @@
 package CDProject.vfmarket.controller;
 
-import CDProject.vfmarket.domain.dto.EmailVerificationResponseDto;
 import CDProject.vfmarket.domain.dto.UserSignUpDto;
-import CDProject.vfmarket.global.jwt.Service.JwtService;
-import CDProject.vfmarket.service.MailService;
 import CDProject.vfmarket.service.UserService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final MailService mailService;
-
-    private final JwtService jwtService;
-
-
-    @Value("${spring.mail.username}")
-    private String senderEmail;
 
     @PostMapping("/sign-up")
     @CrossOrigin(origins = "http://localhost:3000/")
@@ -35,6 +24,7 @@ public class UserController {
     public String jwtTest() {
         return "jwtTest 요청 성공";
     }
+<<<<<<< HEAD
 
     @PostMapping("/mail-verify")
     @CrossOrigin(origins = "http://localhost:3000/")
@@ -83,4 +73,6 @@ public class UserController {
             return e.getMessage();
         }
     }
+=======
+>>>>>>> origin/connect-front
 }

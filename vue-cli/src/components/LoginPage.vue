@@ -15,16 +15,26 @@
       <b-button to="/account/join" variant="primary">회원가입</b-button>
       <b-button to="/account/findpassword" variant="primary">비밀번호 찾기</b-button>
       <button @click="loginWithNaver">
+<<<<<<< HEAD
         <img src="https://static.nid.naver.com/oauth/small_g_in.PNG" alt="naver login" class="naver-logo" />
       </button>
 
+=======
+      <img src="https://static.nid.naver.com/oauth/small_g_in.PNG" alt="naver login" class="naver-logo" />
+    </button>
+      
+>>>>>>> origin/social_login
 
       <!-- Error message display -->
       <div v-if="error" class="alert alert-danger">
         {{ error }}
       </div>
     </b-form>
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> origin/social_login
   </div>
 </template>
 
@@ -64,9 +74,18 @@ export default {
 <style scoped>
 .naver-logo {
   width: 100px;
+<<<<<<< HEAD
 
   height: auto;
 
 
 }
 </style>
+=======
+  
+  height: auto;
+  
+  
+}
+</style>
+>>>>>>> origin/social_login

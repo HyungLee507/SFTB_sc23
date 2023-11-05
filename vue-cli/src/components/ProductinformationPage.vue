@@ -2,10 +2,30 @@
     <b-container>
         <b-row>
             <b-col>
+<<<<<<< HEAD
                 <b-carousel id="carousel-1" v-model="slide" :interval="4000" controls indicators background="#ababab"
                     img-width="1024" img-height="480" style="text-shadow: 1px 1px 2px #333;">
                     <b-carousel-slide v-for="(image, index) in product.images" :key="index" :img-src="image"
                         :alt="'Product image ' + (index + 1)"></b-carousel-slide>
+=======
+                <b-carousel
+                    id="carousel-1"
+                    v-model="slide"
+                    :interval="4000"
+                    controls
+                    indicators
+                    background="#ababab"
+                    img-width="1024"
+                    img-height="480"
+                    style="text-shadow: 1px 1px 2px #333;"
+                >
+                    <b-carousel-slide
+                        v-for="(image, index) in product.images"
+                        :key="index"
+                        :img-src="image"
+                        :alt="'Product image ' + (index + 1)"
+                    ></b-carousel-slide>
+>>>>>>> origin/social_login
                 </b-carousel>
             </b-col>
         </b-row>

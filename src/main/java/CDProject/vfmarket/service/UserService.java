@@ -30,7 +30,7 @@ public class UserService {
                 .password(userSignUpDto.getPassword())
                 .name(userSignUpDto.getName())
                 .age(userSignUpDto.getAge())
-                .role(Role.MEMBER)
+                .role(Role.GUEST)
                 .build();
         user.passwordEncode(passwordEncoder);
         userRepository.save(user);
