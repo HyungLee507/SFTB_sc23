@@ -39,7 +39,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                         findUser.get()
                                 .getRole());
                 response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
-                response.sendRedirect("oauth2/sign-up"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
+                response.sendRedirect("/user/input");
+//                response.sendRedirect("http://localhost:8080/product/list"); // 프론트의 회원가입 추가 정보 입력 폼으로 리다이렉트
 
                 jwtService.sendAccessAndRefreshToken(response, accessToken, null);
 //                User findUser = userRepository.findByEmail(oAuth2User.getEmail())
@@ -63,6 +64,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 user.get().getRole());
         response.addHeader(jwtService.getAccessHeader(), "Bearer " + accessToken);
         response.addHeader(jwtService.getRefreshHeader(), "Bearer " + refreshToken);
+        response.sendRedirect("/product/list");
 
         jwtService.sendAccessAndRefreshToken(response, accessToken, refreshToken);
         jwtService.updateRefreshToken(oAuth2User.getEmail(), refreshToken);
