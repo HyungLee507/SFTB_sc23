@@ -6,6 +6,7 @@ import FindPassword from '@/components/FindPassword'
 import ProductregistrationPage from '@/components/ProductregistrationPage'
 import ProductinformationPage from '@/components/ProductinformationPage'
 import ProductlistPage from '@/components/ProductlistPage'
+import UserInputPage from "@/components/UserInputPage.vue";
 
 
 Vue.use(Router); // VueRouter를 사용하겠다.
@@ -29,13 +30,19 @@ export default new Router({
             path: '/product/registration',
             component: ProductregistrationPage,
         },
-        { path: '/product/list/:id', 
-        component: ProductinformationPage },
+        {
+            path: '/product/list/:id',
+            component: ProductinformationPage
+        },
         {
             path: '/product/list',
             component: ProductlistPage,
         },
-        
-        
+        {
+            path: '/user/input',
+            component: UserInputPage,
+        },
+
+
     ]
 });

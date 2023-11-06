@@ -43,6 +43,7 @@
     },
     "rules": {}
   },
+  "proxy": "https://openapi.naver.com",
   "browserslist": [
     "> 1%",
     "last 2 versions",
