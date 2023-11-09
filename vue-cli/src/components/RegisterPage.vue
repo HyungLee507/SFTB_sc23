@@ -8,7 +8,7 @@
     </div>
     <div class="form-group">
         <label for="text-password">인증번호 입력</label>
-            <b-form-input v-model="VerificationCode"  type="number" id="text-verificationcode" aria-describedby="verificationcode-help-block" required></b-form-input>
+            <b-form-input v-model="form.verificationCode"  type="number" id="text-verificationcode" aria-describedby="verificationcode-help-block" required></b-form-input>
             <b-button @click="VerificationCheck" variant="info" style="margin-left: 10px;">확인</b-button>
     </div>
     
@@ -31,18 +31,21 @@ export default {
         return {
             form: {
                 email: '',
+                verificationCode: '',
                 password: '',
             },
 
-            VerificationCode:'',//사용자가 입력한 인증번호
             isVisable: false,
-            sendCode: '',//서버로 부터 받은 인증번호
         
         };
     },
     methods: {
     
     sendVerificationCode(){
+        if(this.isVisable){
+            alert("이미 인증한 번호입니다.");
+            return;
+        }
         
         if(this.form.email ==''){
             alert('이메일을 입력하세요')
@@ -58,14 +61,12 @@ export default {
                 .then((res) => {
                     if(res.status == 200){
                         alert('이메일이 발송되었습니다');//이메일 발송
-                        const key = res.data.sendCode;
-                        alert(key);
-                        this.sendCode = key;//api로부터 전달받은 key값저장
+                    } else if (res.status == 226){
+                        alert('이미 인증번호를 발송한 이메일입니다.');//이메일 발송
                     }
                     else{
                         alert('잘못된 이메일입니다');
                     }
-                    console.log(res.data.sendCode)
                 }).catch((err)=>{
                 console.log(err)
             })
@@ -74,21 +75,32 @@ export default {
 
     },
 
-    inputVerificationCode(event){
-        this.VerificationCode = event.target.value;
-    },
+    // inputVerificationCode(event){
+    //     this.VerificationCode = event.target.value;
+    // },
     VerificationCheck(){
-        if(this.VerificationCode==''){
+        if(this.form.verificationCode==''){
             alert('인증번호를 입력하세요');
         }
         else{
-            if (this.VerificationCode == this.sendCode) {
-                    alert('인증 성공');
-                    this.isVisable = true;
-                }
-                else {
-                    alert('인증번호가 일치하지 않습니다');
-                }
+            const eform = new FormData();
+            eform.append('email',this.form.email);
+            eform.append('verificationCode',this.form.verificationCode);
+            axios.post('http://localhost:8080/check-verification',eform)
+                .then((res)=>{
+                  if (res.status == 200){
+                      alert('인증에 성공했습니다.');
+                      this.isVisable = true;
+                  } else if (res.status == 204){
+                      alert('이메일을 다시 확인해주십시오.');
+                  }
+                }).catch((err) => {
+                  if(err.response.status == 401){
+                    alert('인증번호가 틀렸습니다.');
+                  } else {
+                    alert('잘못된 요청입니다.')
+                  }
+            });
         }
         
     },
