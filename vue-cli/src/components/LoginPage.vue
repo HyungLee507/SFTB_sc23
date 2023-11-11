@@ -20,7 +20,7 @@
                       required></b-form-input>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">로그인</b-button>
+      <b-button @click="submitForm" variant="primary">로그인</b-button>
       <b-button to="/account/join" variant="primary">회원가입</b-button>
       <b-button to="/account/findpassword" variant="primary">비밀번호 찾기</b-button>
       <button @click="loginWithNaver">
@@ -39,7 +39,7 @@
 
 <script>
 import axios from 'axios';
-import router from "@/router";
+
 
 export default {
   data() {
@@ -53,19 +53,24 @@ export default {
     };
   },
   methods: {
-    async submitForm() {
-      try {
-        const response = await axios.post('http://localhost:8080/login', this.form);
-        // const response = await axios.post('/login', this.form);
-        console.log("response is " + response);
-        localStorage.setItem('token', response.data.token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-        console.log("here is console.log");
-        await router.push('/');
-      } catch (error) {
-        console.error(error);
+   submitForm() {
+    axios.post('/login', this.form)
+    .then(response => {
+      const accessToken = response.headers['authorization'];
+      const refreshToken = response.headers['authorization-refresh']; // 헤더 이름 확인
+      console.log(response.headers);
+      if (refreshToken) { // refreshToken이 있는지 확인
+        localStorage.setItem('refreshToken', refreshToken);
+        axios.defaults.headers.common['Refresh'] = refreshToken;
       }
-    },
+      localStorage.setItem('accessToken', accessToken);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      this.$router.push('/product/list');
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  },
     loginWithNaver() {
       window.location.href = '/oauth2/authorization/naver';
       // axios.get('oauth2/authorization/naver')

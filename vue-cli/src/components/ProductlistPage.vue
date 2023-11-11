@@ -7,7 +7,7 @@
             <b-dropdown-item @click="sortBy('createdAt')">Date</b-dropdown-item>
         </b-dropdown>
         <b-card-group deck>
-            <router-link v-for="product in sortedProducts" :key="product.id" :to="'/api/products/' + product.id">
+            <router-link v-for="product in sortedProducts" :key="product.id" :to="'/product/list/' + product.id">
                 <b-card :title="product.name" img-src="product.images[0]" img-alt="Image" img-top>
                     <b-card-text>{{ product.price }}</b-card-text>
                 </b-card>

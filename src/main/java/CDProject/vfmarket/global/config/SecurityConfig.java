@@ -47,7 +47,8 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .formLogin(formLogin -> {
                             formLogin
-                                    .loginPage("/login-Form.html")
+                                    .loginPage("/account/login")
+                                    .loginProcessingUrl("/login")
                                     .successHandler(new LoginSuccessHandler(jwtService, userRepository))
                                     .failureHandler(new LoginFailureHandler());
                         }
@@ -96,6 +97,7 @@ public class SecurityConfig {
 //                .userInfoEndpoint().userService(customOAuth2UserService); // customUserService 설정
                 .oauth2Login(oauth2Login -> {
                     oauth2Login
+                            .loginPage("/account/login")
                             .successHandler(oAuth2LoginSuccessHandler)
                             .failureHandler(oAuth2LoginFailureHandler)
                             .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(

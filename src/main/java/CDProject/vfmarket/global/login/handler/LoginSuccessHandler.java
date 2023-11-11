@@ -43,7 +43,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                     user.updateRefreshToken(refreshToken);
                     userRepository.saveAndFlush(user);
                 });
-        response.sendRedirect("/product/list");
+//        response.sendRedirect("/product/list");
         log.info("{}", response.getHeader("Authorization"));
         log.info("로그인에 성공하였습니다. 이메일 : {}", email);
         log.info("로그인에 성공하였습니다. AccessToken : {}", accessToken);
