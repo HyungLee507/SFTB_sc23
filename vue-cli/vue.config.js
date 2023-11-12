@@ -13,6 +13,7 @@ module.exports = defineConfig({
                 '/': {
                     target: 'http://localhost:8080',
                     changeOrigin: true,
+                    ws:false,
                 },
                 //서버 프로젝트 포트번호와 동일할 것
             },
