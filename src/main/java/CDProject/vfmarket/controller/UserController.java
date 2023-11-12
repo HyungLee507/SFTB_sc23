@@ -7,12 +7,18 @@ import CDProject.vfmarket.global.login.service.LoginService;
 import CDProject.vfmarket.service.MailService;
 import CDProject.vfmarket.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -24,10 +30,19 @@ public class UserController {
     private String senderEmail;
 
     @PostMapping("/sign-up")
-    @CrossOrigin(origins = "http://localhost:3000/")
+//    @CrossOrigin(origins = "http://localhost:3000/")
     public String signUp(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
         userService.signUp(userSignUpDto);
         return "회원 가입 성공";
+    }
+
+    @DeleteMapping("/sign-out")
+    public String signOut(@RequestParam String email) {
+
+        log.info("회원 탈퇴 컨트롤러 진입 = {}", email);
+        userService.signOut(email);
+        log.info("회원 탈퇴 컨트롤러 성공");
+        return "회원 탈퇴 성공";
     }
 
     @GetMapping("/jwt-test")
@@ -35,9 +50,10 @@ public class UserController {
         return "jwtTest 요청 성공";
     }
 
+
     @PostMapping("/mail-verify")
-    @CrossOrigin(origins = "http://localhost:3000/")
-    public ResponseEntity mailVerify(String email){
+//    @CrossOrigin(origins = "http://localhost:3000/")
+    public ResponseEntity mailVerify(String email) {
         int sendCode = mailService.createNumber();
 
         EmailVerificationResponseDto emailVerificationResponse =
@@ -54,22 +70,22 @@ public class UserController {
     }
 
     @PostMapping("/find-password")
-    @CrossOrigin(origins = "http://localhost:3000/")
-    public ResponseEntity findPassword(String email){
+//    @CrossOrigin(origins = "http://localhost:3000/")
+    public ResponseEntity findPassword(String email) {
         String newPassword = String.valueOf(mailService.createNumber());
 
-        try{
+        try {
             userService.findPassword(email, newPassword);
             mailService.sendFindPasswordMail(email, newPassword);
             return new ResponseEntity(newPassword, HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity(e.getMessage(), HttpStatus.NO_CONTENT);
         }
     }
 
     @PostMapping("/change-password")
-    @CrossOrigin(origins = "http://localhost:3000/")
-    public ResponseEntity changePassword(String email, String password){
+//    @CrossOrigin(origins = "http://localhost:3000/")
+    public ResponseEntity changePassword(String email, String password) {
         try {
             User user = userService.findEmail(email);
             userService.updatePassword(user, password);
@@ -78,6 +94,6 @@ public class UserController {
             // 이메일에 해당하는 계정이 없음
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
-
     }
+
 }
