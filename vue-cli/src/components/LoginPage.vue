@@ -39,7 +39,7 @@
 
 <script>
 import axios from 'axios';
-import router from "@/router";
+
 
 export default {
   data() {
@@ -53,21 +53,34 @@ export default {
     };
   },
   methods: {
-    async submitForm() {
-      try {
-        const response = await axios.post('http://localhost:8080/login', this.form);
-        // const response = await axios.post('/login', this.form);
-        console.log("response is " + response);
-        localStorage.setItem('token', response.data.token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-        console.log("here is console.log");
-        await router.push('/');
-      } catch (error) {
-        console.error(error);
-      }
+    async submitForm($event) {
+      $event.preventDefault();
+      console.log("1111111");
+      const response = await axios.post('/login', this.form);
+      console.log("2222222");
+      console.log(response);
+      // this.$router.push('/product/list');
+      // await axios.post('/login', this.form)
+      //     .then(response => {
+      //       console.log(response);
+      //       // 토큰을 localStorage에 저장
+      //       const accessToken = response.headers['access-token'];
+      //       const refreshToken = response.headers['refresh-token'];
+      //       localStorage.setItem('accessToken', accessToken);
+      //       localStorage.setItem('refreshToken', refreshToken);
+      //       // axios의 기본 설정에 토큰 정보 추가
+      //       axios.defaults.headers.common['authorization'] = accessToken;
+      //       axios.defaults.headers.common['authorization-refresh'] = refreshToken;
+      //       // 로그인 폼을 숨김
+      //       this.$router.push('/product/list');
+      //     })
+      //     .catch(error => {
+      //       console.log(error);
+      //     });
     },
     loginWithNaver() {
-      window.location.href = '/oauth2/authorization/naver';
+      // window.location.href = '/oauth2/authorization/naver';
+      // window.location.href = '/oauth2/authorization/naver';
       // axios.get('oauth2/authorization/naver')
       //     .then(response => {
       //       // this.$router.push('/product/list');
@@ -79,24 +92,24 @@ export default {
       //     .catch(error => {
       //       console.log(error);
       //     });
-      // axios.get('/oauth2/authorization/naver')
-      //     .then(response => {
-      //       if (response.status === 200) {
-      //         // 성공적인 응답을 받았을 때 토큰을 처리하는 코드
-      //         const token = response.headers.get('Authorization');
-      //         if (token) {
-      //           const tokenValue = token.replace('Bearer ', '');
-      //           localStorage.setItem('token', tokenValue);
-      //         }
-      //       } else {
-      //         // 오류 응답을 처리하는 코드
-      //         console.error('응답 코드:', response.status);
-      //       }
-      //     })
-      //     .catch(error => {
-      //       // 네트워크 오류 등을 처리하는 코드
-      //       console.error('요청 실패:', error);
-      //     });
+      axios.get('/oauth2/authorization/naver')
+          .then(response => {
+            if (response.status === 200) {
+              // 성공적인 응답을 받았을 때 토큰을 처리하는 코드
+              const token = response.headers.get('Authorization');
+              if (token) {
+                const tokenValue = token.replace('Bearer ', '');
+                localStorage.setItem('token', tokenValue);
+              }
+            } else {
+              // 오류 응답을 처리하는 코드
+              console.error('응답 코드:', response.status);
+            }
+          })
+          .catch(error => {
+            // 네트워크 오류 등을 처리하는 코드
+            console.error('요청 실패:', error);
+          });
     }
   },
 
