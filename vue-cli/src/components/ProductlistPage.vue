@@ -27,7 +27,21 @@ export default {
             sortKey: '', // 정렬 기준을 저장할 변수
         };
     },
+    
     created() {
+        axios.interceptors.request.use((config) => {
+            // 요청을 보내기 전에 수행할 작업
+            const token = localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰을 가져옵니다.
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`; // 토큰이 있으면 헤더에 추가합니다.
+            }
+            console.log(config.headers.Authorization);
+            return config;
+        }, function (error) {
+            // 요청 에러 처리
+            return Promise.reject(error);
+        });
+
         axios
             .get('/api/products')
             .then((response) => {

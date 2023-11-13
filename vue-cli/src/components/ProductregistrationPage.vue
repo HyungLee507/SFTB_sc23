@@ -1,32 +1,32 @@
 <template>
-<div>
-    <b-form @submit.prevent="submitForm">
-    <div v-for="(image, index) in product.images" :key="index">
-            <b-form-group :id="'product-image-' + index" label="상품 이미지">
-                <b-form-file v-model="product.images[index]" accept="image/*"></b-form-file>
+    <div>
+        <b-form @submit.prevent="submitForm">
+            <div v-for="(image, index) in product.images" :key="index">
+                <b-form-group :id="'product-image-' + index" label="상품 이미지">
+                    <b-form-file v-model="product.images[index]" accept="image/*"></b-form-file>
+                </b-form-group>
+            </div>
+            <b-button @click="addImage">이미지 추가</b-button>
+            <b-button @click="removeImage" v-if="product.images.length > 0">이미지 제거</b-button>
+
+            <b-form-group id="product-name" label="상품 이름">
+                <b-form-input v-model="product.name"></b-form-input>
             </b-form-group>
-        </div>
-        <b-button @click="addImage">이미지 추가</b-button>
-        <b-button @click="removeImage" v-if="product.images.length > 0">이미지 제거</b-button>
 
-    <b-form-group id="product-name" label="상품 이름">
-        <b-form-input v-model="product.name"></b-form-input>
-    </b-form-group>
+            <b-form-group id="product-price" label="상품 가격">
+                <b-input-group>
+                    <b-input-group-prepend is-text>$</b-input-group-prepend>
+                    <b-form-input v-model="product.price" type="number" min="0"></b-form-input>
+                </b-input-group>
+            </b-form-group>
 
-    <b-form-group id="product-price" label="상품 가격">
-        <b-input-group>
-        <b-input-group-prepend is-text>$</b-input-group-prepend>
-        <b-form-input v-model="product.price" type="number" min="0"></b-form-input>
-        </b-input-group>
-    </b-form-group>
+            <b-form-group id="product-description" label="상품 설명">
+                <b-form-textarea v-model="product.description"></b-form-textarea>
+            </b-form-group>
 
-    <b-form-group id="product-description" label="상품 설명">
-        <b-form-textarea v-model="product.description"></b-form-textarea>
-    </b-form-group>
-
-    <b-button type="submit" variant="primary">등록</b-button>
-    </b-form>
-</div>
+            <b-button type="submit" variant="primary">등록</b-button>
+        </b-form>
+    </div>
 </template>
 
 <script>
@@ -39,26 +39,41 @@ export default {
                 images: [],
                 name: '',
                 price: 0,
-                description: ''
-            }
-        }
+                description: '',
+            },
+        };
     },
     methods: {
         addImage() {
-            this.product.images.push('');
+            this.product.images.push(null); 
         },
         removeImage() {
             this.product.images.pop();
         },
         submitForm() {
-            axios.post('/api/products', this.product)
+            const formData = new FormData();
+
+            // 이미지와 다른 상품 정보를 FormData 객체에 추가
+            for (let i = 0; i < this.product.images.length; i++) {
+                formData.append(`images[${i}]`, this.product.images[i]);
+            }
+            formData.append('name', this.product.name);
+            formData.append('price', this.product.price);
+            formData.append('description', this.product.description);
+
+            // FormData 객체를 서버에 제출
+            axios.post('/api/products', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then(response => {
-                    console.log(response.data);
+                    console.log(response);
                 })
                 .catch(error => {
                     console.log(error);
                 });
-        }
-    }
-}
+        },
+    },
+};
 </script>

@@ -52,13 +52,24 @@ export default {
       error: null,
     };
   },
+  created() {
+    axios.interceptors.request.use(function (config) {
+      // 요청을 보내기 전에 수행할 작업
+      console.log(config.headers.Authorization); 
+      return config;
+    }, function (error) {
+      // 요청 에러 처리
+      return Promise.reject(error);
+    });
+  },
   methods: {
-   submitForm() {
-    axios.post('/login', this.form)
+    
+  async submitForm() {
+    await axios.post('/login', this.form)
     .then(response => {
-      const accessToken = response.headers['authorization'];
-      const refreshToken = response.headers['authorization-refresh']; // 헤더 이름 확인
       console.log(response.headers);
+      const accessToken = response.headers['authorization'];
+      const refreshToken = response.headers['authorization-refresh']; 
       if (refreshToken) { // refreshToken이 있는지 확인
         localStorage.setItem('refreshToken', refreshToken);
         axios.defaults.headers.common['Refresh'] = refreshToken;
@@ -66,6 +77,7 @@ export default {
       localStorage.setItem('accessToken', accessToken);
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
       this.$router.push('/product/list');
+       window.location.reload(); // 페이지를 새로 고침
     })
     .catch(error => {
       console.log(error);

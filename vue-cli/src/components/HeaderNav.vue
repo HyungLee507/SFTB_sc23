@@ -20,7 +20,7 @@
             <b-nav-item v-if="!isTokenPresent" to="/account/login">로그인</b-nav-item>
             <b-nav-item v-if="!isTokenPresent" to="/account/join">회원가입</b-nav-item>
             <b-nav-item v-if="isTokenPresent" @click="logout">로그아웃</b-nav-item>
-            <b-nav-item v-if="isTokenPresent" to="/mypage">마이페이지</b-nav-item>
+            <b-nav-item v-if="isTokenPresent" to="/account/mypage">마이페이지</b-nav-item>
           
           
         </b-navbar-nav>
@@ -35,26 +35,33 @@ export default {
   data() {
     return {
       navKey: 0, // 컴포넌트를 강제로 업데이트하기 위한 키
+      token: localStorage.getItem('accessToken'), // 토큰을 데이터로 관리합니다.
     };
   },
   computed: {
-  isTokenPresent() {
-    return localStorage.getItem('accessToken') !== null;
-  }
-},
- methods: {
-  logout() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refresh');
-    localStorage.removeItem('authorization'); 
-    localStorage.removeItem('refreshToken');
-    if (this.$router.currentRoute.path !== '/account/login') {
-      this.$router.push('/account/login');
-    } else {
-      this.$router.push('/');
+    isTokenPresent() {
+      return this.token !== null;
     }
-    this.navKey++;
-  }
-},
+  },
+  methods: {
+    setToken(token) {
+      localStorage.setItem('accessToken', token);
+      this.token = token;
+    },
+    removeToken() {
+      localStorage.removeItem('accessToken');
+      this.token = null;
+    },
+    logout() {
+      this.removeToken();
+      localStorage.removeItem('refreshToken');
+      if (this.$router.currentRoute.path !== '/account/login') {
+        this.$router.push('/account/login');
+      } else {
+        this.$router.push('/');
+      }
+      this.navKey++;
+    },
+  },
 };
 </script>

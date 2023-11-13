@@ -54,7 +54,7 @@ export default {
         else{   
             const eform = new FormData();
             eform.append('email',this.form.email);//이메일 저장
-            axios.post('http://localhost:8080/mail-verify',eform)//이메일 인증api 호출 form의 형태로 이메일 전달
+            axios.post('/mail-verify',eform)//이메일 인증api 호출 form의 형태로 이메일 전달
                 .then((res) => {
                     if(res.status == 200){
                         alert('이메일이 발송되었습니다');//이메일 발송
@@ -93,7 +93,7 @@ export default {
         
     },
 
-    submitForm() {
+   async submitForm() {
 
             if (!this.form.email || !this.form.password) {
                 alert('모든 항목을 입력하세요.');
@@ -105,12 +105,14 @@ export default {
                 return;
             }
 
-            
-        
-            
-            axios.post('http://localhost:8080/sign-up', this.form).then((res) => {
-                alert('회원가입이 완료되었습니다.');
-                console.log(res);
+
+
+
+            await axios.post('/sign-up', this.form).then((res) => {
+                if (res.status == 200) {
+                    alert('회원가입이 완료되었습니다.');
+                this.$router.push('{name: "login"}');
+                }
             }).catch((err) => {
                 alert('회원가입에 실패했습니다. 다시 시도해주세요.');
                 console.log(err);
