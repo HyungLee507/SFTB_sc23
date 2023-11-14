@@ -4,6 +4,7 @@
             <div v-for="(image, index) in product.images" :key="index">
                 <b-form-group :id="'product-image-' + index" label="상품 이미지">
                     <b-form-file v-model="product.images[index]" accept="image/*"></b-form-file>
+                    
                 </b-form-group>
             </div>
             <b-button @click="addImage">이미지 추가</b-button>
@@ -12,6 +13,19 @@
             <b-form-group id="product-name" label="상품 이름">
                 <b-form-input v-model="product.name"></b-form-input>
             </b-form-group>
+                <b-form-group id="product-category" label="상품 카테고리">
+                    <b-form-radio-group v-model="product.category">
+                        <b-form-radio value="운동화">운동화</b-form-radio>
+                        <b-form-radio value="단화">단화</b-form-radio>
+                        <b-form-radio value="캐주얼">캐주얼</b-form-radio>
+                        <b-form-radio value="기타">기타</b-form-radio>
+                        <b-form-radio value="스포츠">스포츠</b-form-radio>
+                    </b-form-radio-group>
+                </b-form-group>
+
+                <b-form-group id="product-showSize" label="상품 사이즈">
+                    <b-form-input v-model="product.showSize"></b-form-input>
+                </b-form-group>
 
             <b-form-group id="product-price" label="상품 가격">
                 <b-input-group>
@@ -36,14 +50,16 @@ export default {
     data() {
         return {
             product: {
-                images: [],
+                images: [null],
                 name: '',
                 price: 0,
+                category: '',
+                showSize: 0,
                 description: '',
             },
         };
     },
-    created(){
+    created() {
         axios.interceptors.request.use((config) => {
             // 요청을 보내기 전에 수행할 작업
             const token = localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰을 가져옵니다.
@@ -59,12 +75,16 @@ export default {
     },
     methods: {
         addImage() {
-            this.product.images.push(null); 
+            this.product.images.push(null);
         },
         removeImage() {
             this.product.images.pop();
         },
         submitForm() {
+            if (this.product.images.length < 3) {
+                alert('이미지는 3개 이상 등록해주세요.');
+                return;
+            }
             const formData = new FormData();
 
             // 이미지와 다른 상품 정보를 FormData 객체에 추가
@@ -91,3 +111,4 @@ export default {
     },
 };
 </script>
+
