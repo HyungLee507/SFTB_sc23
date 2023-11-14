@@ -6,7 +6,6 @@ import FindPassword from '@/components/FindPassword'
 import ProductregistrationPage from '@/components/ProductregistrationPage'
 import ProductinformationPage from '@/components/ProductinformationPage'
 import ProductlistPage from '@/components/ProductlistPage'
-import UserinputPage from '@/components/UserinputPage'
 import CartPage from '@/components/CartPage';
 import MyPage from '@/components/MyPage';
 import ProfilePage from '@/components/ProfilePage'
@@ -44,10 +43,6 @@ const router = new Router({
         {
             path: '/product/list',
             component: ProductlistPage,
-        },
-        {
-            path: '/user/input',
-            component: UserinputPage,
         },
         
         {

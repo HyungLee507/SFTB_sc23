@@ -14,6 +14,10 @@
     
         <label for="text-password">비밀번호</label>
         <b-form-input v-model="form.password"  type="password" id="text-password" aria-describedby="password-help-block" required></b-form-input>
+        <label for="text-name">이름</label>
+        <b-form-input v-model="form.name" type="text" id="text-name" aria-describedby="name-help-block" required></b-form-input>
+        <label for="text-footsize">신발 사이즈</label>
+        <b-form-input v-model="form.footsize" type="number" id="text-footsize" aria-describedby="footsize-help-block" required></b-form-input>
 
 
         <b-button type="submit" v-show="isVisable" variant="primary">회원가입</b-button>
@@ -32,6 +36,8 @@ export default {
             form: {
                 email: '',
                 password: '',
+                name: '',
+                footsize: '',
             },
 
             VerificationCode:'',//사용자가 입력한 인증번호
