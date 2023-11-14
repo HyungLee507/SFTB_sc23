@@ -1,10 +1,11 @@
+
 <template>
     <div>
         <b-form @submit.prevent="submitForm">
             <div v-for="(image, index) in product.images" :key="index">
                 <b-form-group :id="'product-image-' + index" label="상품 이미지">
-                    <b-form-file v-model="product.images[index]" accept="image/*"></b-form-file>
-                    
+                    <b-form-file @change="previewImage($event, index)" v-model="product.images[index]" accept="image/*"></b-form-file>
+                    <img class="preview" :src="product.imagePreviews[0]" v-if="product.imagePreviews[0] !== undefined && index === 0"/>
                 </b-form-group>
             </div>
             <b-button @click="addImage">이미지 추가</b-button>
@@ -18,8 +19,8 @@
                         <b-form-radio value="운동화">운동화</b-form-radio>
                         <b-form-radio value="단화">단화</b-form-radio>
                         <b-form-radio value="캐주얼">캐주얼</b-form-radio>
-                        <b-form-radio value="기타">기타</b-form-radio>
                         <b-form-radio value="스포츠">스포츠</b-form-radio>
+                        <b-form-radio value="기타">기타</b-form-radio>
                     </b-form-radio-group>
                 </b-form-group>
 
@@ -50,7 +51,8 @@ export default {
     data() {
         return {
             product: {
-                images: [null],
+                images: [undefined],
+                imagePreviews: [], 
                 name: '',
                 price: 0,
                 category: '',
@@ -74,15 +76,29 @@ export default {
         });
     },
     methods: {
+        previewImage(event, index) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    this.$set(this.product.imagePreviews, index, e.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                this.$set(this.product.imagePreviews, index, undefined);
+            }
+        },
         addImage() {
-            this.product.images.push(null);
+            this.product.images.push(undefined);
         },
         removeImage() {
             this.product.images.pop();
+            this.product.imagePreviews.splice(-1, 1);
         },
         submitForm() {
             if (this.product.images.length < 3) {
                 alert('이미지는 3개 이상 등록해주세요.');
+
                 return;
             }
             const formData = new FormData();
@@ -111,4 +127,11 @@ export default {
     },
 };
 </script>
+<style scoped>
+.preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+</style>
 
