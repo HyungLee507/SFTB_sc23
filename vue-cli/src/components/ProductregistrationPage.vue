@@ -24,7 +24,7 @@
                 </b-form-group>
 
                 <b-form-group id="product-showSize" label="상품 사이즈">
-                    <b-form-input v-model="product.showSize"></b-form-input>
+                    <b-form-input v-model="product.showSize" type="number"></b-form-input>
                 </b-form-group>
 
             <b-form-group id="product-price" label="상품 가격">
