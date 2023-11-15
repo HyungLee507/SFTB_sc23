@@ -110,6 +110,8 @@ export default {
             formData.append('name', this.product.name);
             formData.append('price', this.product.price);
             formData.append('description', this.product.description);
+            formData.append('category', this.product.category);
+            formData.append('showSize', this.product.showSize);
 
             // FormData 객체를 서버에 제출
             axios.post('/api/products', formData, {

@@ -27,6 +27,8 @@
             <b-col>
                 <h1>{{ product.name }}</h1>
                 <p>{{ product.price }}</p>
+                <p>{{ product.category }}</p>
+                <p>{{ product.showSize }}</p>
                 <p>{{ product.description }}</p>
                 <b-button variant="primary" to="#">장바구니</b-button>
                 <b-button variant="success" to="#">VR Fitting</b-button>
@@ -47,11 +49,26 @@ export default {
                 name: "",
                 price: 0,
                 description: "",
+                category: '',
+                showSize: 0,
             },
             slide: 0,
         };
     },
     created() {
+        axios.interceptors.request.use((config) => {
+            // 요청을 보내기 전에 수행할 작업
+            const token = localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰을 가져옵니다.
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`; // 토큰이 있으면 헤더에 추가합니다.
+            }
+            console.log(config.headers.Authorization);
+            return config;
+        }, function (error) {
+            // 요청 에러 처리
+            return Promise.reject(error);
+        });
+
         const id = this.$route.params.id;//상품의 id를 받아옴
         axios
             .get("/api/products/list/" + id) //상품정보를 받아오는 api호출
