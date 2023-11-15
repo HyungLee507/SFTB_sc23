@@ -1,6 +1,7 @@
+
 <template>
     <div class="container d-flex justify-content-center">
-    <b-form  @submit="submitForm">
+    <b-form  @submit.prevent="submitForm">
     <div class="form-group">
         <label for="text-email">이메일</label>
         <b-form-input v-model="form.email" type="email" id="text-email" aria-describedby="email-help-block" required></b-form-input>
@@ -14,6 +15,12 @@
     
         <label for="text-password">비밀번호</label>
         <b-form-input v-model="form.password"  type="password" id="text-password" aria-describedby="password-help-block" required></b-form-input>
+        <div class="form-group">
+            <label for="password-confirm">비밀번호 확인</label>
+            <b-form-input type="password" id="password-confirm" v-model="passwordConfirm" required></b-form-input>
+            <p v-if="passwordsMatch && form.password && passwordConfirm" style="color: green;">비밀번호가 같습니다.</p>
+            <p v-else-if="form.password && passwordConfirm" style="color: red;">비밀번호가 다릅니다.</p>
+        </div>
         <label for="text-name">이름</label>
         <b-form-input v-model="form.name" type="text" id="text-name" aria-describedby="name-help-block" required></b-form-input>
         <label for="text-footsize">신발 사이즈</label>
@@ -43,8 +50,14 @@ export default {
             VerificationCode:'',//사용자가 입력한 인증번호
             isVisable: false,
             sendCode: '',//서버로 부터 받은 인증번호
+            passwordConfirm: '',
         
         };
+    },
+    computed: {
+        passwordsMatch() {
+            return this.form.password === this.passwordConfirm;
+        }
     },
     methods: {
     
@@ -98,8 +111,13 @@ export default {
         }
         
     },
+    checkPassword() {
+            if (this.form.password !== this.passwordConfirm) {
+                alert('비밀번호가 다릅니다.');
+            }
+        },
 
-   async submitForm() {
+async submitForm() {
 
             if (!this.form.email || !this.form.password) {
                 alert('모든 항목을 입력하세요.');
@@ -110,6 +128,10 @@ export default {
                 alert('올바른 이메일 주소를 입력하세요.');
                 return;
             }
+            if (!this.passwordsMatch) {
+                alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+                return;
+            }
 
 
 
@@ -117,7 +139,7 @@ export default {
             await axios.post('/sign-up', this.form).then((res) => {
                 if (res.status == 200) {
                     alert('회원가입이 완료되었습니다.');
-                this.$router.push('{name: "login"}');
+                this.$router.push('/account/login');
                 }
             }).catch((err) => {
                 alert('회원가입에 실패했습니다. 다시 시도해주세요.');

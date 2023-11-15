@@ -113,9 +113,6 @@ export default {
 
             // FormData 객체를 서버에 제출
             axios.post('/api/products', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
             })
                 .then(response => {
                     console.log(response);
