@@ -117,10 +117,11 @@ public class JwtService {
      */
     public Optional<String> extractEmail(String accessToken) {
         try {
+            String trim = accessToken.trim();
             // 토큰 유효성 검사하는 데에 사용할 알고리즘이 있는 JWT verifier builder 반환
             return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
                     .build() // 반환된 빌더로 JWT verifier 생성
-                    .verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
+                    .verify(trim) // accessToken을 검증하고 유효하지 않다면 예외 발생
                     .getClaim(EMAIL_CLAIM) // claim(Emial) 가져오기
                     .asString());
         } catch (Exception e) {
@@ -131,10 +132,13 @@ public class JwtService {
 
     public Optional<String> extractRole(String accessToken) {
         try {
+            log.info("accessToken is{}", accessToken);
+            String trim = accessToken.trim();
+            log.info("trim is{}", trim);
             // 토큰 유효성 검사하는 데에 사용할 알고리즘이 있는 JWT verifier builder 반환
             return Optional.ofNullable(JWT.require(Algorithm.HMAC512(secretKey))
                     .build() // 반환된 빌더로 JWT verifier 생성
-                    .verify(accessToken) // accessToken을 검증하고 유효하지 않다면 예외 발생
+                    .verify(trim) // accessToken을 검증하고 유효하지 않다면 예외 발생
                     .getClaim(ROLE) // claim(Emial) 가져오기
                     .asString());
         } catch (Exception e) {
@@ -161,16 +165,23 @@ public class JwtService {
      * RefreshToken DB 저장(업데이트)
      */
     public void updateRefreshToken(String email, String refreshToken) {
+        String trimToken = refreshToken.trim();
         userRepository.findByEmail(email)
                 .ifPresentOrElse(
-                        user -> user.updateRefreshToken(refreshToken),
+                        user -> user.updateRefreshToken(trimToken),
                         () -> new Exception("일치하는 회원이 없습니다.")
                 );
     }
 
     public boolean isTokenValid(String token) {
         try {
-            JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
+            log.info("token is{}", token);
+            String trim = token.trim();
+            log.info("trim is {}", trim);
+//            Base64.Decoder decoder = Base64.getUrlDecoder();
+//            String sss = new String(decoder.decode(token));
+//            log.info("sss is {}", sss);
+            JWT.require(Algorithm.HMAC512(secretKey)).build().verify(trim);
             return true;
         } catch (Exception e) {
             log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
