@@ -75,6 +75,10 @@ public class User extends BaseTimeEntity {
         this.role = Role.MEMBER;
     }
 
+    public void setFootSize(Integer footSize) {
+        this.footSize = footSize;
+    }
+
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
     }
@@ -93,6 +97,10 @@ public class User extends BaseTimeEntity {
 
     public void updatePassword(String updatePassword, PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(updatePassword);
+    }
+
+    public void updateRole(Role role) {
+        this.role = role;
     }
 
     public void updateRefreshToken(String updateRefreshToken) {
