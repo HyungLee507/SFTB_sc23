@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FirstRegistUserInfoDto {
 
+    private String email;
+
     private String nickName;
 
     private Integer shoeSize;
-
 }
