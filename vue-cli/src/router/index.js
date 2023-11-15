@@ -6,7 +6,7 @@ import FindPassword from '@/components/FindPassword'
 import ProductregistrationPage from '@/components/ProductregistrationPage'
 import ProductinformationPage from '@/components/ProductinformationPage'
 import ProductlistPage from '@/components/ProductlistPage'
-import UserinputPage from '@/components/UserinputPage'
+import UserInputPage from '@/components/UserInputPage'
 import CartPage from '@/components/CartPage';
 import MyPage from '@/components/MyPage';
 import ProfilePage from '@/components/ProfilePage'
@@ -21,7 +21,7 @@ import SellingProductInformationPage from '@/components/SellingProductInformatio
 Vue.use(Router);
 
 const router = new Router({
-   mode: 'history',
+    mode: 'history',
     routes: [
         {
             path: '/account/login',
@@ -47,9 +47,8 @@ const router = new Router({
         },
         {
             path: '/user/input',
-            component: UserinputPage,
+            component: UserInputPage,
         },
-        
         {
             path: '/user/cart',
             component: CartPage,
@@ -91,12 +90,12 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  const isLoggedIn = !!localStorage.getItem('accessToken');
-  if (isLoggedIn && (to.path === '/account/login' || to.path === '/account/join')) {
+    const isLoggedIn = !!localStorage.getItem('accessToken');
+    if (isLoggedIn && (to.path === '/account/login' || to.path === '/account/join')) {
     next('/'); // 로그인된 사용자가 '/account/login' 또는 '/account/join'에 접근하려고 하면 루트 경로('/')로 리다이렉트
-  } else {
+    } else {
     next(); // 그 외의 경우에는 요청된 경로로 진행
-  }
+    }
 });
 
 export default router;
