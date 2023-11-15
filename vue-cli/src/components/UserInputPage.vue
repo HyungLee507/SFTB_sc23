@@ -26,7 +26,8 @@ export default {
   },
   methods: {
     submitForm() {
-      axios.post('/api/user', {
+      axios.post('/user/update', {
+        //여기에서 이메일을 줄 수 가 있나?
         name: this.name,
         shoeSize: this.shoeSize
       })
