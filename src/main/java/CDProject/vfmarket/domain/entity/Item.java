@@ -1,18 +1,34 @@
 package CDProject.vfmarket.domain.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Item extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Item_id")
     private Long id;
     private String itemName;
@@ -24,12 +40,12 @@ public class Item extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private ItemStatus status;
 
-    //상품 대표 이미지인데... 이렇게 리스트 말고 정면 측면 후면 이렇게 나눠야 될지 고민...
     private String image1;
     private String image2;
     private String image3;
     private String image4;
     private String image5;
+
     @Lob
     private String description;
 
