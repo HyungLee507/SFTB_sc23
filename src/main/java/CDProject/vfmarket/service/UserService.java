@@ -6,6 +6,7 @@ import CDProject.vfmarket.domain.entity.Role;
 import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import java.rmi.NoSuchObjectException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class UserService {
                     .password(userSignUpDto.getPassword())
                     .name(userSignUpDto.getName())
                     .age(userSignUpDto.getAge())
-                    .role(Role.GUEST)
+                    .role(Role.MEMBER)
                     .build();
             user.passwordEncode(passwordEncoder);
             userRepository.save(user);
@@ -78,7 +79,14 @@ public class UserService {
         }
     }
 
-    public void updateUserInfo(FirstRegistUserInfoDto firstRegistUserInfoDto) {
-
+    public void updateUserInfo(FirstRegistUserInfoDto firstRegistUserInfoDto) throws NoSuchObjectException {
+        Optional<User> firstLoginUser = userRepository.findByEmail(firstRegistUserInfoDto.getEmail());
+        if (firstLoginUser.isPresent()) {
+            firstLoginUser.get().authorizeUser();
+            firstLoginUser.get().updateNickname(firstRegistUserInfoDto.getNickName());
+            firstLoginUser.get().setFootSize(firstRegistUserInfoDto.getShoeSize());
+        } else {
+            throw new NoSuchObjectException("해당 유저를 찾을 수 없습니다.");
+        }
     }
 }

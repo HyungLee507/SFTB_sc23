@@ -14,6 +14,5 @@ public class UserSignUpDto {
     private String name;
 
     private String age;
-
-
+    
 }
