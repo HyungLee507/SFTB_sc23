@@ -6,7 +6,7 @@ import FindPassword from '@/components/FindPassword'
 import ProductregistrationPage from '@/components/ProductregistrationPage'
 import ProductinformationPage from '@/components/ProductinformationPage'
 import ProductlistPage from '@/components/ProductlistPage'
-import UserInputPage from '@/components/UserInputPage'
+// import UserInputPage from '@/components/UserInputPage'
 import CartPage from '@/components/CartPage';
 import MyPage from '@/components/MyPage';
 import ProfilePage from '@/components/ProfilePage'
@@ -45,10 +45,10 @@ const router = new Router({
             path: '/product/list',
             component: ProductlistPage,
         },
-        {
-            path: '/user/input',
-            component: UserInputPage,
-        },
+        // {
+        //     path: '/user/input',
+        //     component: UserInputPage,
+        // },
         {
             path: '/user/cart',
             component: CartPage,
@@ -82,7 +82,7 @@ const router = new Router({
             component: SoldPage,
         },
         {
-            path: '/user/mypage/saleshistory/sellingproduct',
+            path: '/user/mypage/saleshistory/sellingproduct/:productId',
             component: SellingProductInformationPage,
         }
     ]

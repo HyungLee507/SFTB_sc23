@@ -81,6 +81,8 @@ export default {
                         images: item.images,
                         name: item.name,
                         price: item.price,
+                        showSize: item.showSize
+                        category: item.category
                         description: item.description,
                     }));
                 })
