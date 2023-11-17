@@ -75,7 +75,7 @@ export default {
     methods: {
         getSoldProducts() {
             axios
-                .get('/api/products')
+                .get('/api/products')  //판매완료 페이지
                 .then((response) => {
                     this.soldProducts = response.data.map((item) => ({
                         images: item.images,

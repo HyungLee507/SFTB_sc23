@@ -20,7 +20,7 @@
           <b-nav-item v-if="!isTokenPresent" to="/account/login">로그인</b-nav-item>
           <b-nav-item v-if="!isTokenPresent" to="/account/join">회원가입</b-nav-item>
           <b-nav-item v-if="isTokenPresent" @click="logout">로그아웃</b-nav-item>
-          <b-nav-item v-if="isTokenPresent" to="/user/mypage">마이페이지</b-nav-item>
+          <b-nav-item v-if="!isTokenPresent" to="/user/mypage">마이페이지</b-nav-item>
 
           
         </b-navbar-nav>

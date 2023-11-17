@@ -15,13 +15,18 @@
                     <div>
                         <p style="margin-right: 300px;">[대표이미지]</p>
                         <div v-for="(image, index) in editedProduct.images" :key="index">
-                            <img :src="image" alt="Product Image" class="product-image" />
-                            <b-button class=image-button @click="editImage(index)">이미지 수정</b-button>
-                            <b-button class=delete-button @click="deleteImage(index)">이미지 삭제</b-button>
+                            <img 
+                            :src="image" 
+                            alt="Product Image" 
+                            class="product-image"
+                            style="width: 250px; height: 250px; border-radius: 0;"
+                            />
+                            <b-button class="image-button" @click="editImage(index)">이미지 수정</b-button>
+                            <b-button class="delete-button" @click="deleteImage(index)">이미지 삭제</b-button>
                         </div>
                         <div>
                             <input type="file" ref="fileInput" style="display: none" @change="handleImageUpload" />
-                            <b-button class=add-button @click="addImage(index)">이미지 추가</b-button>
+                            <b-button class="add-button" @click="addImage">이미지 추가</b-button>
                         </div>
                         <p>상품 이름: <b-input v-model="editedProduct.name" /></p>
                         <p>상품 가격: <b-input v-model="editedProduct.price" type="number" step="100" /></p>
@@ -79,6 +84,8 @@
 
 .add-button {
     background-color: blue;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 </style>
 
@@ -94,31 +101,35 @@ export default {
         return {
             editedProduct: {
                 images: [],
-                name: '',
+                imagePreviews: [],
+                name: "",
                 price: 0,
                 showSize: 0,
-                category: '',
-                description: '',
+                category: "",
+                description: "",
                 id: 0,
             },
+            selectedImageIndex: null,
         };
     },
     created() {
         const productId = this.$route.params.ProductId;
-        axios.get(`/api/products/${productId}`)   //백엔드랑 맞출것
+        
+        axios.get(`/api/products/${productId}`)   // api
             .then(response => {
                 this.editedProduct = response.data;
             })
     },
     methods: {
         saveProductInformation() {
-            //서버에 저장하는 로직
+            // 서버에 저장하는 로직
         },
-        editImage() {
-            //이미지 수정 로직
+        editImage(index) {
+            this.selectedImageIndex = index;
+            this.$refs.fileInput.click();
         },
         addImage() {
-            //이미지 추가 로직
+            this.$refs.fileInput.click();
         },
         cancelProduct() {
             // 상품판매 취소
@@ -133,12 +144,32 @@ export default {
         isRepresentativeImage(index) {
             return index === 0;
         },
+        handleImageUpload(event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    if (!this.editedProduct.images) {
+                        this.$set(this.editedProduct, "images", []);
+                    }
+                    if (this.selectedImageIndex !== null) {
+                        this.editedProduct.images[this.selectedImageIndex] = reader.result;
+                        this.selectedImageIndex = null; // 선택 인덱스 초기화
+                    } else {
+                        this.editedProduct.images.push(reader.result);
+                    }
+                    this.$forceUpdate(); 
+                };
+                reader.readAsDataURL(file);
+            }
+        },
     },
 };
 </script> -->
 
 <script>
-import ButtonList from './ButtonList';
+import ButtonList from "./ButtonList";
 
 export default {
     components: {
@@ -148,11 +179,12 @@ export default {
         return {
             editedProduct: {
                 images: [],
-                name: '',
+                imagePreviews: [],
+                name: "",
                 price: 0,
                 showSize: 0,
-                category: '',
-                description: '',
+                category: "",
+                description: "",
                 id: 0,
             },
             selectedImageIndex: null,
@@ -161,31 +193,33 @@ export default {
     created() {
         const productId = this.$route.params.productId;
 
-        if (productId === '1') {
+        if (productId === "1") {
             const testData1 = {
                 images: [
-                    'https://shopping-phinf.pstatic.net/main_1164266/11642661041.20191216104903.jpg?type=f300',
-                    'https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300',
+                    "https://shopping-phinf.pstatic.net/main_1164266/11642661041.20191216104903.jpg?type=f300",
+                    "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
+                    "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
                 ],
-                name: '나이키운동화',
+                name: "나이키운동화",
                 price: 10000,
                 showSize: 250,
-                category: '운동화',
-                description: '운동하기 편함',
+                category: "운동화",
+                description: "운동하기 편함",
                 id: 1,
             };
             this.editedProduct = testData1;
-        } else if (productId === '2') {
+        } else if (productId === "2") {
             const testData2 = {
                 images: [
-                    'https://shopping-phinf.pstatic.net/main_1164266/11642661041.20191216104903.jpg?type=f300',
-                    'https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300',
+                    "https://shopping-phinf.pstatic.net/main_1164266/11642661041.20191216104903.jpg?type=f300",
+                    "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
+                    "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
                 ],
-                name: '아디다스 샌들',
+                name: "아디다스 샌들",
                 price: 15000,
                 showSize: 270,
-                category: '샌들',
-                description: '편함',
+                category: "샌들",
+                description: "편함",
                 id: 2,
             };
             this.editedProduct = testData2;
@@ -195,22 +229,28 @@ export default {
         saveProductInformation() {
             // 서버에 저장하는 로직
         },
-        editImage(index) {
-            this.selectedImageIndex = index;
-            this.$refs.fileInput.value = '';
-            this.$refs.fileInput.click();
-        },
-        addImage() {
-            // 이미지 추가 로직
-        },
         cancelProduct() {
             // 상품판매 취소
         },
+        editImage(index) {
+            this.selectedImageIndex = index;
+            this.$refs.fileInput.click();
+        },
+        addImage() {
+            if (this.editedProduct.images.length < 5) {
+                this.$refs.fileInput.click();
+            } else {               
+                alert("이미지는 최대 5개까지만 추가할 수 있습니다.");
+            }
+        },
+        
         deleteImage(index) {
             if (this.isRepresentativeImage(index)) {
-                alert('대표이미지는 삭제할 수 없습니다.');
-            } else {
+                alert("대표이미지는 삭제할 수 없습니다.");
+            } else if (this.editedProduct.images.length > 3) {
                 this.editedProduct.images.splice(index, 1);
+            } else {               
+                alert("이미지는 최소 3개까지 유지되어야 합니다.");
             }
         },
         isRepresentativeImage(index) {
@@ -218,19 +258,25 @@ export default {
         },
         handleImageUpload(event) {
             const file = event.target.files[0];
-            if (file && this.selectedImageIndex !== null) {
+
+            if (file) {
                 const reader = new FileReader();
                 reader.onload = () => {
-                    // 이미지를 읽은 후의 동작
-                    this.editedProduct.images[this.selectedImageIndex] = reader.result;
+                    if (!this.editedProduct.images) {
+                        this.$set(this.editedProduct, "images", []);
+                    }
+                    if (this.selectedImageIndex !== null) {
+                        this.editedProduct.images[this.selectedImageIndex] = reader.result;
+                        this.selectedImageIndex = null; 
+                    } else {
+                        this.editedProduct.images.push(reader.result);
+                    }
+
+                    console.log("Edited product:", this.editedProduct);
+                    this.$forceUpdate(); 
                 };
                 reader.readAsDataURL(file);
             }
-            this.selectedImageIndex = null; // 선택 인덱스 초기화
-        },
-        handleFileChange(event) {
-            // 파일 선택이 완료되면 handleImageUpload 메서드 호출
-            this.handleImageUpload(event);
         },
     },
 };

@@ -68,7 +68,7 @@ export default {
     methods: {
         getSellingProducts() {
             axios
-                .get('/api/products')
+                .get('/admin/orders')
                 .then((response) => {
                     this.sellingProducts = response.data.map((item) => ({
                         images: item.images,
