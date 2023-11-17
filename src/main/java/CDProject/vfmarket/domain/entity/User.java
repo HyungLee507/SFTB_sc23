@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +69,8 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user")
     private List<StyleShot> styleShots = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Cart> shoppingBaskets = new ArrayList<>();
+    @OneToOne(mappedBy = "user")
+    private Cart shoppingBaskets;
 
     public void authorizeUser() {
         this.role = Role.MEMBER;
