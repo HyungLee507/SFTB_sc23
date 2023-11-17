@@ -30,7 +30,7 @@
                 <p>{{ product.category }}</p>
                 <p>{{ product.showSize }}</p>
                 <p>{{ product.description }}</p>
-                <b-button variant="primary" to="#">장바구니</b-button>
+                <b-button variant="primary" @click="addToCart">장바구니</b-button>
                 <b-button variant="success" to="#">VR Fitting</b-button>
                 <b-button variant="info" to="#">결제</b-button>
             </b-col>
@@ -79,5 +79,18 @@ export default {
                 console.log(error);
             });
     },
+    methods: {
+        addToCart() {
+            axios.post('/api/cart', {
+                productId: this.product.id,
+            })
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
+    }
 };
 </script>
