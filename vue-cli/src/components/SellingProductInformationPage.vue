@@ -115,7 +115,7 @@ export default {
     created() {
         const productId = this.$route.params.ProductId;
         
-        axios.get(`/api/products/${productId}`)   // api
+        axios.get(`/products/${productId}`)   // api
             .then(response => {
                 this.editedProduct = response.data;
             })

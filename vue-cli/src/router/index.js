@@ -10,7 +10,7 @@ import ProductlistPage from '@/components/ProductlistPage'
 import CartPage from '@/components/CartPage';
 import MyPage from '@/components/MyPage';
 import ProfilePage from '@/components/ProfilePage'
-import OrdersPage from '@/components/OrdersPage'
+import OrdersPage from '@/components/OrdersPage'  //없애야하나
 import VirtualFittingPage from '@/components/VirtualFittingPage'
 import SalesHistoryPage from '@/components/SalesHistoryPage.vue'
 import SellingPage from '@/components/SellingPage.vue'
@@ -62,7 +62,7 @@ const router = new Router({
             component: ProfilePage,
         },
         {
-            path: '/user/mypage/orders',
+            path: '/user/mypage/orders',   //없앨지말지
             component: OrdersPage,
         },
         {

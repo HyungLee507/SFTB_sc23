@@ -70,7 +70,7 @@ export default {
     methods: {
         getOrdersProducts() {
             axios
-                .get('/api/products')
+                .get('/order')  
                 .then((response) => {
                     this.ordersProducts = response.data.map((item) => ({
                         images: item.images,

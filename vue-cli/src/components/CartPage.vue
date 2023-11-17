@@ -83,14 +83,14 @@ export default {
     methods: {
         getCartItems() {
             axios
-                .get('/api/products')
+                .get('/cart')
                 .then((response) => {   //백엔드에서 어떻개 받지
                     this.cartItems = response.data.map(item => ({
                         images: item.images,
                         name: item.name,
                         price: item.price,
-                        showSize: item.showSize
-                        category: item.category
+                        showSize: item.showSize,
+                        category: item.category,
                         description: item.description
                     }));
                 })
@@ -107,9 +107,9 @@ export default {
         },
     },
 };
-</script> -->
+</script>
 
-<!-- //테스트용// -->
+//테스트용// -->
 
 <script>
 import ButtonList from './ButtonList'

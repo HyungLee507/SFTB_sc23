@@ -29,7 +29,7 @@ export default {
             buttons: [
                 {
                     label: "주문내역",
-                    action: this.goToOrdersPage,
+                    action: this.goToMyPage,
                     backgroundColor: "transparent",
                 },
                 {
@@ -67,8 +67,8 @@ export default {
             button.cursor = "default";
         },
 
-        goToOrdersPage() {
-            const targetRoute = "/user/mypage/orders";
+        goToMyPage() {
+            const targetRoute = "/user/mypage";
             this.$router.push(targetRoute).catch(() => { });
         },
         goToCartPage() {
