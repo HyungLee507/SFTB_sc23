@@ -11,8 +11,10 @@ public class UserSignUpDto {
 
     private String password;
 
+    private Integer showSize;
+
     private String name;
 
     private String age;
-    
+
 }

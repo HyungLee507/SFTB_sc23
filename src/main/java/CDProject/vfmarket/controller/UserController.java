@@ -33,7 +33,7 @@ public class UserController {
     private String senderEmail;
 
     @PostMapping("/sign-up")
-    @CrossOrigin(origins = "http://localhost:3000/")
+//    @CrossOrigin(origins = "http://localhost:3000/")
     public String signUp(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
         userService.signUp(userSignUpDto);
         return "회원 가입 성공";
