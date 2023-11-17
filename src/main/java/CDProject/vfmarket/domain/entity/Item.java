@@ -1,5 +1,6 @@
 package CDProject.vfmarket.domain.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -37,14 +38,19 @@ public class Item extends BaseTimeEntity {
 
     private Long sellerId;
 
+    private String sellerName;
+
     @Enumerated(EnumType.STRING)
     private ItemStatus status;
 
-    private String image1;
-    private String image2;
-    private String image3;
-    private String image4;
-    private String image5;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
+
+    //    private String image1;
+//    private String image2;
+//    private String image3;
+//    private String image4;
+//    private String image5;
 
     @Lob
     private String description;
@@ -56,6 +62,9 @@ public class Item extends BaseTimeEntity {
 
     @OneToOne(mappedBy = "item")
     private Refund refund;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User itemUploadUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Cart shoppingBasket;
