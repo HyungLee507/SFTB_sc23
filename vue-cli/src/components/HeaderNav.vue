@@ -25,7 +25,7 @@
           <b-nav-item v-if="!isTokenPresent" to="/user/mypage">마이페이지</b-nav-item> 
           <!-- 마이페이지, 장바구니 토큰 수정 -->
 
-
+          
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
