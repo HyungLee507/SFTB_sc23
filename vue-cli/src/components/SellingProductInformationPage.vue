@@ -1,7 +1,6 @@
 <template>
     <div class="sellingproductinformation">
         <b-container>
-            <br>
             <b-row>
                 <b-col md="12">
                     <h1>판매상품 정보 수정</h1>
@@ -101,7 +100,6 @@ export default {
         return {
             editedProduct: {
                 images: [],
-                imagePreviews: [],
                 name: "",
                 price: 0,
                 showSize: 0,
@@ -179,7 +177,6 @@ export default {
         return {
             editedProduct: {
                 images: [],
-                imagePreviews: [],
                 name: "",
                 price: 0,
                 showSize: 0,

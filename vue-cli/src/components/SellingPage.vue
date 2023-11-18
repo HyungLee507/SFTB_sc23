@@ -1,7 +1,6 @@
 <template>
     <div class="sellingpage">
         <b-container>
-            <br>
             <b-row>
                 <b-col md="12">
                     <h1>판매중인 상품</h1>
@@ -149,6 +148,7 @@ export default {
     background-color: #007bff;
     color: white;
     margin-left: 500px;
+    margin-bottom: 30px;
     width: 150px;
     height: 40px;
 }

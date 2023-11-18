@@ -1,11 +1,9 @@
 <template>
     <div class="cartpage">
         <b-container>
-            <br>
             <b-row>
                 <b-col md="12">
-                    <h1>장바구니</h1>
-                    <br><br>
+                    <h1 style="margin-bottom: 40px;">장바구니</h1>
                 </b-col>
             </b-row>
             <b-row>
@@ -55,8 +53,9 @@
 
 
 
-<!-- <script>
+<script>
 import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -78,40 +77,62 @@ export default {
     },
 
     created() {
+        axios.interceptors.request.use((config) => {
+            const token = localStorage.getItem('accessToken');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        }, function (error) {
+            return Promise.reject(error);
+        });
+
         this.getCartItems();
     },
+
     methods: {
         getCartItems() {
             axios
-                .get('/cart')
-                .then((response) => {   //백엔드에서 어떻개 받지
+                .get('/cart-items')
+                .then((response) => {
                     this.cartItems = response.data.map(item => ({
                         images: item.images,
                         name: item.name,
                         price: item.price,
                         showSize: item.showSize,
                         category: item.category,
-                        description: item.description
+                        description: item.description,
+                        id: item.id,
                     }));
                 })
                 .catch((error) => {
                     console.error(error);
                 });
         },
-        onCheckout() {           // 결제
-            
+        onCheckout() {
+            // 결제 로직 추가
         },
         removeItem(index) {
-            this.cartItems.splice(index, 1);
-            // 서버에 저장된 목록 제거 로직 구현해야함 
+            const itemId = this.cartItems[index].id;
+            axios
+                .delete('/delete-item', {
+                        itemId: itemId,              
+                })
+                .then(() => {
+                    this.cartItems.splice(index, 1);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
         },
     },
 };
 </script>
 
-//테스트용// -->
 
-<script>
+
+
+<!-- <script>
 import ButtonList from './ButtonList'
 
 export default {
@@ -160,7 +181,7 @@ export default {
         },
     }
 };
-</script>
+</script> -->
 
 <style>
 .container {

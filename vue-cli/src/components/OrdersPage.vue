@@ -1,11 +1,9 @@
 <template>
     <div class="ordersgpage">
         <b-container>
-            <br>
             <b-row>
                 <b-col md="12">
-                    <h1>주문내역</h1>
-                    <br><br>
+                    <h1 style="margin-bottom: 40px;">주문내역</h1>
                 </b-col>
             </b-row>
             <b-row>

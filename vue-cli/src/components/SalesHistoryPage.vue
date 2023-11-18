@@ -1,12 +1,10 @@
 <template>
     <div class="orderspage">
         <b-container>
-            <br>
             <b-row>
                 <b-col md="12">
-                    <h1>판매내역 </h1>
+                    <h1 style="margin-bottom: 40px;">판매내역 </h1>
                     <button @click="goToSellingStatus('product-register')" class="status-button product-register-button">상품등록</button>
-                    <br><br>
                 </b-col>
             </b-row>
             <b-row>
@@ -54,5 +52,6 @@ export default {
     background-color: #007bff;
     color: white;
     margin-left: 500px;
+    margin-bottom: 40px;
 }
 </style>

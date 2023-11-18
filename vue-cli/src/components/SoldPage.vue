@@ -1,12 +1,10 @@
 <template>
     <div class="soldpage">
         <b-container>
-            <br>
             <b-row>
                 <b-col md="12">
                     <h1>판매완료 상품</h1>
                     <button @click="goToProductRegisterPage" class=" product-register-button">상품등록</button>
-                    <br><br>
                 </b-col>
             </b-row>
             <b-row>
@@ -151,6 +149,7 @@ export default {
     background-color: #007bff;
     color: white;
     margin-left: 500px;
+    margin-bottom: 30px;
     width: 150px;
     height: 40px;
 }

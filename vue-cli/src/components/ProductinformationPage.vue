@@ -81,15 +81,15 @@ export default {
     },
     methods: {
         addToCart() {
-            axios.post('/api/cart', {
+            axios.post('/save-item', {
                 productId: this.product.id,
             })
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+                .then((response) => {
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
     }
 };
