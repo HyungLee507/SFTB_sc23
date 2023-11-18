@@ -53,8 +53,12 @@
 </template>
 <script>
 import axios from 'axios';
+import ButtonList from './ButtonList'
 
 export default {
+  components: {
+    ButtonList
+  },
   data() {
     return {
       cartItems: [],
@@ -124,7 +128,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .container {
   max-width: 800px;
   margin: 0 auto;

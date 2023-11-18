@@ -8,7 +8,7 @@
     </b-dropdown>
     <b-card-group deck>
       <router-link v-for="product in sortedProducts" :key="product.id" :to="'/product-list/' + product.id">
-        <b-card :title="product.name" :img-src="getImageUrl(product.image)" img-alt="Image" img-top>
+        <b-card :title="product.name" :img-src=getImageUrl(product.image) img-alt="Image" img-top>
           <b-card-text>{{ product.price }}</b-card-text>
         </b-card>
       </router-link>
@@ -32,6 +32,7 @@ export default {
         .get('/product-list')
         .then((response) => {
           this.products = response.data;
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -64,7 +65,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .b-card {
   max-width: 20rem;
   margin-bottom: 1rem;
