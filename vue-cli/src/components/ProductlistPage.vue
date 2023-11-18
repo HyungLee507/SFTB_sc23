@@ -75,7 +75,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .b-card {
     max-width: 20rem;
     margin-bottom: 1rem;

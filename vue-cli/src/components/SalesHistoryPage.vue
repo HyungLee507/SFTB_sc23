@@ -3,7 +3,7 @@
         <b-container>
             <b-row>
                 <b-col md="12">
-                    <h1 style="margin-bottom: 40px; margin-top: 40px;">판매내역 </h1>
+                    <h1 style="margin-bottom: 40px;">판매내역 </h1>
                     <button @click="goToSellingStatus('product-register')" class="status-button product-register-button">상품등록</button>
                 </b-col>
             </b-row>
@@ -53,5 +53,15 @@ export default {
     color: white;
     margin-left: 500px;
     margin-bottom: 40px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
 </style>

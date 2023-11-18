@@ -94,4 +94,24 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+
+
+img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+</style>

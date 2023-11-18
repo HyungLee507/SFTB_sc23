@@ -28,7 +28,8 @@
                                         <input type="checkbox" v-model="item.selected" />
                                     </td>
                                     <td>
-                                        <img :src=getImageUrl(item.image) alt="Image" width="50">
+                                        <!-- <img :src=getImageUrl(item.image) alt="Image" width="50"> -->
+                                        <img :src="item.images[0]" alt="Image" width="50">
                                     </td>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.price }}</td>
@@ -53,10 +54,16 @@
 
 
 
-<script>
+<!-- <script>
 import axios from 'axios';
+import ButtonList from './ButtonList'
 
 export default {
+
+    components: {
+        ButtonList
+    },
+
     data() {
         return {
             cartItems: [],
@@ -129,11 +136,11 @@ export default {
         },
     },
 };
-</script>
+</script> -->
 
 
 
-<!-- 
+
 <script>
 import ButtonList from './ButtonList'
 
@@ -183,9 +190,9 @@ export default {
         },
     }
 };
-</script> -->
+</script>
 
-<style>
+<style scoped>
 .container {
     max-width: 800px;
     margin: 0 auto;
