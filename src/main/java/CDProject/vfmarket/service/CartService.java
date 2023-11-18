@@ -47,14 +47,22 @@ public class CartService {
             cart.setUser(user.get());
         }
 
-        List<Item> items = cart.getItems();
-        for (Item item1 : items) {
-            if (item1.getId() == itemId) {
-                throw new AlreadySavedItem("이미 저장된 상품입니다.");
-            }
+        if (cart.getItems().stream().anyMatch(it -> it.getId().equals(itemId))) {
+            throw new AlreadySavedItem("이미 저장된 상품입니다.");
         }
-        item.get().setShoppingBasket(cart);
-        items.add(item.get());
+//        if (cart.getItems().contains(item)) {
+//            throw new AlreadySavedItem("이미 저장된 상품입니다.");
+//        }
+//        List<Item> items = cart.getItems();
+//        for (Item item1 : items) {
+//            if (item1.getId() == itemId) {
+//                throw new AlreadySavedItem("이미 저장된 상품입니다.");
+//            }
+//        }
+//        item.get().setShoppingBasket(cart);
+//        items.add(item.get());
+
+        cart.getItems().add(item.get());
         cartRepository.save(cart);
     }
 
@@ -85,6 +93,5 @@ public class CartService {
                     );
                 })
                 .collect(Collectors.toList());
-
     }
 }
