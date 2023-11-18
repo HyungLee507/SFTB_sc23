@@ -113,7 +113,7 @@ export default {
     removeItem(index) {
       const itemId = this.cartItems[index].id;
       axios
-          .delete('/delete-item?itemId=' + this.product.id, {})
+          .delete(`/delete-item?itemId=${itemId}`)
           .then(() => {
             this.cartItems.splice(index, 1);
           })
