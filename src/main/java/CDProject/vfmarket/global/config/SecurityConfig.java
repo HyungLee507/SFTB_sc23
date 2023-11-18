@@ -78,9 +78,9 @@ public class SecurityConfig {
                                         new AntPathRequestMatcher("/profile/**"),
                                         new AntPathRequestMatcher("/static/**")
                                 ).permitAll()
-                                .requestMatchers(
-                                        new AntPathRequestMatcher("/controller")
-                                ).permitAll()
+//                                .requestMatchers(
+//                                        new AntPathRequestMatcher("/controller")
+//                                ).hasRole(String.valueOf(Role.MEMBER))
 //                        ).hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )//유저 권한 있는 놈들만
