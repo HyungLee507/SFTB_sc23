@@ -90,8 +90,8 @@
         </b-form-radio-group>
       </b-form-group>
 
-      <b-form-group id="product-showSize" label="상품 사이즈">
-        <b-form-input v-model="product.showSize" type="number"></b-form-input>
+      <b-form-group id="product-shoeSize" label="상품 사이즈">
+        <b-form-input v-model="product.shoeSize" type="number"></b-form-input>
       </b-form-group>
 
       <b-form-group id="product-price" label="상품 가격">
@@ -118,11 +118,12 @@ export default {
     return {
       product: {
         images: [undefined],
+        sellerName: '',
         imagePreviews: [],
         name: '',
         price: 0,
         category: '',
-        showSize: 0,
+        shoeSize: 0,
         description: '',
       },
     };
@@ -175,8 +176,9 @@ export default {
       }
       formData.append('name', this.product.name);
       formData.append('price', this.product.price);
+      formData.append('sellerName', this.product.sellerName);
       formData.append('category', this.product.category);
-      formData.append('shoeSize', this.product.showSize);
+      formData.append('shoeSize', this.product.shoeSize);
       formData.append('description', this.product.description);
 
       // FormData 객체를 서버에 제출
