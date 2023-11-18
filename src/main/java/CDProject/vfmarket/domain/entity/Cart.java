@@ -6,7 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,13 @@ public class Cart extends BaseTimeEntity {
     @JoinColumn(name = "User_Id")
     private User user;
 
-    @OneToMany(mappedBy = "shoppingBasket")
+    //@OneToMany(mappedBy = "shoppingBasket")
+    @ManyToMany
+    @JoinTable(
+            name = "cart_item",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "item_id")
+    )
     private List<Item> items = new ArrayList<>();
 
     public void removeItem(Long itemId) {

@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -66,8 +67,10 @@ public class Item extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User itemUploadUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Cart shoppingBasket;
+    //    @ManyToOne(fetch = FetchType.LAZY)
+//    private Cart shoppingBasket;
+    @ManyToMany(mappedBy = "items")
+    private List<Cart> shoppingCarts = new ArrayList<>();
 
     @OneToMany(mappedBy = "item")
     private List<Comment> comment = new ArrayList<>();
