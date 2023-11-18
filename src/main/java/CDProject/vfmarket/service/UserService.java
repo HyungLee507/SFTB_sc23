@@ -29,8 +29,8 @@ public class UserService {
                     .email(userSignUpDto.getEmail())
                     .password(userSignUpDto.getPassword())
                     .name(userSignUpDto.getName())
-                    .footSize(userSignUpDto.getShowSize())
-                    .age(userSignUpDto.getAge())
+                    .footSize(userSignUpDto.getFootSize())
+//                    .age(userSignUpDto.getAge())
                     .role(Role.MEMBER)
                     .build();
             user.passwordEncode(passwordEncoder);
