@@ -1,14 +1,20 @@
 package CDProject.vfmarket.service;
 
+import CDProject.vfmarket.domain.dto.itemDTO.CartItemDto;
 import CDProject.vfmarket.domain.entity.Cart;
 import CDProject.vfmarket.domain.entity.Item;
 import CDProject.vfmarket.domain.entity.User;
+import CDProject.vfmarket.exceptions.AlreadySavedItem;
+import CDProject.vfmarket.exceptions.ItemNotFoundException;
+import CDProject.vfmarket.exceptions.UserNotFoundException;
 import CDProject.vfmarket.repository.CartRepository;
 import CDProject.vfmarket.repository.ItemRepository;
 import CDProject.vfmarket.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.rmi.NoSuchObjectException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,21 +31,30 @@ public class CartService {
 
     private final UserRepository userRepository;
 
-    public void saveItemToCart(Long userId, Long itemId) throws Exception {
+    public void saveItemToCart(Long userId, Long itemId)
+            throws ItemNotFoundException, UserNotFoundException, AlreadySavedItem {
         Optional<Item> item = itemRepository.findById(itemId);
         Optional<User> user = userRepository.findById(userId);
         if (item.isEmpty()) {
-            throw new Exception("해당 아이템을 찾을 수 없습니다.");
+            throw new ItemNotFoundException("해당 아이템을 찾을 수 없습니다.");
         }
         if (user.isEmpty()) {
-            throw new Exception("해당 사용자를 찾을 수 없습니다.");
+            throw new UserNotFoundException("해당 사용자를 찾을 수 없습니다.");
         }
         Cart cart = user.get().getShoppingBaskets();
         if (cart == null) {
             cart = new Cart();
             cart.setUser(user.get());
         }
-        cart.getItems().add(item.get());
+
+        List<Item> items = cart.getItems();
+        for (Item item1 : items) {
+            if (item1.getId() == itemId) {
+                throw new AlreadySavedItem("이미 저장된 상품입니다.");
+            }
+        }
+        item.get().setShoppingBasket(cart);
+        items.add(item.get());
         cartRepository.save(cart);
     }
 
@@ -52,11 +67,24 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-//    public List<Item> cartItems(Long userId) {
-//        Cart cart = cartRepository.findByUserId(userId);
-//        List<Item> items = cart.getItems();
-//        items.stream().map(item -> new ItemDetailDto(,d,d,d,d,))
-//                .collect(Collectors.toList());
-//
-//    }
+    public List<CartItemDto> cartItems(Long userId) {
+        Cart cart = cartRepository.findByUserId(userId);
+        List<Item> items = cart.getItems();
+        return items.stream()
+                .map(item -> {
+                    String firstImageFileName =
+                            item.getImages().isEmpty() ? null : item.getImages().get(0).getFileName();
+                    return new CartItemDto(
+                            item.getId(),
+                            item.getItemName(),
+                            item.getPrice(),
+                            item.getShoeSize(),
+                            item.getCategory(),
+                            item.getDescription(),
+                            firstImageFileName
+                    );
+                })
+                .collect(Collectors.toList());
+
+    }
 }
