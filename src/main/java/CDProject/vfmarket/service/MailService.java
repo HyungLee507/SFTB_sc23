@@ -1,17 +1,13 @@
 package CDProject.vfmarket.service;
 
-import CDProject.vfmarket.domain.entity.EmailVerification;
-import CDProject.vfmarket.repository.EmailVerificationRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Properties;
 
 @Service
@@ -34,32 +30,8 @@ public class MailService {
     private Boolean starttlsEnable;
     private final JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 
-    private final EmailVerificationRepository emailVerificationRepository;
-
     public int createNumber(){
         return (int)(Math.random() * (90000)) + 100000;// (int) Math.random() * (최댓값-최소값+1) + 최소값
-    }
-
-    @Transactional
-    public void saveVerificationCode(String receiver, int sendCode){
-        EmailVerification emailVerification = new EmailVerification();
-        String verificationCode = String.valueOf(sendCode);
-
-        emailVerification.setEmail(receiver);
-        emailVerification.setVerificationCode(verificationCode);
-
-        emailVerificationRepository.save(emailVerification);
-    }
-
-    @Transactional
-    public void deleteVerificationCode(EmailVerification emailVerification){
-        emailVerificationRepository.delete(emailVerification);
-    }
-
-
-    @Transactional
-    public Optional<EmailVerification> findByEmail(String email){
-        return emailVerificationRepository.findByEmail(email);
     }
 
     public MimeMessage createVerificationMail(String receiver, int sendCode){

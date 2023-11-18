@@ -69,20 +69,20 @@ public class SecurityConfig {
 //                .anyRequest().authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
 //                .and()
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(
-                                        new AntPathRequestMatcher("/**"),
-                                        new AntPathRequestMatcher("/css/**"),
-                                        new AntPathRequestMatcher("/images/**"),
-                                        new AntPathRequestMatcher("/js/**"),
-                                        new AntPathRequestMatcher("/h2-console/**"),
-                                        new AntPathRequestMatcher("/profile/**"),
-                                        new AntPathRequestMatcher("/static/**")
-                                ).permitAll()
-                                .requestMatchers(
-                                        new AntPathRequestMatcher("/controller")
-                                ).permitAll()
-//                        ).hasRole("ADMIN")
-                                .anyRequest().authenticated()
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/**"),
+                                new AntPathRequestMatcher("/css/**"),
+                                new AntPathRequestMatcher("/images/**"),
+                                new AntPathRequestMatcher("/js/**"),
+                                new AntPathRequestMatcher("/h2-console/**"),
+                                new AntPathRequestMatcher("/profile/**"),
+                                new AntPathRequestMatcher("/sign-up"),
+                                new AntPathRequestMatcher("/static/**")
+                        ).permitAll()
+                        .requestMatchers(
+                                new AntPathRequestMatcher("/controller")
+                        ).hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )//유저 권한 있는 놈들만
 //                .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers(
@@ -90,6 +90,11 @@ public class SecurityConfig {
 //                        ).hasRole("ADIMN")
 //                        .anyRequest().authenticated()
 //                )
+                //== 소셜 로그인 설정 ==//
+//                .oauth2Login()
+//                .successHandler(oAuth2LoginSuccessHandler) // 동의하고 계속하기를 눌렀을 때 Handler 설정
+//                .failureHandler(oAuth2LoginFailureHandler) // 소셜 로그인 실패 시 핸들러 설정
+//                .userInfoEndpoint().userService(customOAuth2UserService); // customUserService 설정
                 .oauth2Login(oauth2Login -> {
                     oauth2Login
                             .loginPage("/account/login")
