@@ -52,7 +52,6 @@ public class UploadService {
             } catch (Exception e) {
                 log.info("file error is {}", e.getMessage());
                 throw new NoSuchFieldException("해당 파일을 찾을 수 없습니다.");
-//                return new ResponseEntity(e.getMessage(), HttpStatus.NO_CONTENT);
             }
         }
         log.info("imageList size is {}", imageList.size());
@@ -83,20 +82,9 @@ public class UploadService {
                 List<Image> images = uploadItem.getImages();
                 images.add(new Image(fileName, uploadItem));
             }
-//            uploadItem.setImage1(imageList.get(0));
-//            uploadItem.setImage2(imageList.get(1));
-//            uploadItem.setImage3(imageList.get(2));
-
-//            if (imageList.size() >= 4) {
-//                uploadItem.getImages().add();
-//            }
-//            if (imageList.size() == 5) {
-//                uploadItem.setImage5(imageList.get(4));
-//            }
             itemRepository.save(uploadItem);
         } catch (Exception e) {
             log.info("token error is {}", e.getMessage());
-//            return new ResponseEntity(e.getMessage(), HttpStatus.NO_CONTENT);
         }
 
     }

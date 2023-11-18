@@ -72,22 +72,6 @@ public class ItemService {
         for (Image image : imageList) {
             images.add(image.getFileName());
         }
-
-//        if (findItem.get().getImage1() != null) {
-//            images.add(findItem.get().getImage1());
-//        }
-//        if (findItem.get().getImage2() != null) {
-//            images.add(findItem.get().getImage2());
-//        }
-//        if (findItem.get().getImage3() != null) {
-//            images.add(findItem.get().getImage3());
-//        }
-//        if (findItem.get().getImage4() != null) {
-//            images.add(findItem.get().getImage4());
-//        }
-//        if (findItem.get().getImage5() != null) {
-//            images.add(findItem.get().getImage5());
-//        }
         ItemDetailDto itemDetailDto = new ItemDetailDto();
         itemDetailDto.setId(findItem.get().getId());
         itemDetailDto.setPrice(findItem.get().getPrice());
