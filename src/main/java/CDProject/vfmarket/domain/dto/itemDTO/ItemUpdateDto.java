@@ -13,7 +13,7 @@ public class ItemUpdateDto {
     @Lob
     private String description;
 
-    private Integer showSize;
+    private Integer shoeSize;
 
     private String category;
 

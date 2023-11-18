@@ -34,7 +34,7 @@ public class Item extends BaseTimeEntity {
     private Long id;
     private String itemName;
     private Long price;
-    private Integer showSize;
+    private Integer shoeSize;
 
     private Long sellerId;
 
@@ -71,5 +71,12 @@ public class Item extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "item")
     private List<Comment> comment = new ArrayList<>();
+
+    public List<Image> getImages() {
+        if (this.images == null) {
+            this.images = new ArrayList<>();
+        }
+        return this.images;
+    }
 
 }

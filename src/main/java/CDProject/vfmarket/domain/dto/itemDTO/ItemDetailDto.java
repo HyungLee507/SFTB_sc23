@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ItemDetailDto {
 
+    private Long id;
+
     private String name;
 
     private Long price;
@@ -22,7 +24,7 @@ public class ItemDetailDto {
 
     private String image;
 
-    private int showSize;
+    private int shoeSize;
 
     private String category;
 
