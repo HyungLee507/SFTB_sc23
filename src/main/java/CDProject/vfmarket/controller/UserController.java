@@ -4,13 +4,21 @@ import CDProject.vfmarket.domain.dto.EmailVerificationResponseDto;
 import CDProject.vfmarket.domain.dto.UserSignUpDto;
 import CDProject.vfmarket.domain.entity.EmailVerification;
 import CDProject.vfmarket.domain.entity.User;
+import CDProject.vfmarket.global.login.service.LoginService;
 import CDProject.vfmarket.service.MailService;
 import CDProject.vfmarket.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
@@ -19,6 +27,7 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
     private final MailService mailService;
+    private final LoginService loginService;
 
     @Value("${spring.mail.username}")
     private String senderEmail;
@@ -28,6 +37,12 @@ public class UserController {
     public String signUp(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
         userService.signUp(userSignUpDto);
         return "회원 가입 성공";
+    }
+
+    @DeleteMapping("/sign-out")
+    public String signOut(@RequestParam String email) {
+        userService.signOut(email);
+        return "회원 탈퇴 성공";
     }
 
     @GetMapping("/jwt-test")
@@ -48,6 +63,8 @@ public class UserController {
         EmailVerificationResponseDto emailVerificationResponse =
                 EmailVerificationResponseDto.builder()
                         .email(senderEmail)
+                        .sendCode(sendCode)
+                        .message("입력하신 이메일로 인증번호가 전송되었습니다.\n인증번호를 입력하세요.")
                         .build();
 
         mailService.sendVerificationMail(email, sendCode);  // 인증 코드 메일 전송
@@ -77,7 +94,6 @@ public class UserController {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
     }
-
 
     @PostMapping("/find-password")
     @CrossOrigin(origins = "http://localhost:3000/")
