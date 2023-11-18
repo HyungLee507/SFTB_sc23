@@ -86,9 +86,7 @@ export default {
       // axios.post('/save-item', {
       //   productId: this.product.id,
       // })
-      axios.post('/save-item?itemId=' + this.product.id, {
-        // JSON 본문 데이터
-      })
+      axios.post('/save-item?itemId=' + this.product.id, {})
           .then((response) => {
             console.log(response.data);
           })
