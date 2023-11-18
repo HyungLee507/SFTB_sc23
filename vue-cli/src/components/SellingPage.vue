@@ -3,7 +3,7 @@
         <b-container>
             <b-row>
                 <b-col md="12">
-                    <h1>판매중인 상품</h1>
+                    <h1 style="margin-top: 40px;">판매중인 상품</h1>
                     <button @click="goToProductRegisterPage" class=" product-register-button">상품등록</button>
                 </b-col>
             </b-row>
@@ -73,7 +73,7 @@ export default {
                         images: item.images,
                         name: item.name,
                         price: item.price,
-                        showSize: item.showSize
+                        shoeSize: item.shoeSize
                         category: item.category
                         description: item.description,
                         id: item.id,
@@ -111,7 +111,7 @@ export default {
                     images: ['data:image/jpeg;base64,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'],
                     name: '나이키운동화',
                     price: 10000,
-                    showSize: 260,
+                    shoeSize: 260,
                     category: '운동',
                     description: '운동할떄 신으면 좋음',
                     id: 1,
@@ -120,7 +120,7 @@ export default {
                     images: ['data:image/jpeg;base64,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'],
                     name: '아디다스 샌들',
                     price: 15000,
-                    showSize: 270,
+                    shoeSize: 270,
                     category: '샌들',
                     description: '편하게 신으면 좋음',
                     id: 2,

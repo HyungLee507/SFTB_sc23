@@ -3,7 +3,7 @@
         <b-container>
             <b-row>
                 <b-col md="12">
-                    <h1>판매상품 정보 수정</h1>
+                    <h1 style="margin-top: 40px;">판매상품 정보 수정</h1>
                 </b-col>
             </b-row>
             <b-row>
@@ -29,7 +29,7 @@
                         </div>
                         <p>상품 이름: <b-input v-model="editedProduct.name" /></p>
                         <p>상품 가격: <b-input v-model="editedProduct.price" type="number" step="100" /></p>
-                        <p>상품 사이즈: <b-input v-model="editedProduct.showSize" type="number" step="5"/></p>
+                        <p>상품 사이즈: <b-input v-model="editedProduct.shoeSize" type="number" step="5"/></p>
                         <p>상품 카테고리:</p>
                             <b-form-group>
                                 <b-row>
@@ -102,7 +102,7 @@ export default {
                 images: [],
                 name: "",
                 price: 0,
-                showSize: 0,
+                shoeSize: 0,
                 category: "",
                 description: "",
                 id: 0,
@@ -179,7 +179,7 @@ export default {
                 images: [],
                 name: "",
                 price: 0,
-                showSize: 0,
+                shoeSize: 0,
                 category: "",
                 description: "",
                 id: 0,
@@ -199,7 +199,7 @@ export default {
                 ],
                 name: "나이키운동화",
                 price: 10000,
-                showSize: 250,
+                shoeSize: 250,
                 category: "운동화",
                 description: "운동하기 편함",
                 id: 1,
@@ -214,7 +214,7 @@ export default {
                 ],
                 name: "아디다스 샌들",
                 price: 15000,
-                showSize: 270,
+                shoeSize: 270,
                 category: "샌들",
                 description: "편함",
                 id: 2,

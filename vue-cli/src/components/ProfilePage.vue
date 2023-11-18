@@ -4,7 +4,7 @@
         <b-container>
             <b-row>
                 <b-col md="12">
-                    <h1 style="margin-bottom: 40px;">내정보</h1>
+                    <h1 style="margin-bottom: 40px; margin-top: 40px;">내정보</h1>
                 </b-col>
             </b-row>
             <b-row>

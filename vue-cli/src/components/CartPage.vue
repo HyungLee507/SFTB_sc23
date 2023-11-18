@@ -3,7 +3,7 @@
         <b-container>
             <b-row>
                 <b-col md="12">
-                    <h1 style="margin-bottom: 40px;">장바구니</h1>
+                    <h1 style="margin-bottom: 40px; margin-top: 40px;">장바구니</h1>
                 </b-col>
             </b-row>
             <b-row>
@@ -28,7 +28,7 @@
                                         <input type="checkbox" v-model="item.selected" />
                                     </td>
                                     <td>
-                                        <img :src="item.images[0]" alt="Image" width="50">
+                                        <img :src=getImageUrl(item.image) alt="Image" width="50">
                                     </td>
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.price }}</td>
@@ -99,7 +99,7 @@ export default {
                         images: item.images,
                         name: item.name,
                         price: item.price,
-                        showSize: item.showSize,
+                        shoeSize: item.shoeSize,
                         category: item.category,
                         description: item.description,
                         id: item.id,
@@ -112,12 +112,14 @@ export default {
         onCheckout() {
             // 결제 로직 추가
         },
+        getImageUrl(imageName) {
+            return `http://localhost:8080/product/${imageName}`;
+        },
         removeItem(index) {
             const itemId = this.cartItems[index].id;
+
             axios
-                .delete('/delete-item', {
-                        itemId: itemId,              
-                })
+                .delete(`/delete-item?itemId=${itemId}`)
                 .then(() => {
                     this.cartItems.splice(index, 1);
                 })
@@ -131,8 +133,8 @@ export default {
 
 
 
-
-<!-- <script>
+<!-- 
+<script>
 import ButtonList from './ButtonList'
 
 export default {

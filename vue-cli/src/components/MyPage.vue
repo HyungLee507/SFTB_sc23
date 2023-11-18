@@ -3,7 +3,7 @@
         <b-container>
             <b-row>
                 <b-col md="12">
-                    <h1 style="margin-bottom: 40px;">주문내역</h1>
+                    <h1 style="margin-bottom: 40px; margin-top: 40px;">주문내역</h1>
                 </b-col>
             </b-row>
             <b-row>
@@ -75,7 +75,7 @@ export default {
                         images: item.images,
                         name: item.name,
                         price: item.price,
-                        showSize: item.showSize
+                        shoeSize: item.shoeSize
                         category: item.category
                         description: item.description,
                         status: item.status,

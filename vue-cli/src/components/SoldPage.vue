@@ -3,7 +3,7 @@
         <b-container>
             <b-row>
                 <b-col md="12">
-                    <h1>판매완료 상품</h1>
+                    <h1 margin-top: 40px;>판매완료 상품</h1>
                     <button @click="goToProductRegisterPage" class=" product-register-button">상품등록</button>
                 </b-col>
             </b-row>
@@ -79,7 +79,7 @@ export default {
                         images: item.images,
                         name: item.name,
                         price: item.price,
-                        showSize: item.showSize
+                        shoeSize: item.shoeSize
                         category: item.category
                         description: item.description,
                     }));

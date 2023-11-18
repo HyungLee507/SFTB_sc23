@@ -3,7 +3,7 @@
         <b-container>
             <b-row>
                 <b-col md="12">
-                    <h1 style="margin-bottom: 40px;">판매내역 </h1>
+                    <h1 style="margin-bottom: 40px; margin-top: 40px;">판매내역 </h1>
                     <button @click="goToSellingStatus('product-register')" class="status-button product-register-button">상품등록</button>
                 </b-col>
             </b-row>
