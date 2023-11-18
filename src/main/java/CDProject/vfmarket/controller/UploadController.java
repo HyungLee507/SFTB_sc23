@@ -76,7 +76,7 @@ public class UploadController {
 //                    .sellerId(userId)
 //                    .itemName(itemFormDto.getName())
 //                    .price(itemFormDto.getPrice())
-//                    .showSize(itemFormDto.getShoeSize())
+//                    .shoeSize(itemFormDto.getShoeSize())
 //                    .category(itemFormDto.getCategory())
 //                    .description(itemFormDto.getDescription())
 //                    .status(FOR_SALE)

@@ -27,9 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UploadService {
 
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final TokenValueProvider tokenValueProvider;
 
@@ -73,14 +73,15 @@ public class UploadService {
                     .itemName(itemFormDto.getName())
                     .price(itemFormDto.getPrice())
                     .sellerName(sellerName)
-                    .showSize(itemFormDto.getShoeSize())
+                    .shoeSize(itemFormDto.getShoeSize())
                     .category(itemFormDto.getCategory())
                     .description(itemFormDto.getDescription())
                     .status(FOR_SALE)
                     .build();
             log.info("item data is {}", uploadItem.getItemName());
             for (String fileName : imageList) {
-                uploadItem.getImages().add(new Image(fileName, uploadItem));
+                List<Image> images = uploadItem.getImages();
+                images.add(new Image(fileName, uploadItem));
             }
 //            uploadItem.setImage1(imageList.get(0));
 //            uploadItem.setImage2(imageList.get(1));
