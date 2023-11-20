@@ -32,7 +32,8 @@
         <p>{{ product.description }}</p>
         <b-button variant="primary" @click="addToCart">장바구니</b-button>
         <b-button variant="success" to="#">VR Fitting</b-button>
-        <b-button variant="info" to="#">결제</b-button>
+        <!--        <b-button variant="info" to="#">결제</b-button>-->
+        <b-button variant="info" :to="'/product/payment/' + this.id">결제</b-button>
       </b-col>
     </b-row>
   </b-container>
@@ -53,6 +54,7 @@ export default {
         shoeSize: 0,
       },
       slide: 0,
+      id: this.$route.params.id,
     };
   },
   created() {

@@ -14,6 +14,9 @@ import VirtualFittingPage from "@/components/VirtualFittingPage.vue";
 import OrdersPage from "@/components/OrdersPage.vue";
 import SalesHistoryPage from "@/components/SalesHistoryPage.vue";
 import SellingPage from "@/components/SellingPage.vue";
+import PaymentPage from "@/components/PaymentPage.vue";
+import SoldPage from "@/components/SoldPage.vue";
+import SellingProductInformationPage from "@/components/SellingProductInformationPage.vue";
 
 
 Vue.use(Router); // VueRouter를 사용하겠다.
@@ -77,6 +80,18 @@ export default new Router({
             path: '/user/mypage/saleshistory/selling',
             component: SellingPage,
         },
+        {
+            path: '/user/mypage/saleshistory/sold',
+            component: SoldPage,
+        },
+        {
+            path: '/user/mypage/saleshistory/sellingproduct/:productId',
+            component: SellingProductInformationPage,
+        },
+        {
+            path: '/product/payment/:productId',
+            component: PaymentPage,
+        }
 
 
     ]

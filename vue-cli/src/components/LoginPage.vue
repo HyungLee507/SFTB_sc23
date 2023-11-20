@@ -78,7 +78,7 @@ export default {
             localStorage.setItem('accessToken', accessToken);
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
             this.$router.push('/product/list');
-            // window.location.reload(); // 페이지를 새로 고침
+            window.location.reload(); // 페이지를 새로 고침
           })
           .catch(error => {
             console.log(error);
