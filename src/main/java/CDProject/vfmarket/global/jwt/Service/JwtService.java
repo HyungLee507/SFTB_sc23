@@ -46,7 +46,7 @@ public class JwtService {
     private String refreshHeader;
 
 
-    public String createAccessToken(Long id, String email, Role role) {
+    public String createAccessToken(String userName, Long id, String email, Role role) {
         Date now = new Date();
         log.info("create token");
         return JWT.create()
@@ -54,6 +54,7 @@ public class JwtService {
                 .withExpiresAt(new Date(now.getTime() + accessTokenExpirationPeriod))
                 .withClaim("userId", id)
                 .withClaim("role", role.name())
+                .withClaim("userName", userName)
                 .withClaim(EMAIL_CLAIM, email)
                 .sign(Algorithm.HMAC512(secretKey));
     }

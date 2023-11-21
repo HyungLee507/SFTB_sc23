@@ -28,7 +28,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                                         Authentication authentication) throws IOException {
         String email = extractUsername(authentication);// 인증 정보에서 Username(email) 추출
         Optional<User> findUser = userRepository.findByEmail(email);
-        String accessToken = jwtService.createAccessToken(findUser.get().getId(), findUser.get().getEmail(),
+        String accessToken = jwtService.createAccessToken(findUser.get().getName(), findUser.get().getId(),
+                findUser.get().getEmail(),
                 findUser.get()
                         .getRole()); // JwtService의 createAccessToken을 사용하여 AccessToken 발급
         String refreshToken = jwtService.createRefreshToken(findUser.get().getId(), findUser.get().getEmail(),
