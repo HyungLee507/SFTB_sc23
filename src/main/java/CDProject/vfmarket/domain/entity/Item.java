@@ -61,8 +61,8 @@ public class Item extends BaseTimeEntity {
     @OneToOne(mappedBy = "item")
     private Order order;
 
-    @OneToOne(mappedBy = "item")
-    private Refund refund;
+//    @OneToOne(mappedBy = "item")
+//    private Refund refund;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User itemUploadUser;
