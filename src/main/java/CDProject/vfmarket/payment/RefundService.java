@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class RefundService {
 
-    //Todo : 결제 취소 시 -> 상품 상태 변경 및 Order(결제 상태 변경)
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
 

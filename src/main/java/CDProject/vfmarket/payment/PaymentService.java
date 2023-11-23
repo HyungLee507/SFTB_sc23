@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 public class PaymentService {
     private final OrderDetailRepository orderDetailRepository;
 
-    //ToDo : saveOrder-> 결제 성공시 결제 내역 생성
 
     private final OrderRepository orderRepository;
 

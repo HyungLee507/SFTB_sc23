@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 @RequiredArgsConstructor
 public class OrderService {
-
-    //Todo : 상품 정보 구매자, 판매자들 에게 데이터 제공
+    
 
     private final OrderRepository orderRepository;
 
