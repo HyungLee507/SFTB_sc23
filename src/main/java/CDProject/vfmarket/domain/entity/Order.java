@@ -1,5 +1,6 @@
 package CDProject.vfmarket.domain.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -12,6 +13,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,25 +24,37 @@ import lombok.Setter;
 @Setter
 @Table(name = "ORDERS")
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Order extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Orders_Id")
     private Long id;
+
     private Long paymentPrice;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Buyer_Id")
     private User buyer;
+
     //OneToOne 추후 수정
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_Id")
     private Item item;
-    @OneToOne(mappedBy = "order")
-    private Refund refund;
+
     private Long sellerId;
+
+    private String sellerName;
+
     private String representativeImage;
+
+    private String merchant_uid;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private OrderDetail orderDetail;
 
 }
