@@ -83,6 +83,7 @@ export default {
   methods: {
     getImageUrl(imageName) {
       return `http://localhost:8080/product/${imageName}`;
+      // return `https://c6d8-14-63-41-207.ngrok-free.app/product/${imageName}`;
     },
     addToCart() {
       // axios.post('/save-item', {
