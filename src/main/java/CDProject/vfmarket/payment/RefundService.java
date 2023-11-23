@@ -1,6 +1,12 @@
 package CDProject.vfmarket.payment;
 
+import CDProject.vfmarket.domain.entity.Item;
+import CDProject.vfmarket.domain.entity.ItemStatus;
+import CDProject.vfmarket.domain.entity.Order;
+import CDProject.vfmarket.domain.entity.OrderStatus;
 import CDProject.vfmarket.payment.enums.IamportApiUrl;
+import CDProject.vfmarket.repository.ItemRepository;
+import CDProject.vfmarket.repository.OrderRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import jakarta.transaction.Transactional;
@@ -11,9 +17,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 import javax.net.ssl.HttpsURLConnection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -21,6 +29,33 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Transactional
 public class RefundService {
+
+    //Todo : 결제 취소 시 -> 상품 상태 변경 및 Order(결제 상태 변경)
+    private final OrderRepository orderRepository;
+    private final ItemRepository itemRepository;
+
+    @Value("${portone.api.key}")
+    private String apiKey;
+
+    @Value("${portone.api.secretKey}")
+    private String secretKey;
+
+    public void canceledOrder(Long orderId) throws IOException {
+        if (orderRepository.findById(orderId).isEmpty()) {
+            return;
+        }
+        Optional<Order> findByIdOrder = orderRepository.findById(orderId);
+        Order order = findByIdOrder.get();
+        Item item = order.getItem();
+        item.setStatus(ItemStatus.FOR_SALE);
+        order.setStatus(OrderStatus.CANCEL_TRANSACTION);
+
+        String impToken = getToken(apiKey, secretKey);
+        refundRequest(impToken, order.getMerchant_uid(), "사용자 결제 취소!");
+
+        itemRepository.save(item);
+        orderRepository.save(order);
+    }
 
     public void refundRequest(String access_token, String merchant_uid, String reason) throws IOException {
         URL url = new URL(IamportApiUrl.CANCEL_URL.getURL());
