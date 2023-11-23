@@ -89,7 +89,7 @@ export default new Router({
             component: SellingProductInformationPage,
         },
         {
-            path: '/product/payment/:productId',
+            path: '/product/payment/:id',
             component: PaymentPage,
         }
 
