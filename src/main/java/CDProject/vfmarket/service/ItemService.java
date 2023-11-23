@@ -4,6 +4,7 @@ package CDProject.vfmarket.service;
 import CDProject.vfmarket.domain.dto.itemDTO.ItemDetailDto;
 import CDProject.vfmarket.domain.dto.itemDTO.ItemUpdateDto;
 import CDProject.vfmarket.domain.dto.itemDTO.ItemViewDto;
+import CDProject.vfmarket.domain.dto.itemDTO.SalesItemDto;
 import CDProject.vfmarket.domain.entity.Image;
 import CDProject.vfmarket.domain.entity.Item;
 import CDProject.vfmarket.domain.entity.ItemStatus;
@@ -14,6 +15,7 @@ import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -83,6 +85,25 @@ public class ItemService {
         itemDetailDto.setImages(images);
         return itemDetailDto;
     }
+
+    public List<SalesItemDto> getSalesItems(Long sellerId) {
+        List<Item> items = itemRepository.findAllBySellerId(sellerId);
+//        log.info("allSalesItems is {}", allSalesItems);
+        return items.stream()
+                .map(item -> {
+                    String firstImageFileName =
+                            item.getImages().isEmpty() ? null : item.getImages().get(0).getFileName();
+                    return new SalesItemDto(
+                            item.getId(),
+                            item.getPrice(),
+                            item.getItemName(),
+                            firstImageFileName
+                    );
+                })
+                .collect(Collectors.toList());
+    }
+
+    ;
 
     public void deleteItem(Long itemId) throws Exception {
         Optional<Item> findItem = itemRepository.findById(itemId);
