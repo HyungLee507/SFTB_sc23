@@ -18,7 +18,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 //            + " AND i.sellerId = :sellerId")
 //    List<SalesItemDto> findAllSalesItems(@Param("sellerId") Long sellerId);
 
-    @Query("select new CDProject.vfmarket.domain.dto.itemDTO.ItemViewDto(i.id,i.itemName,i.price,i.createdDate,img.fileName)"
+    @Query("select new CDProject.vfmarket.domain.dto.itemDTO.ItemViewDto(i.id,i.itemName,i.price,i.createdDate,img.fileName,i.status)"
             + " from Item i "
             + " left join i.images img"
             + " where i.status = CDProject.vfmarket.domain.entity.ItemStatus.FOR_SALE")

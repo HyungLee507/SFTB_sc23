@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,9 +72,16 @@ public class ItemService {
             return null;
         }
         List<String> images = new ArrayList<>();
+        List<Long> imageIds = new ArrayList<>();
         for (Image image : imageList) {
             images.add(image.getFileName());
+            imageIds.add(image.getId());
         }
+        return getItemDetailDto(findItem, images, imageIds);
+    }
+
+    @NotNull
+    private static ItemDetailDto getItemDetailDto(Optional<Item> findItem, List<String> images, List<Long> imageIds) {
         ItemDetailDto itemDetailDto = new ItemDetailDto();
         itemDetailDto.setId(findItem.get().getId());
         itemDetailDto.setPrice(findItem.get().getPrice());
@@ -83,6 +91,8 @@ public class ItemService {
         itemDetailDto.setDescription(findItem.get().getDescription());
         itemDetailDto.setCategory(findItem.get().getCategory());
         itemDetailDto.setImages(images);
+        itemDetailDto.setStatus(findItem.get().getStatus());
+        itemDetailDto.setImageIds(imageIds);
         return itemDetailDto;
     }
 

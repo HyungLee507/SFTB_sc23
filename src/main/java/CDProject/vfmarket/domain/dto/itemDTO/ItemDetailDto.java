@@ -1,5 +1,6 @@
 package CDProject.vfmarket.domain.dto.itemDTO;
 
+import CDProject.vfmarket.domain.entity.ItemStatus;
 import jakarta.persistence.Lob;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,4 +33,8 @@ public class ItemDetailDto {
     private String description;
 
     private List<String> images;
+
+    private List<Long> imageIds;
+
+    private ItemStatus status;
 }
