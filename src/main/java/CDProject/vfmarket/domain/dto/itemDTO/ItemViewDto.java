@@ -1,5 +1,6 @@
 package CDProject.vfmarket.domain.dto.itemDTO;
 
+import CDProject.vfmarket.domain.entity.ItemStatus;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,5 +20,7 @@ public class ItemViewDto {
     private LocalDateTime createdDate;
 
     private String image;
+
+    private ItemStatus status;
 
 }
