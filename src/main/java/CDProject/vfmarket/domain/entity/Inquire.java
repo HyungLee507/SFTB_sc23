@@ -1,17 +1,21 @@
 package CDProject.vfmarket.domain.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
-@Getter@Setter
+@Getter
+@Setter
 @NoArgsConstructor
-public class Inquire extends BaseTimeEntity{
+public class Inquire extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,8 +24,8 @@ public class Inquire extends BaseTimeEntity{
     @Lob
     private String detail;
 
-    @OneToMany(mappedBy = "inquire")
-    private List<Comment> comments = new ArrayList<>();
+//    @OneToMany(mappedBy = "inquire")
+//    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Admin admin;
