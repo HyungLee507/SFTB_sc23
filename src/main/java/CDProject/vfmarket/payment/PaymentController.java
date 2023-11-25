@@ -5,7 +5,6 @@ import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
-import io.jsonwebtoken.Claims;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -43,20 +42,14 @@ public class PaymentController {
         this.iamportClient = new IamportClient(apiKey, secretKey);
     }
 
-    //    해당 경로로 요청을 받으면 요청으로 받은 주문 상품들을 저장한다.
     @PostMapping("/payment")
     public ResponseEntity<String> paymentComplete(@RequestHeader("Authorization") String token,
                                                   @RequestBody OrderSaveDto orderSaveDto) throws IOException {
-        String trim = token.replace("Bearer ", "");
-        Claims claims = tokenValueProvider.extractClaims(trim);
-        long userId = Long.parseLong(claims.get("userId").toString());
+        Long userId = tokenValueProvider.extractUserId(token);
         String orderNumber = orderSaveDto.getMerchant_uid();
-        log.info("여기까진 오케이");
-//        String orderNumber = orderSaveDtos.get(0).getOrderNumber();
         try {
-//            Long userId = sessionUser.getUserIdNo();
             paymentService.saveOrder(userId, orderSaveDto);
-//            log.info("결제 성공 : 주문 번호 {}", orderNumber);
+            log.info("결제 성공 : 주문 번호 {}", orderNumber);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             log.info("주문 상품 환불 진행 : 주문 번호 {}", orderNumber);
