@@ -10,6 +10,13 @@ public class TokenValueProvider {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
+
+    public Long extractUserId(String token) {
+        String trim = token.replace("Bearer ", "");
+        Claims claims = extractClaims(trim);
+        return Long.parseLong(claims.get("userId").toString());
+    }
+
     public Claims extractClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey.getBytes())
