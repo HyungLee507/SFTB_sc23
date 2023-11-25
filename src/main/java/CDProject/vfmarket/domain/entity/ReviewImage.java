@@ -27,4 +27,9 @@ public class ReviewImage {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
+
+    public ReviewImage(String fileName, Review review) {
+        this.fileName = fileName;
+        this.review = review;
+    }
 }
