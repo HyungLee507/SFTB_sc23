@@ -1,4 +1,4 @@
-package CDProject.vfmarket.domain.dto;
+package CDProject.vfmarket.domain.dto.LoginDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
