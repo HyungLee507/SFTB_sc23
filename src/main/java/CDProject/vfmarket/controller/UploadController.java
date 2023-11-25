@@ -1,9 +1,6 @@
 package CDProject.vfmarket.controller;
 
 import CDProject.vfmarket.domain.dto.itemDTO.ItemFormDto;
-import CDProject.vfmarket.global.jwt.TokenValueProvider;
-import CDProject.vfmarket.repository.ItemRepository;
-import CDProject.vfmarket.repository.UserRepository;
 import CDProject.vfmarket.service.UploadService;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -24,9 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class UploadController {
-    private final UserRepository userRepository;
-    private final ItemRepository itemRepository;
-    private final TokenValueProvider tokenValueProvider;
+    //    private final UserRepository userRepository;
+//    private final ItemRepository itemRepository;
+//    private final TokenValueProvider tokenValueProvider;
     private final UploadService uploadService;
 
     @PostMapping("product/item-upload")

@@ -5,7 +5,6 @@ import CDProject.vfmarket.domain.dto.OrderDTO.SoldItemViewDto;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.payment.RefundService;
 import CDProject.vfmarket.service.OrderService;
-import io.jsonwebtoken.Claims;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,26 +28,20 @@ public class OrderController {
 
     @GetMapping("/orderItems")
     public List<OrderViewDto> orderHistory(@RequestHeader("Authorization") String token) {
-        String trim = token.replace("Bearer ", "");
-        Claims claims = tokenValueProvider.extractClaims(trim);
-        long userId = Long.parseLong(claims.get("userId").toString());
+        Long userId = tokenValueProvider.extractUserId(token);
         return orderService.getOrderHistory(userId);
     }
 
     @GetMapping("/soldItems")
     public List<SoldItemViewDto> soldItemHistory(@RequestHeader("Authorization") String token) {
-        String trim = token.replace("Bearer ", "");
-        Claims claims = tokenValueProvider.extractClaims(trim);
-        long userId = Long.parseLong(claims.get("userId").toString());
+        Long userId = tokenValueProvider.extractUserId(token);
         return orderService.getSoldItemHistory(userId);
     }
 
     @PutMapping("/refundItem/{orderId}")
     public void canceledOrder(@RequestHeader("Authorization") String token, @PathVariable Long orderId)
             throws IOException {
-        String trim = token.replace("Bearer ", "");
-        Claims claims = tokenValueProvider.extractClaims(trim);
-        long userId = Long.parseLong(claims.get("userId").toString());
+        Long userId = tokenValueProvider.extractUserId(token);
         refundService.canceledOrder(orderId);
     }
 

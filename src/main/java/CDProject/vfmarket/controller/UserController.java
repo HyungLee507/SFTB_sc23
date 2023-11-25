@@ -1,8 +1,8 @@
 package CDProject.vfmarket.controller;
 
-import CDProject.vfmarket.domain.dto.EmailVerificationResponseDto;
-import CDProject.vfmarket.domain.dto.FirstRegistUserInfoDto;
-import CDProject.vfmarket.domain.dto.UserSignUpDto;
+import CDProject.vfmarket.domain.dto.SignUpDTO.EmailVerificationResponseDto;
+import CDProject.vfmarket.domain.dto.SignUpDTO.FirstRegistUserInfoDto;
+import CDProject.vfmarket.domain.dto.SignUpDTO.UserSignUpDto;
 import CDProject.vfmarket.domain.entity.EmailVerification;
 import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.global.login.service.LoginService;

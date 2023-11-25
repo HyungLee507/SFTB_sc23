@@ -5,7 +5,6 @@ import CDProject.vfmarket.domain.dto.itemDTO.ItemViewDto;
 import CDProject.vfmarket.domain.dto.itemDTO.SalesItemDto;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.service.ItemService;
-import io.jsonwebtoken.Claims;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,9 +53,7 @@ public class ItemController {
 
     @GetMapping("/salesItems")
     public List<SalesItemDto> salesItems(@RequestHeader("Authorization") String token) {
-        String trim = token.replace("Bearer ", "");
-        Claims claims = tokenValueProvider.extractClaims(trim);
-        long sellerId = Long.parseLong(claims.get("userId").toString());
+        Long sellerId = tokenValueProvider.extractUserId(token);
         List<SalesItemDto> salesItems = itemService.getSalesItems(sellerId);
         log.info("sales Items ={}", salesItems);
         return salesItems;

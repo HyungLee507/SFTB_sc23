@@ -6,7 +6,6 @@ import CDProject.vfmarket.exceptions.ItemNotFoundException;
 import CDProject.vfmarket.exceptions.UserNotFoundException;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.service.CartService;
-import io.jsonwebtoken.Claims;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +28,7 @@ public class CartController {
     @PostMapping("/save-item")
     public ResponseEntity saveItem(@RequestHeader("Authorization") String token, @RequestParam Long itemId)
             throws Exception {
-        String trim = token.replace("Bearer ", "");
-        Claims claims = tokenValueProvider.extractClaims(trim);
-        long userId = Long.parseLong(claims.get("userId").toString());
+        Long userId = tokenValueProvider.extractUserId(token);
         try {
             cartService.saveItemToCart(userId, itemId);
         } catch (AlreadySavedItem e) {
@@ -46,9 +43,7 @@ public class CartController {
 
     @DeleteMapping("/delete-item")
     public ResponseEntity deleteItem(@RequestHeader("Authorization") String token, @RequestParam Long itemId) {
-        String trim = token.replace("Bearer ", "");
-        Claims claims = tokenValueProvider.extractClaims(trim);
-        long userId = Long.parseLong(claims.get("userId").toString());
+        Long userId = tokenValueProvider.extractUserId(token);
         try {
             cartService.deleteItemInCart(itemId, userId);
         } catch (Exception e) {
@@ -59,9 +54,7 @@ public class CartController {
 
     @GetMapping("/cart-items")
     public List<CartItemDto> cartItems(@RequestHeader("Authorization") String token) {
-        String trim = token.replace("Bearer ", "");
-        Claims claims = tokenValueProvider.extractClaims(trim);
-        long userId = Long.parseLong(claims.get("userId").toString());
+        Long userId = tokenValueProvider.extractUserId(token);
         return cartService.cartItems(userId);
     }
 }

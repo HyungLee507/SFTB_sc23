@@ -9,7 +9,6 @@ import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.repository.ItemRepository;
 import CDProject.vfmarket.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import java.io.File;
 import java.util.ArrayList;
@@ -59,12 +58,13 @@ public class UploadService {
         try {
             log.info("token value is {}", token);
 
-            String trim = token.replace("Bearer ", "");
-            log.info("trim value is {}", trim);
-            Claims claims = tokenValueProvider.extractClaims(trim);
-            log.info("claims is {}", claims);
+//            String trim = token.replace("Bearer ", "");
+//            log.info("trim value is {}", trim);
+//            Claims claims = tokenValueProvider.extractClaims(trim);
+//            log.info("claims is {}", claims);
             log.info("imageList size is {}", imageList.size());
-            long userId = Long.parseLong(claims.get("userId").toString());
+//            long userId = Long.parseLong(claims.get("userId").toString());
+            Long userId = tokenValueProvider.extractUserId(token);
             Optional<User> seller = userRepository.findById(userId);
             String sellerName = seller.get().getName();
             Item uploadItem = Item.builder()
@@ -86,7 +86,6 @@ public class UploadService {
         } catch (Exception e) {
             log.info("token error is {}", e.getMessage());
         }
-
     }
 
 }

@@ -1,7 +1,7 @@
 package CDProject.vfmarket.service;
 
-import CDProject.vfmarket.domain.dto.FirstRegistUserInfoDto;
-import CDProject.vfmarket.domain.dto.UserSignUpDto;
+import CDProject.vfmarket.domain.dto.SignUpDTO.FirstRegistUserInfoDto;
+import CDProject.vfmarket.domain.dto.SignUpDTO.UserSignUpDto;
 import CDProject.vfmarket.domain.entity.Role;
 import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.repository.UserRepository;
