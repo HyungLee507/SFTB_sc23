@@ -1,5 +1,6 @@
 package CDProject.vfmarket.global.config;
 
+import CDProject.vfmarket.global.filter.CustomAuthenticationEntryPoint;
 import CDProject.vfmarket.global.jwt.Service.JwtService;
 import CDProject.vfmarket.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import CDProject.vfmarket.global.login.filter.CustomJsonUsernamePasswordAuthenticationFilter;
@@ -55,19 +56,11 @@ public class SecurityConfig {
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-
                 .headers(headers -> headers
                         .frameOptions(FrameOptionsConfig::disable) // X-Frame-Options 비활성화
                 )
-                // 세션 사용하지 않으므로 STATELESS로 설정
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                // 기본 페이지, css, image, js 하위 폴더에 있는 자료들은 모두 접근 가능, h2-console에 접근 가능
-//                .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll()
-//                .requestMatchers("/sign-up").permitAll() // 회원가입 접근 가능
-//                .anyRequest().authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
-//                .and()
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers(
                                         new AntPathRequestMatcher("/**"),
@@ -90,6 +83,9 @@ public class SecurityConfig {
 //                        ).hasRole("ADIMN")
 //                        .anyRequest().authenticated()
 //                )
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                )
                 .oauth2Login(oauth2Login -> {
                     oauth2Login
                             .loginPage("/account/login")
