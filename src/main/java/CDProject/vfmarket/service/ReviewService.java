@@ -30,8 +30,6 @@ public class ReviewService {
 
     private ItemRepository itemRepository;
 
-    private final String uploadFolder = "/Users/leedonghyun/Desktop/images";
-
     public void saveReview(Long userId, ReviewFormDto reviewFormDto) throws NoSuchFieldException {
 
         List<String> imageList = new ArrayList<>();
@@ -40,6 +38,7 @@ public class ReviewService {
                 String uploadFileName = uploadFile.getOriginalFilename();
                 String uuid = UUID.randomUUID().toString();
                 uploadFileName = uuid + "_" + uploadFileName;
+                String uploadFolder = "/Users/leedonghyun/Desktop/images";
                 File saveFile = new File(uploadFolder, uploadFileName);
                 log.info("uploadFileName is {}", uploadFileName);
                 uploadFile.transferTo(saveFile);
@@ -63,7 +62,7 @@ public class ReviewService {
                     .starRate(reviewFormDto.getStarRate())
                     .writeStatus(WriteStatus.REVIEW_AVAILABLE)
                     .reviewName(reviewFormDto.getName())
-                    .detail(reviewFormDto.getDescription())
+                    .content(reviewFormDto.getDescription())
                     .build();
             for (String fileName : imageList) {
                 List<ReviewImage> images = uploadReview.getImages();
@@ -81,4 +80,11 @@ public class ReviewService {
         byItemId.setWriteStatus(WriteStatus.REVIEW_NOT_AVAILABLE);
         reviewRepository.save(byItemId);
     }
+
+    //todo : 이거 해야됨.
+    public void updateReview(Long reviewId) {
+
+    }
+
+
 }
