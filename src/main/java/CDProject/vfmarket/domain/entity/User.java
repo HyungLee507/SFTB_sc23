@@ -62,12 +62,12 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "buyer")
     private List<Order> orderList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user")
-    private List<DeliveryAddress> address;
-
+    
     @OneToMany(mappedBy = "user")
     private List<StyleShot> styleShots = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Notification> notifications;
 
     @OneToOne(mappedBy = "user")
     private Cart shoppingBaskets;
@@ -108,4 +108,6 @@ public class User extends BaseTimeEntity {
         this.refreshToken = updateRefreshToken;
     }
 
+    //    @OneToMany(mappedBy = "user")
+//    private List<DeliveryAddress> address;
 }
