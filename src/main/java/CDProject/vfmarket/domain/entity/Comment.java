@@ -1,5 +1,6 @@
 package CDProject.vfmarket.domain.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +15,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +24,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,18 +39,15 @@ public class Comment extends BaseTimeEntity {
     @Lob
     private String description;
 
-//    @Column(name = "orders")
-//    private Integer order;
-
     @Enumerated(EnumType.STRING)
     private ReviewType reviewType;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "Inquire_ID")
-//    private Inquire inquire;
+
+    private WriteStatus writeStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Review_ID")
+    @Nullable
     private Review review;
 
 
@@ -58,10 +60,5 @@ public class Comment extends BaseTimeEntity {
     @OneToMany(mappedBy = "parent")
     private List<Comment> replies = new ArrayList<>();
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "item_ID")
-//    private Item item;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Admin admin;
 }
