@@ -12,12 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemDetailDto {
-
+    //itemId
     private Long id;
 
     private String name;
 
     private Long price;
+
+    private Long sellerId;
 
     private String sellerName;
 
