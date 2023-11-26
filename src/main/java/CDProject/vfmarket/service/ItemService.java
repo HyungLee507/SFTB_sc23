@@ -11,6 +11,7 @@ import CDProject.vfmarket.domain.entity.ItemStatus;
 import CDProject.vfmarket.exceptions.ResourceNotFoundException;
 import CDProject.vfmarket.repository.ImageRepository;
 import CDProject.vfmarket.repository.ItemRepository;
+import CDProject.vfmarket.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ItemService {
     private final ItemRepository itemRepository;
     private final ImageRepository imageRepository;
+    private final UserRepository userRepository;
 
     public List<ItemViewDto> productList() {
         return itemRepository.findAllItemListDto();
@@ -93,6 +95,7 @@ public class ItemService {
         itemDetailDto.setImages(images);
         itemDetailDto.setStatus(findItem.get().getStatus());
         itemDetailDto.setImageIds(imageIds);
+        itemDetailDto.setSellerId(findItem.get().getSellerId());
         return itemDetailDto;
     }
 
