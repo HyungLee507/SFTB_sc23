@@ -2,6 +2,7 @@ package CDProject.vfmarket.controller;
 
 
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewFormDto;
+import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewUpdateFormDto;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +28,10 @@ public class ReviewController {
     }
 
     @PutMapping("review-update")
-    public void reviewUpdate(@RequestHeader("Authorization") String token, @RequestParam Long reviewId) {
+    public void reviewUpdate(@RequestHeader("Authorization") String token, @RequestParam Long reviewId,
+                             ReviewUpdateFormDto reviewUpdateFormDto) {
         Long userId = tokenValueProvider.extractUserId(token);
-
+        reviewService.updateReview(reviewId, reviewUpdateFormDto);
     }
 
     @PutMapping("review-delete")
