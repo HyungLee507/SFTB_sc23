@@ -28,8 +28,7 @@ public class OrderDetail {
     @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;
-
-    // OrderDetail의 추가적인 필드들
+    
     private String apply_num;
 
     private String pg_provider;

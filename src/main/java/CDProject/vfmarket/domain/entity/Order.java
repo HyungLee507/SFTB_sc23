@@ -38,7 +38,6 @@ public class Order extends BaseTimeEntity {
     @JoinColumn(name = "Buyer_Id")
     private User buyer;
 
-    //OneToOne 추후 수정
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_Id")
     private Item item;
