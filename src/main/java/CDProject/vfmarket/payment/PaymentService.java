@@ -12,9 +12,9 @@ import CDProject.vfmarket.repository.ItemRepository;
 import CDProject.vfmarket.repository.OrderDetailRepository;
 import CDProject.vfmarket.repository.OrderRepository;
 import CDProject.vfmarket.repository.UserRepository;
+import CDProject.vfmarket.service.NotificationService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,17 +33,19 @@ public class PaymentService {
 
     private final UserRepository userRepository;
 
+    private final NotificationService notificationService;
+
     public void saveOrder(Long userId, OrderSaveDto orderSaveDto) {
 
-        Optional<Item> items = itemRepository.findById(orderSaveDto.getId());
-//        if(items.isPresent()){
-//            Item item = items.get();
-//        }
-        log.info("item sellerName is {}", items.get().getSellerName());
-        items.get().setStatus(ItemStatus.STOP_SELLING);
-        Optional<User> sellerUser = userRepository.findById(userId);
-        log.info("sellerUser name is {}", sellerUser.get().getName());
-        Image firstImage = getFirstImage(items.get().getId());
+        Item items = itemRepository.findById(orderSaveDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Item not found with id: " + orderSaveDto.getId()));
+        log.info("item sellerName is {}", items.getSellerName());
+        items.setStatus(ItemStatus.STOP_SELLING);
+
+        User sellerUser = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+        log.info("sellerUser name is {}", sellerUser.getName());
+        Image firstImage = getFirstImage(items.getId());
 
         String fileName = firstImage.getFileName();
         log.info("findImage name is {}", fileName);
@@ -51,7 +53,7 @@ public class PaymentService {
             Order order = Order.builder()
                     .paymentPrice(orderSaveDto.getPaid_amount())
                     .sellerName(orderSaveDto.getSeller_name())
-                    .sellerId(items.get().getSellerId())
+                    .sellerId(items.getSellerId())
                     .merchant_uid(orderSaveDto.getMerchant_uid())
                     .status(OrderStatus.COMPLETE_PAYMENT)
                     .representativeImage(fileName)
@@ -59,9 +61,13 @@ public class PaymentService {
             if (userRepository.findById(userId).isPresent()) {
                 order.setBuyer(userRepository.findById(userId).get());
             }
-            order.setItem(items.get());
+            order.setItem(items);
+
+            notificationService.makeNotification(items.getSellerId(),
+                    "등록하신 상품" + items.getItemName() + "의 거래가 체결되었습니다.");
+
             orderRepository.save(order);
-            itemRepository.save(items.get());
+            itemRepository.save(items);
         } catch (Exception e) {
             log.info("order error!!", e);
         }
@@ -79,27 +85,6 @@ public class PaymentService {
                 .build();
         orderDetail.setOrder(savedOrder);
         orderDetailRepository.save(orderDetail);
-
-//        orderRepository.insertOrder(orders);
-
-//        for (OrderSaveDto dto : orderSaveDtos) {
-//            int curStock = productRepository.selectProductStock(dto.getProductId());
-//            int orderStock = dto.getOrderCount();
-//
-//            if (curStock - orderStock < 0) {
-//                throw new IllegalArgumentException("상품 재고가 부족합니다.");
-//            }
-//
-//            OrderProduct orderProduct = OrderProduct.builder()
-//                    .orderId(orders.getOrderId())
-//                    .productId(dto.getProductId())
-//                    .orderProductPrice(dto.getOrderPrice())
-//                    .orderProductCount(dto.getOrderCount())
-//                    .orderProductDiscount(dto.getOrderDiscount())
-//                    .productImage(dto.getProductImage())
-//                    .build();
-//            orderProductRepository.insertOrderProduct(orderProduct);
-//            productRepository.updateProductStock(dto.getProductId(), dto.getOrderCount());
     }
 
     public Image getFirstImage(Long itemId) {

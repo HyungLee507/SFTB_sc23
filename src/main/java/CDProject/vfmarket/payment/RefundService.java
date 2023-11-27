@@ -7,8 +7,10 @@ import CDProject.vfmarket.domain.entity.OrderStatus;
 import CDProject.vfmarket.payment.enums.IamportApiUrl;
 import CDProject.vfmarket.repository.ItemRepository;
 import CDProject.vfmarket.repository.OrderRepository;
+import CDProject.vfmarket.service.NotificationService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -32,6 +34,7 @@ public class RefundService {
 
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
+    private final NotificationService notificationService;
 
     @Value("${portone.api.key}")
     private String apiKey;
@@ -40,17 +43,25 @@ public class RefundService {
     private String secretKey;
 
     public void canceledOrder(Long orderId) throws IOException {
+
+        Optional<Order> findByIdOrder = orderRepository.findById(orderId);
         if (orderRepository.findById(orderId).isEmpty()) {
             return;
         }
-        Optional<Order> findByIdOrder = orderRepository.findById(orderId);
-        Order order = findByIdOrder.get();
+//        Optional<Order> findByIdOrder = orderRepository.findById(orderId);
+//        Order order = findByIdOrder.get();
+//        Item item = order.getItem();
+//        item.setStatus(ItemStatus.FOR_SALE);
+//        order.setStatus(OrderStatus.CANCEL_TRANSACTION);
+        Order order = findByIdOrder.orElseThrow(
+                () -> new EntityNotFoundException("Order not found with id: " + orderId));
         Item item = order.getItem();
         item.setStatus(ItemStatus.FOR_SALE);
         order.setStatus(OrderStatus.CANCEL_TRANSACTION);
 
         String impToken = getToken(apiKey, secretKey);
         refundRequest(impToken, order.getMerchant_uid(), "사용자 결제 취소!");
+        notificationService.makeNotification(item.getSellerId(), "등록하신 상품" + item.getItemName() + "의 거래가 취소되었습니다.");
 
         itemRepository.save(item);
         orderRepository.save(order);
