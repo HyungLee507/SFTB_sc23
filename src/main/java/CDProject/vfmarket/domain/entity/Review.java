@@ -32,7 +32,7 @@ public class Review extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double starRate;
+    private Integer starRate;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "item_id")
