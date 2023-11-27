@@ -118,6 +118,8 @@ modules.xml
 # Compiled class file
 *.class
 
+
+
 # Log file
 *.log
 
@@ -139,6 +141,8 @@ modules.xml
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+# npm build
+src/main/resources/static/*
 
 ### Node ###
 # Logs
