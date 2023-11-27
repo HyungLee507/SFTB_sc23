@@ -1,9 +1,11 @@
 package CDProject.vfmarket.service;
 
+import CDProject.vfmarket.domain.dto.NotificationDTO.NotificationViewDto;
 import CDProject.vfmarket.domain.entity.Notification;
 import CDProject.vfmarket.exceptions.NotFoundException;
 import CDProject.vfmarket.repository.NotificationRepository;
 import CDProject.vfmarket.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,11 @@ public class NotificationService {
 
     private final UserRepository userRepository;
 
+
+    public List<NotificationViewDto> getNotifications(Long userId) {
+        return notificationRepository.findNotificationsByUserId(userId);
+    }
+
     public void makeNotification(Long userId, String message) {
         Notification notification = Notification.builder().
                 user(userRepository.findById(userId).get())
@@ -23,6 +30,7 @@ public class NotificationService {
                 .build();
         notificationRepository.save(notification);
     }
+
 
     public void markAsRead(Long notificationId) {
         Notification notification = notificationRepository.findById(notificationId)
