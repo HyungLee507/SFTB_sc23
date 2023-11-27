@@ -1,13 +1,13 @@
 package CDProject.vfmarket.domain.dto.commentDTO;
 
 import CDProject.vfmarket.domain.entity.WriteStatus;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.Lob;
 import java.time.LocalDateTime;
-import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class CommentDto {
 
     private Long commentId;
@@ -21,9 +21,9 @@ public class CommentDto {
 
     private WriteStatus writeStatus;
 
-    @Nullable
-    private List<SubCommentDto> replies;
+    private LocalDateTime lastModifiedDate;
 
-    private LocalDateTime createdDate;
+//    @Nullable
+//    private List<SubCommentDto> replies;
 
 }
