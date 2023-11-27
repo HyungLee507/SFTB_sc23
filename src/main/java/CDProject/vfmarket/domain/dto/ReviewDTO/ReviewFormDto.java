@@ -10,7 +10,7 @@ public class ReviewFormDto {
 
     private String name;
 
-    private Double starRate;
+    private Integer starRate;
 
     @Lob
     private String content;
