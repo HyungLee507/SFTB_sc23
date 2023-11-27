@@ -11,7 +11,6 @@ import CDProject.vfmarket.repository.ReviewRepository;
 import CDProject.vfmarket.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,16 +21,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     public void saveReview(Long userId, ReviewFormDto reviewFormDto) {
-        Optional<User> seller = userRepository.findById(userId);
-        Optional<Item> findItem = itemRepository.findById(reviewFormDto.getItemId());
+        User seller = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
+        Item findItem = itemRepository.findById(reviewFormDto.getItemId())
+                .orElseThrow(() -> new EntityNotFoundException("Item not found with id: " + reviewFormDto.getItemId()));
         Review uploadReview = Review.builder()
-                .user(seller.get())
-                .item(findItem.get())
+                .user(seller)
+                .item(findItem)
                 .starRate(reviewFormDto.getStarRate())
                 .writeStatus(WriteStatus.REVIEW_AVAILABLE)
                 .reviewName(reviewFormDto.getName())
@@ -87,7 +88,6 @@ public class ReviewService {
         reviewRepository.save(byItemId);
     }
 
-    //todo : 이거 해야됨.
     public void updateReview(Long reviewId, ReviewUpdateFormDto reviewUpdateFormDto) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + reviewId));
