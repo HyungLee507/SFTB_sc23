@@ -1,9 +1,7 @@
 package CDProject.vfmarket.domain.dto.ReviewDTO;
 
 import jakarta.persistence.Lob;
-import java.util.List;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class ReviewFormDto {
@@ -15,7 +13,7 @@ public class ReviewFormDto {
     private Double starRate;
 
     @Lob
-    private String description;
+    private String content;
 
-    private List<MultipartFile> images;
+//    private List<MultipartFile> images;
 }

@@ -54,6 +54,4 @@ public class CommentService {
         byId.get().setDescription(content);
         commentRepository.save(byId.get());
     }
-
-
 }
