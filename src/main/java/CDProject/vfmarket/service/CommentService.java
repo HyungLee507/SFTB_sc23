@@ -1,13 +1,15 @@
 package CDProject.vfmarket.service;
 
+import CDProject.vfmarket.domain.dto.commentDTO.CommentDto;
 import CDProject.vfmarket.domain.dto.commentDTO.CommentFormDto;
-import CDProject.vfmarket.domain.dto.commentDTO.SubCommentFormDto;
+import CDProject.vfmarket.domain.dto.commentDTO.CommentUpdateFormDto;
 import CDProject.vfmarket.domain.entity.Comment;
 import CDProject.vfmarket.domain.entity.WriteStatus;
 import CDProject.vfmarket.repository.CommentRepository;
 import CDProject.vfmarket.repository.ReviewRepository;
 import CDProject.vfmarket.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,15 +35,16 @@ public class CommentService {
                 .review(reviewRepository.findById(commentFormDto.getReviewId()).get())
                 .writeStatus(WriteStatus.COMMENT_AVAILABLE)
                 .build();
+        commentRepository.save(comment);
     }
-
-    public void saveSubComment(Long userId, SubCommentFormDto subCommentFormDto) {
-        Comment comment = Comment.builder()
-                .description(subCommentFormDto.getContent())
-                .user(userRepository.findById(userId).get())
-                .parent(commentRepository.findById(subCommentFormDto.getCommentId()).get())
-                .build();
-    }
+    //대댓글 기능 삭제
+//    public void saveSubComment(Long userId, SubCommentFormDto subCommentFormDto) {
+//        Comment comment = Comment.builder()
+//                .description(subCommentFormDto.getContent())
+//                .user(userRepository.findById(userId).get())
+//                .parent(commentRepository.findById(subCommentFormDto.getCommentId()).get())
+//                .build();
+//    }
 
     public void deleteComment(Long commentId) {
         Optional<Comment> byId = commentRepository.findById(commentId);
@@ -49,9 +52,13 @@ public class CommentService {
         commentRepository.save(byId.get());
     }
 
-    public void updateComment(Long commentId, String content) {
-        Optional<Comment> byId = commentRepository.findById(commentId);
-        byId.get().setDescription(content);
+    public void updateComment(CommentUpdateFormDto commentUpdateFormDto) {
+        Optional<Comment> byId = commentRepository.findById(commentUpdateFormDto.getCommentId());
+        byId.get().setDescription(commentUpdateFormDto.getDescription());
         commentRepository.save(byId.get());
+    }
+
+    public List<CommentDto> getComments(Long reviewId) {
+        return commentRepository.findAllCommentsInReview(reviewId);
     }
 }
