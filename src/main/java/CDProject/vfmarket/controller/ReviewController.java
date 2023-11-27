@@ -21,8 +21,7 @@ public class ReviewController {
     private final TokenValueProvider tokenValueProvider;
 
     @PostMapping("review-upload")
-    public void reviewUpload(@RequestHeader("Authorization") String token, ReviewFormDto reviewFormDto)
-            throws NoSuchFieldException {
+    public void reviewUpload(@RequestHeader("Authorization") String token, ReviewFormDto reviewFormDto) {
         Long userId = tokenValueProvider.extractUserId(token);
         reviewService.saveReview(userId, reviewFormDto);
     }
