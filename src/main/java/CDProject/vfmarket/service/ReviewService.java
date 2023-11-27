@@ -1,6 +1,7 @@
 package CDProject.vfmarket.service;
 
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewFormDto;
+import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewUpdateFormDto;
 import CDProject.vfmarket.domain.entity.Item;
 import CDProject.vfmarket.domain.entity.Review;
 import CDProject.vfmarket.domain.entity.User;
@@ -8,6 +9,7 @@ import CDProject.vfmarket.domain.entity.WriteStatus;
 import CDProject.vfmarket.repository.ItemRepository;
 import CDProject.vfmarket.repository.ReviewRepository;
 import CDProject.vfmarket.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -86,8 +88,13 @@ public class ReviewService {
     }
 
     //todo : 이거 해야됨.
-    public void updateReview(Long reviewId) {
-
+    public void updateReview(Long reviewId, ReviewUpdateFormDto reviewUpdateFormDto) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + reviewId));
+        review.setReviewName(reviewUpdateFormDto.getReviewName());
+        review.setStarRate(reviewUpdateFormDto.getStarRate());
+        review.setContent(reviewUpdateFormDto.getContent());
+        reviewRepository.save(review);
     }
 
 
