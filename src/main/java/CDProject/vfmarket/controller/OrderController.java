@@ -41,7 +41,7 @@ public class OrderController {
     @PutMapping("/refundItem/{orderId}")
     public void canceledOrder(@RequestHeader("Authorization") String token, @PathVariable Long orderId)
             throws IOException {
-        Long userId = tokenValueProvider.extractUserId(token);
+//        Long userId = tokenValueProvider.extractUserId(token);
         refundService.canceledOrder(orderId);
     }
 

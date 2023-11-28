@@ -30,7 +30,7 @@ public class ReviewController {
     @PutMapping("review-update")
     public void reviewUpdate(@RequestHeader("Authorization") String token, @RequestParam Long reviewId,
                              ReviewUpdateFormDto reviewUpdateFormDto) {
-        Long userId = tokenValueProvider.extractUserId(token);
+//        Long userId = tokenValueProvider.extractUserId(token);
         reviewService.updateReview(reviewId, reviewUpdateFormDto);
     }
 
