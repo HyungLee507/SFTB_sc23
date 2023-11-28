@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -39,13 +40,17 @@ public class Review extends BaseTimeEntity {
     private Item item;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "seller_id")
+    private User seller;
+
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "buyer_id")
+    private User buyer;
 
     @Enumerated(EnumType.STRING)
     private WriteStatus writeStatus;
 
-    private String reviewName;
+    private String title;
 
     @Lob
     private String content;
