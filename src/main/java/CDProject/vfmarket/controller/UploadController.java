@@ -45,7 +45,7 @@ public class UploadController {
     public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
         log.info("file name is {}", filename);
         return new UrlResource("file:"
-                + "/Users/leedonghyun/Desktop/images/" + filename);
+                + "C:/sw-capstone/images/" + filename);
     }
 
 

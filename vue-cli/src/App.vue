@@ -1,21 +1,28 @@
 <template>
   <div id="app">
-    <HeaderNav/>
+    <HeaderNav v-if="showHeaderNav" />
     <router-view></router-view>
-    
   </div>
 </template>
 
 <script>
 import HeaderNav from './components/HeaderNav'
 
-
 export default {
   name: 'App',
   components: {
-    
-    HeaderNav
-  }
+    HeaderNav,
+  },
+  data() {
+    return {
+      showHeaderNav: true,
+    }
+  },
+  created() {
+    if (this.$route.name === 'uploadPage') {
+      this.showHeaderNav = false
+    }
+  },
 }
 </script>
 
@@ -29,3 +36,4 @@ export default {
   margin-top: 60px;
 }
 </style>
+

@@ -72,8 +72,8 @@ public class Item extends BaseTimeEntity {
     @ManyToMany(mappedBy = "items")
     private List<Cart> shoppingCarts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "item")
-    private List<Comment> comment = new ArrayList<>();
+//    @OneToMany(mappedBy = "item")
+//    private List<Comment> comment = new ArrayList<>();
 
     public List<Image> getImages() {
         if (this.images == null) {

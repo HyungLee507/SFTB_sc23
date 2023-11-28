@@ -17,6 +17,8 @@ import SellingPage from "@/components/SellingPage.vue";
 import PaymentPage from "@/components/PaymentPage.vue";
 import SoldPage from "@/components/SoldPage.vue";
 import SellingProductInformationPage from "@/components/SellingProductInformationPage.vue";
+import UploadPage from "@/components/UploadPage.vue";
+import ReviewPage from "@/components/ReviewPage.vue";
 
 
 Vue.use(Router); // VueRouter를 사용하겠다.
@@ -42,7 +44,8 @@ export default new Router({
         },
         {
             path: '/product-list/:id',
-            component: ProductinformationPage
+            component: ProductinformationPage,
+            name: 'productinformationPage',
         },
         {
             path: '/product/list',
@@ -91,7 +94,18 @@ export default new Router({
         {
             path: '/product/payment/:id',
             component: PaymentPage,
+        },
+        {
+            path: '/product/upload/:id',
+            component: UploadPage,
+            name: 'uploadPage',
+        },
+        {
+            path: '/product/review/',
+            component: ReviewPage,
+            name: 'reviewPage',
         }
+
 
 
     ]
