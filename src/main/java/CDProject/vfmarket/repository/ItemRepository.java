@@ -11,6 +11,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     List<Item> findAllBySellerId(Long sellerId);
 
+
+    @Query("select i.sellerId from Item i where i.id = :itemId")
+    Long findSellerIdByItemId(Long itemId);
+
 //    @Query("select new CDProject.vfmarket.domain.dto.itemDTO.SalesItemDto(i.id,i.price,i.itemName,(SELECT image.fileName FROM i.images image WHERE image.item = i ORDER BY image.id ASC))"
 //            + " from Item i"
 //            + " left join i.images img"
