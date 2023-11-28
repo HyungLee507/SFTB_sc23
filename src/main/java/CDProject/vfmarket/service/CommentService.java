@@ -29,6 +29,8 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
+    private final NotificationService notificationService;
+
     public void saveComment(Long userId, CommentFormDto commentFormDto) {
 
         User user = userRepository.findById(userId)
@@ -42,6 +44,8 @@ public class CommentService {
                 .review(review)
                 .writeStatus(WriteStatus.COMMENT_AVAILABLE)
                 .build();
+        notificationService.makeNotification(review.getItem().getSellerId(), review.getItem().getId(),
+                review.getItem().getItemName() + " 결제 후기에 대한 댓글이 작성되어졌습니다.");
         commentRepository.save(comment);
     }
 

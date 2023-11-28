@@ -63,7 +63,7 @@ public class PaymentService {
             }
             order.setItem(items);
 
-            notificationService.makeNotification(items.getSellerId(),
+            notificationService.makeNotification(items.getSellerId(), items.getId(),
                     "등록하신 상품" + items.getItemName() + "의 거래가 체결되었습니다.");
 
             orderRepository.save(order);

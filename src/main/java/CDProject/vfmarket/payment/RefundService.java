@@ -61,7 +61,8 @@ public class RefundService {
 
         String impToken = getToken(apiKey, secretKey);
         refundRequest(impToken, order.getMerchant_uid(), "사용자 결제 취소!");
-        notificationService.makeNotification(item.getSellerId(), "등록하신 상품" + item.getItemName() + "의 거래가 취소되었습니다.");
+        notificationService.makeNotification(item.getSellerId(), item.getId(),
+                "등록하신 상품" + item.getItemName() + "의 거래가 취소되었습니다.");
 
         itemRepository.save(item);
         orderRepository.save(order);
