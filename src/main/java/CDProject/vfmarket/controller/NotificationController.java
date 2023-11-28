@@ -29,7 +29,7 @@ public class NotificationController {
         return notificationService.getNotifications(userId);
     }
 
-    @PutMapping("/read-notification/{id}")
+    @PutMapping("/read-notification/{notificationId}")
     public ResponseEntity<?> markNotificationAsRead(@PathVariable Long notificationId) {
         notificationService.markAsRead(notificationId);
         return ResponseEntity.ok().build();
