@@ -56,8 +56,8 @@ export default {
       const formData = new FormData();
       formData.append('image', this.file);
       formData.append('item_id', this.item_id);
-
-      axios.post('/api/compose', formData)
+      const ngrokBase = "https://c402-34-147-38-68.ngrok-free.app/"
+      axios.post(ngrokBase+'showimage', formData)
           .then(response => {
             this.composedImageUrl = response.data.composedImageUrl;
             alert('이미지가 합성되었습니다!');

@@ -114,9 +114,9 @@ export default {
     openUploadPopup() {
       // 업로드 팝업창 열기 로직 추가
       window.open('/product/upload/'+ this.product.id, 'upload', 'width=500, height=500, left=100, top=50');
-      axios.post('/send-product-id', {
-        productId: this.product.id,
-      })
+      const formData = new FormData();
+      formData.append('productId', this.product.id);
+      axios.post('/vf/productimg', formData)
           .then((response) => {
             console.log(response.data);
           })
