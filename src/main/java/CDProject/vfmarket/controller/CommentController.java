@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CommentController {
 
-    private CommentService commentService;
-    private TokenValueProvider tokenValueProvider;
+    private final CommentService commentService;
+    private final TokenValueProvider tokenValueProvider;
 
     @PostMapping("/comment-upload")
     public void commentUpload(@RequestHeader("Authorization") String token, CommentFormDto commentFormDto) {
