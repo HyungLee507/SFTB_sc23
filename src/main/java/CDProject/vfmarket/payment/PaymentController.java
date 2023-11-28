@@ -2,6 +2,7 @@ package CDProject.vfmarket.payment;
 
 import CDProject.vfmarket.domain.dto.OrderDTO.OrderSaveDto;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
+import CDProject.vfmarket.service.NotificationService;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
@@ -27,6 +28,8 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
+    private final NotificationService notificationService;
+
     private final TokenValueProvider tokenValueProvider;
 
     private IamportClient iamportClient;
@@ -49,6 +52,9 @@ public class PaymentController {
         String orderNumber = orderSaveDto.getMerchant_uid();
         try {
             paymentService.saveOrder(userId, orderSaveDto);
+            notificationService.makeNotification(userId, orderSaveDto.getId(),
+                    orderSaveDto.getName() + " 상품 결제를 하셨습니다.");
+
             log.info("결제 성공 : 주문 번호 {}", orderNumber);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
