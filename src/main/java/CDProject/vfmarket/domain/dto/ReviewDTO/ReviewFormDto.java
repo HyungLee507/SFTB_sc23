@@ -8,7 +8,7 @@ public class ReviewFormDto {
 
     private Long itemId;
 
-    private String name;
+    private String title;
 
     private Integer starRate;
 
