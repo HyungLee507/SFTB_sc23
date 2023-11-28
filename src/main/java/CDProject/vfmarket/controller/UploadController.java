@@ -27,8 +27,8 @@ public class UploadController {
     private final UploadService uploadService;
 
     @PostMapping("product/item-upload")
-    public ResponseEntity register(@RequestHeader("Authorization") String token,
-                                   @ModelAttribute ItemFormDto itemFormDto)
+    public ResponseEntity<?> register(@RequestHeader("Authorization") String token,
+                                      @ModelAttribute ItemFormDto itemFormDto)
             throws IOException, NoSuchFieldException {
 
         if (token == null) {
