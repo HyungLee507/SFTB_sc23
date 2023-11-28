@@ -13,4 +13,6 @@ public class NotificationViewDto {
     private LocalDateTime createdTime;
 
     private boolean isRead;
+
+    private Long itemId;
 }
