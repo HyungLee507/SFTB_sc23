@@ -66,7 +66,7 @@ public class UserService {
         }
     }
 
-    public void updatePassword(User user, String password) throws Exception {
+    public void updatePassword(User user, String password) {
         user.updatePassword(password, passwordEncoder);
         userRepository.save(user);
     }
