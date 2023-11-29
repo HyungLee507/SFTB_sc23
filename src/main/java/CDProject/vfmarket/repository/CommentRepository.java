@@ -5,6 +5,7 @@ import CDProject.vfmarket.domain.entity.Comment;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
@@ -13,5 +14,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             + " left join c.user u"
             + " left join c.review r"
             + " where r.id = :reviewId")
-    List<CommentDto> findAllCommentsInReview(Long reviewId);
+    List<CommentDto> findAllCommentsInReview(@Param("reviewId") Long reviewId);
 }
