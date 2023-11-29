@@ -9,6 +9,7 @@ import CDProject.vfmarket.domain.entity.OrderDetail;
 import CDProject.vfmarket.domain.entity.OrderStatus;
 import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.repository.ItemRepository;
+import CDProject.vfmarket.repository.NotificationRepository;
 import CDProject.vfmarket.repository.OrderDetailRepository;
 import CDProject.vfmarket.repository.OrderRepository;
 import CDProject.vfmarket.repository.UserRepository;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class PaymentService {
+    private final NotificationRepository notificationRepository;
     private final OrderDetailRepository orderDetailRepository;
 
 
@@ -63,14 +65,16 @@ public class PaymentService {
             }
             order.setItem(items);
 
-            notificationService.makeNotification(items.getSellerId(), items.getId(),
-                    "등록하신 상품" + items.getItemName() + "의 거래가 체결되었습니다.");
-
             orderRepository.save(order);
             itemRepository.save(items);
         } catch (Exception e) {
-            log.info("order error!!", e);
+            log.info("order error!! {}", e.getMessage());
+            Item resetItem = itemRepository.findById(orderSaveDto.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Item not found with id: " + orderSaveDto.getId()));
+            log.info("reset.... {}", resetItem.getSellerName());
+            items.setStatus(ItemStatus.FOR_SALE);
         }
+
         Order savedOrder = orderRepository.findByItem_Id(orderSaveDto.getId());
         OrderDetail orderDetail = OrderDetail.builder()
                 .apply_num(orderSaveDto.getApply_num())
