@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,13 +18,13 @@ public class VFController {
 
     private final ItemService itemService;
     @PostMapping("/vf/productimg")
-    public ResponseEntity sendProductImg(Long productId) throws IOException {
+    public ResponseEntity sendProductImg(Long productId) {
         String prodImgUrl = itemService.itemDetailInfo(productId).getImages().get(0);
         // 전송할 파일 정보
         File file = new File("C:/sw-capstone/images/"+prodImgUrl);
 
         // Flask ngrok base url. Flask는 colab에서 돌아간다.
-        String ngrokBase = "https://18dc-34-90-87-63.ngrok-free.app/";
+        String ngrokBase = "https://b635-35-221-153-135.ngrok-free.app/";
         // Flask 백엔드의 엔드포인트 URL
         String url = ngrokBase + "getprod";
 
@@ -48,13 +46,14 @@ public class VFController {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 
+        String data = response.getBody();
         // 응답 결과 확인
 //        if (response.getStatusCode().is2xxSuccessful()) {
 //            return new ResponseEntity<>(HttpStatus.OK);
 //        } else {
 //            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 //        }
-        return new ResponseEntity<>(response.getStatusCode());
+        return new ResponseEntity<>(data, response.getStatusCode());
 
     }
 }

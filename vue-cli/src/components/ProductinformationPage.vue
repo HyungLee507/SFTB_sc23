@@ -112,16 +112,20 @@ export default {
           });
     },
     openUploadPopup() {
-      // 업로드 팝업창 열기 로직 추가
-      window.open('/product/upload/'+ this.product.id, 'upload', 'width=500, height=500, left=100, top=50');
       const formData = new FormData();
       formData.append('productId', this.product.id);
       axios.post('/vf/productimg', formData)
           .then((response) => {
-            console.log(response.data);
+            const data = response.data;
+            localStorage.setItem("dirname", data.dirname);
+            localStorage.setItem("clothsrc", data.clothsrc);
+            localStorage.setItem("hostUrl", data.hostUrl);
+            // 업로드 팝업창 열기 로직 추가
+            window.open('/product/upload/'+ this.product.id, 'upload', 'width=500, height=500, left=100, top=50');
           })
           .catch((error) => {
             console.log(error);
+            alert("에러로 인해 가상 피팅을 진행할 수 없습니다.")
           });
     },
     changeSlide(index) {

@@ -34,8 +34,8 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      imageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png',// 하드코딩된 이미지 URL
-      composedImageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png', // 하드코딩된 합성 이미지 URL
+      imageUrl: '',// 하드코딩된 이미지 URL
+      composedImageUrl: '', // 하드코딩된 합성 이미지 URL
       item_id: this.$route.params.id,
       file: null, // 추가된 file 데이터
 
@@ -56,10 +56,11 @@ export default {
       const formData = new FormData();
       formData.append('image', this.file);
       formData.append('item_id', this.item_id);
-      const ngrokBase = "https://c402-34-147-38-68.ngrok-free.app/"
-      axios.post(ngrokBase+'showimage', formData)
+      formData.append('dirname', localStorage.getItem("dirname"));
+      const ngrokHost = localStorage.getItem("hostUrl")
+      axios.post(ngrokHost+'showimage', formData)
           .then(response => {
-            this.composedImageUrl = response.data.composedImageUrl;
+            this.composedImageUrl = response.data.resultSrc;
             alert('이미지가 합성되었습니다!');
           })
           .catch(error => {
