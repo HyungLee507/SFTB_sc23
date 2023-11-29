@@ -1,16 +1,15 @@
 <!--<template>-->
 <!--  <b-container>-->
+<!--    <h1 style="margin-top: 30px;">{{ product.name }}</h1>-->
 <!--    <b-row>-->
 <!--      <b-col>-->
 <!--        <b-carousel-->
 <!--            id="carousel-1"-->
 <!--            v-model="slide"-->
-<!--            :interval="4000"-->
+<!--            :interval="0"-->
 <!--            controls-->
 <!--            indicators-->
 <!--            background="#ABABAB"-->
-<!--            img-width="1024"-->
-<!--            img-height="480"-->
 <!--            style="text-shadow: 1px 1px 2px #333;"-->
 <!--        >-->
 <!--          <b-carousel-slide-->
@@ -18,26 +17,42 @@
 <!--              :key="index"-->
 <!--              :img-src="getImageUrl(image)"-->
 <!--              :alt="'Product image ' + (index + 1)"-->
+
 <!--          ></b-carousel-slide>-->
 <!--        </b-carousel>-->
 <!--      </b-col>-->
 <!--    </b-row>-->
 <!--    <b-row>-->
 <!--      <b-col>-->
+<!--        <div class="small-images">-->
+<!--          <img-->
+<!--              v-for="(image, index) in product.images"-->
+<!--              :key="index"-->
+<!--              :src="getImageUrl(image)"-->
+<!--              :alt="'작은 상품 이미지 ' + (index + 1)"-->
+<!--              @click="changeSlide(index)"-->
+<!--          />-->
+<!--        </div>-->
 <!--        <h1>{{ product.name }}</h1>-->
-<!--        <p>{{ product.sellerName }}</p>-->
-<!--        <p>{{ product.price }}</p>-->
-<!--        <p>{{ product.category }}</p>-->
-<!--        <p>{{ product.shoeSize }}</p>-->
-<!--        <p>{{ product.description }}</p>-->
-<!--        <b-button variant="primary" @click="addToCart">장바구니</b-button>-->
-<!--        <b-button variant="success" to="#">VR Fitting</b-button>-->
+<!--        <div class="product-info">-->
+<!--          <p>판매자: <strong>{{ product.sellerName }}</strong></p>-->
+<!--          <p>가격: <strong>{{ product.price.toLocaleString() }}원</strong></p>-->
+<!--          <p>카테고리: <strong>{{ product.category }}</strong></p>-->
+<!--          <p>사이즈: <strong>{{ product.shoeSize }}</strong></p>-->
+<!--          <p>상품설명</p>-->
+<!--          <div class="description-box" style="margin-bottom: 30px">-->
+<!--            <p><strong>{{ product.description }}</strong></p>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <b-button variant="primary" @click="addToCart" style="margin-right: 30px">장바구니</b-button>-->
+<!--        <b-button variant="success" @click="openUploadPopup" style="margin-right: 30px">VR Fitting</b-button>-->
 <!--        &lt;!&ndash;        <b-button variant="info" to="#">결제</b-button>&ndash;&gt;-->
 <!--        <b-button variant="info" :to="'/product/payment/' + this.id">결제</b-button>-->
 <!--      </b-col>-->
 <!--    </b-row>-->
 <!--  </b-container>-->
 <!--</template>-->
+
 <!--<script>-->
 <!--import axios from "axios";-->
 
@@ -83,7 +98,6 @@
 <!--  methods: {-->
 <!--    getImageUrl(imageName) {-->
 <!--      return `http://localhost:8080/product/${imageName}`;-->
-<!--      // return `https://c6d8-14-63-41-207.ngrok-free.app/product/${imageName}`;-->
 <!--    },-->
 <!--    addToCart() {-->
 <!--      // axios.post('/save-item', {-->
@@ -96,15 +110,52 @@
 <!--          .catch((error) => {-->
 <!--            console.log(error);-->
 <!--          });-->
-<!--    }-->
+<!--    },-->
+<!--    openUploadPopup() {-->
+<!--      // 업로드 팝업창 열기 로직 추가-->
+<!--      window.open('/product/upload/' + this.product.id, 'upload', 'width=500, height=500, left=100, top=50');-->
+<!--    },-->
+<!--    changeSlide(index) {-->
+<!--      this.slide = index;-->
+<!--    },-->
 <!--  },-->
 <!--};-->
 <!--</script>-->
 
+<!--<style scoped>-->
+<!--.small-images {-->
+<!--  display: flex;-->
+<!--  justify-content: center;-->
+<!--  margin-top: 10px;-->
+<!--}-->
+
+<!--.small-images img {-->
+<!--  cursor: pointer;-->
+<!--  width: 180px;-->
+<!--  height: 120px;-->
+<!--  object-fit: cover;-->
+<!--  border: 1px solid #ddd;-->
+<!--}-->
+
+<!--.small-images img:hover {-->
+<!--  border: 1px solid #333;-->
+<!--}-->
+
+<!--.description-box {-->
+<!--  border: 1px solid #ddd;-->
+<!--  padding: 15px;-->
+<!--  margin-top: 10px;-->
+<!--  border-radius: 5px;-->
+<!--  width: 800px;-->
+<!--  height: 300px;-->
+<!--  margin-left: auto;-->
+<!--  margin-right: auto;-->
+<!--}-->
+<!--</style>-->
 
 <template>
   <b-container>
-    <h1 style="margin-top: 30px;">{{ product.name }}</h1>
+    <h1 class="head1">{{ product.name }}</h1>
     <b-row>
       <b-col>
         <b-carousel
@@ -137,21 +188,57 @@
               @click="changeSlide(index)"
           />
         </div>
-        <h1>{{ product.name }}</h1>
+        <h1 class="head1">{{ product.name }}</h1>
         <div class="product-info">
-          <p>판매자: <strong>{{ product.sellerName }}</strong></p>
+          <p style="margin-top: 20px;">판매자: <strong>{{ product.sellerName }}</strong></p>
           <p>가격: <strong>{{ product.price.toLocaleString() }}원</strong></p>
           <p>카테고리: <strong>{{ product.category }}</strong></p>
           <p>사이즈: <strong>{{ product.shoeSize }}</strong></p>
-          <p>상품설명</p>
-          <div class="description-box" style="margin-bottom: 30px">
-            <p><strong>{{ product.description }}</strong></p>
+        </div>
+        <p style="font-size: large"><strong>상품설명</strong></p>
+        <div class="description-box" style="margin-bottom: 30px">
+          <p><strong>{{ product.description }}</strong></p>
+        </div>
+        <p style="font-weight: bold">판매자 후기 ({{ sellerReviews.length }})</p>
+        <div v-for="(sellerReview, index) in sellerReviews.slice(0, showAllReviews ? sellerReviews.length : 5)"
+             :key="index" class="review-container">
+          <div class="reviewer-name">{{ maskReviewerName(sellerReview.reviewerName) }}</div>
+          <div class="review-item">
+            <p class="review-title">제목: {{ sellerReview.title }}</p>
+            <p class="review-rating">
+              판매자 평점:
+              <span v-for="i in 5" :key="i" class="star-icon">
+        {{ i <= sellerReview.starRate ? '⭐' : '☆' }}
+      </span>
+            </p>
+            <div class="review-content">
+              <p style="white-space: pre-line; word-break: break-all;">
+                <strong>{{ sellerReview.content }}</strong>
+              </p>
+            </div>
+          </div>
+          <div class="review-comment">
+            <p style="white-space: pre-line; word-break: break-all;">
+              <strong>↳ 판매자: {{ product.sellerName }} <br></strong>{{ sellerReview.comments.content }}
+            </p>
           </div>
         </div>
-        <b-button variant="primary" @click="addToCart" style="margin-right: 30px">장바구니</b-button>
-        <b-button variant="success" @click="openUploadPopup" style="margin-right: 30px">VR Fitting</b-button>
-        <!--        <b-button variant="info" to="#">결제</b-button>-->
-        <b-button variant="info" :to="'/product/payment/' + this.id">결제</b-button>
+
+
+        <div class="review-button" v-if="sellerReviews.length > 5">
+          <b-button class="show-all" @click="toggleShowAllReviews" variant="link">
+            {{ showAllReviews ? '숨기기' : '더 보기' }}
+          </b-button>
+        </div>
+        <div class="average-rating">
+          <p>판매자 평균 평점: {{ calculateAverageRating().toFixed(1) }} / 5.0</p>
+        </div>
+        <div class="buttons">
+          <b-button variant="primary" @click="addToCart" style="margin-right: 30px">장바구니</b-button>
+          <b-button variant="success" @click="openUploadPopup" style="margin-right: 30px">VR Fitting</b-button>
+          <!--        <b-button variant="info" to="#">결제</b-button>-->
+          <b-button variant="info" :to="'/product/payment/' + this.id">결제</b-button>
+        </div>
       </b-col>
     </b-row>
   </b-container>
@@ -159,6 +246,7 @@
 
 <script>
 import axios from "axios";
+
 
 export default {
   data() {
@@ -174,8 +262,14 @@ export default {
       },
       slide: 0,
       id: this.$route.params.id,
+      showAllReviews: false,
+
+      sellerReviews: [],
+
     };
   },
+
+
   created() {
     axios.interceptors.request.use((config) => {
       // 요청을 보내기 전에 수행할 작업
@@ -191,14 +285,35 @@ export default {
     });
     const id = this.$route.params.id;//상품의 id를 받아옴
     axios
-        .get("/product-list/" + id) //상품정보를 받아오는 api호출
+        .get("/product-detail/" + id) //상품정보를 받아오는 api호출
         .then((response) => {
           this.product = response.data;//상품정보를 받아옴
         })
         .catch((error) => {
           console.log(error);
         });
+
+
+    const productId = this.$route.params.id;
+    // axios.get("/seller-reviews/" + productId)   // 리뷰들 받아오는 api
+    //     .then((response) => {
+    //       this.sellerReviews = response.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+
+    axios.get("/seller-reviews/" + productId)
+        .then((response) => {
+          this.$set(this, 'sellerReviews', response.data.map(review => ({...review})));
+          console.log('sellerReviews:', this.sellerReviews);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
   },
+
+
   methods: {
     getImageUrl(imageName) {
       return `http://localhost:8080/product/${imageName}`;
@@ -218,10 +333,47 @@ export default {
     openUploadPopup() {
       // 업로드 팝업창 열기 로직 추가
       window.open('/product/upload/' + this.product.id, 'upload', 'width=500, height=500, left=100, top=50');
+      axios.post('/send-product-id', {
+        productId: this.product.id,
+      })
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     },
     changeSlide(index) {
       this.slide = index;
     },
+    calculateAverageRating() {
+      if (this.sellerReviews.length === 0) {
+        return 0;
+      }
+
+      const totalRating = this.sellerReviews.reduce((sum, review) => sum + review.starRate, 0);
+      return totalRating / this.sellerReviews.length;
+    },
+    toggleShowAllReviews() {
+      this.showAllReviews = !this.showAllReviews;
+    },
+    toggleShowAllContent(review) {
+      review.showAllContent = !review.showAllContent;
+    },
+    toggleShowAllCommentContent(review) {
+      review.showAllCommentContent = !review.showAllCommentContent;
+    },
+    maskReviewerName(name) {
+      const firstChar = name.charAt(0);
+      const lastChar = name.charAt(name.length - 1);
+
+      if (name.length <= 2) {
+        return firstChar + '*';
+      } else {
+        return firstChar + '*'.repeat(name.length - 2) + lastChar;
+      }
+    },
+
   },
 };
 </script>
@@ -246,7 +398,7 @@ export default {
 }
 
 .description-box {
-  border: 1px solid #ddd;
+  border: 2px solid #87CEEB;
   padding: 15px;
   margin-top: 10px;
   border-radius: 5px;
@@ -255,4 +407,90 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
+
+.product-info {
+  border: 2px solid #0936ca;
+  margin-left: 150px;
+  margin-right: 150px;
+  margin-bottom: 60px;
+}
+
+
+.star-icon {
+  font-size: 20px;
+  color: gold;
+}
+
+.review-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-top: 10px;
+  border-radius: 5px;
+  margin-left: 180px;
+  margin-right: 180px;
+}
+
+.review-item {
+  margin-bottom: 15px;
+}
+
+.review-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.review-rating {
+  font-size: 16px;
+  color: gold;
+}
+
+.review-content {
+  font-size: 16px;
+}
+
+.average-rating {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.review-container {
+  border: 5px solid #ff7c02;
+}
+
+.review-button {
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-top: 20px;
+}
+
+.review-comment {
+  border: 2px solid #F1B273EA;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.reviewer-name {
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.head1 {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.buttons {
+  margin-bottom: 30px;
+}
+
+.show-all {
+  background-color: white;
+  color: #A26D45FF;
+  border-color: white;
+}
+
 </style>

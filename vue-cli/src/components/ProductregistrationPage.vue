@@ -260,7 +260,7 @@ export default {
       formData.append('price', this.product.price);
       formData.append('description', this.product.description);
       formData.append('category', this.product.category);
-      formData.append('showSize', this.product.showSize);
+      formData.append('showSize', this.product.shoeSize);
 
       // FormData 객체를 서버에 제출
       axios.post('/product/item-upload', formData, {
