@@ -26,25 +26,25 @@ public class ReviewController {
     private final TokenValueProvider tokenValueProvider;
 
 
-    @GetMapping("seller-reviews/{productId}")
+    @GetMapping("/seller-reviews/{productId}")
     public List<ReviewDto> getReviews(@PathVariable Long productId) {
         return reviewService.getReviews(productId);
     }
 
-    @PostMapping("review-upload")
+    @PostMapping("/review-upload")
     public void reviewUpload(@RequestHeader("Authorization") String token, ReviewFormDto reviewFormDto) {
         Long buyerId = tokenValueProvider.extractUserId(token);
         reviewService.saveReview(buyerId, reviewFormDto);
     }
 
-    @PutMapping("review-update")
+    @PutMapping("/review-update")
     public void reviewUpdate(@RequestHeader("Authorization") String token, @RequestParam Long reviewId,
                              ReviewUpdateFormDto reviewUpdateFormDto) {
 //        Long userId = tokenValueProvider.extractUserId(token);
         reviewService.updateReview(reviewId, reviewUpdateFormDto);
     }
 
-    @PutMapping("review-delete")
+    @PutMapping("/review-delete")
     public void reviewDelete(@RequestHeader("Authorization") String token, @RequestParam Long reviewId) {
         reviewService.deleteReview(reviewId);
     }
