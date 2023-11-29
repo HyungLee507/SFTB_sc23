@@ -46,7 +46,7 @@ public class ItemController {
 //    public void deleteItem(@RequestHeader("Authorization") String token , @ResponseBody ItemUpdateDto){
 //
 //    }
-    @GetMapping("/product-list/{itemId}")
+    @GetMapping("/product-detail/{itemId}")
     public ItemDetailDto itemDetail(@PathVariable Long itemId) {
         return itemService.itemDetailInfo(itemId);
     }
