@@ -35,8 +35,6 @@ public class ReviewService {
 
     public List<ReviewDto> getReviews(Long itemId) {
         Long sellerId = itemRepository.findSellerIdByItemId(itemId);
-//        User seller = userRepository.findById(sellerId)
-//                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + sellerId));
         List<ReviewDto> reviews = reviewRepository.findALlReviewBySellerId(sellerId);
         for (ReviewDto reviewDto : reviews) {
             List<CommentDto> comments = commentRepository.findAllCommentsInReview(reviewDto.getReviewId());
