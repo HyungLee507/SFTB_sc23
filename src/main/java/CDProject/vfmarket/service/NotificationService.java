@@ -37,6 +37,27 @@ public class NotificationService {
                 .item(item)
                 .build();
         notificationRepository.save(notification);
+//        return notification;
+    }
+
+
+    public void generateReviewNotification(Long itemId, String message) {
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("해당 상를 찾을 수 없습니다."));
+        User user = userRepository.findById(item.getSellerId())
+                .orElseThrow(() -> new NotFoundException("해당 유저를 찾을 수 없습니다."));
+
+        String realMessage = item.getItemName() + "에 대한 " + message;
+        Notification notification = Notification.builder().
+                user(user)
+                .isRead(false)
+                .message(realMessage)
+                .item(item)
+                .build();
+        notificationRepository.save(notification);
+    }
+
+    public void generateCommentNotification(Long userId, Long commentId) {
+
     }
 
 
