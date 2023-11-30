@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     KGpay() {
-      axios.get('/product-list/' + this.item_id)
+      axios.get('/product-detail/' + this.item_id)
           .then(response => {
             console.log("sjdfkjsdlfsjl");
             let accessToken = localStorage.getItem('accessToken');
