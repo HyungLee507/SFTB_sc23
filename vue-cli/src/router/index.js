@@ -18,6 +18,7 @@ import PaymentPage from "@/components/PaymentPage.vue";
 import SoldPage from "@/components/SoldPage.vue";
 import SellingProductInformationPage from "@/components/SellingProductInformationPage.vue";
 import ReviewPage from "@/components/ReviewPage.vue";
+import UploadPage from "@/components/UploadPage.vue";
 // import ReviewManagementPage from "@/components/ReviewManagementPage.vue"
 Vue.use(Router);
 export default new Router({
