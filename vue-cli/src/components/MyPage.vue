@@ -125,11 +125,20 @@ export default {
     removeItem(index) {
       const orderId = this.ordersProducts[index].orderId;
 
+      // axios
+      //     .delete(`/delete-item?itemId=${orderId}`)   //api 맞게 수정
+      //     .then(() => {
+      //       this.ordersProducts.splice(index, 1);
+      //       alert('결제가 취소되었습니다.');
+      //     })
+      //     .catch((error) => {
+      //       console.error(error);
+      //     });
       axios
-          .delete(`/delete-item?itemId=${orderId}`)   //api 맞게 수정
+          .put(`/refundItem/${orderId}`)   //api 맞게 수정
           .then(() => {
             this.ordersProducts.splice(index, 1);
-            alert('결제가 취소되었습니다.');
+            alert("결제 취소 완료!");
           })
           .catch((error) => {
             console.error(error);
