@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("isAuthenticated()")
 public class UploadController {
 
     private final UploadService uploadService;
-    
+
     @PostMapping("product/item-upload")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> register(@RequestHeader("Authorization") String token,
                                       @ModelAttribute ItemFormDto itemFormDto)
             throws IOException, NoSuchFieldException {
