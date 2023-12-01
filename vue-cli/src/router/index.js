@@ -19,6 +19,7 @@ import SoldPage from "@/components/SoldPage.vue";
 import SellingProductInformationPage from "@/components/SellingProductInformationPage.vue";
 import ReviewPage from "@/components/ReviewPage.vue";
 import UploadPage from "@/components/UploadPage.vue";
+import TradingPage from "@/components/TradingPage.vue";
 // import ReviewManagementPage from "@/components/ReviewManagementPage.vue"
 Vue.use(Router);
 export default new Router({
@@ -82,6 +83,10 @@ export default new Router({
             component: SellingPage,
         },
         {
+            path: '/user/mypage/saleshistory/trading',
+            component: TradingPage,
+        },
+        {
             path: '/user/mypage/saleshistory/sold',
             component: SoldPage,
         },
@@ -103,9 +108,10 @@ export default new Router({
             component: ReviewPage,
             name: 'reviewPage',
         },
-        // {
-        //     path: '/user/mypage/reviewmanagement',
-        //     component: ReviewManagementPage
-        // }
+
+// {
+//     path: '/user/mypage/reviewmanagement',
+//     component: ReviewManagementPage
+// }
     ]
 });
