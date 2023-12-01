@@ -16,10 +16,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByBuyer_Id(Long buyerId);
 
-    @Query("SELECT new CDProject.vfmarket.domain.dto.OrderDTO.OrderViewDto(i.itemName, o.representativeImage, i.price,i.id,i.shoeSize,o.lastModifiedDate) FROM Order o JOIN o.item i WHERE o.buyer.id = :buyerId AND o.status = CDProject.vfmarket.domain.entity.OrderStatus.COMPLETE_PAYMENT")
+    @Query("SELECT new CDProject.vfmarket.domain.dto.OrderDTO.OrderViewDto(o.id,i.itemName, o.representativeImage, i.price,i.id,i.shoeSize,o.lastModifiedDate) FROM Order o JOIN o.item i WHERE o.buyer.id = :buyerId AND o.status = CDProject.vfmarket.domain.entity.OrderStatus.COMPLETE_PAYMENT")
     List<OrderViewDto> orderViewData(@Param("buyerId") Long buyerId);
 
-    @Query("SELECT new CDProject.vfmarket.domain.dto.OrderDTO.SoldItemViewDto(i.itemName, o.representativeImage, i.price,o.id,i.shoeSize,o.lastModifiedDate) FROM Order o JOIN o.item i WHERE o.sellerId = :sellerId AND o.status = CDProject.vfmarket.domain.entity.OrderStatus.COMPLETE_PAYMENT")
+    @Query("SELECT new CDProject.vfmarket.domain.dto.OrderDTO.SoldItemViewDto(o.id,i.itemName, o.representativeImage, i.price,i.shoeSize,o.lastModifiedDate) FROM Order o JOIN o.item i WHERE o.sellerId = :sellerId AND o.status = CDProject.vfmarket.domain.entity.OrderStatus.DEAL_DONE")
     List<SoldItemViewDto> soldViewData(@Param("sellerId") Long sellerId);
+
+    @Query("SELECT new CDProject.vfmarket.domain.dto.OrderDTO.OrderViewDto(o.id,i.itemName, o.representativeImage, i.price,i.id,i.shoeSize,o.lastModifiedDate) FROM Order o JOIN o.item i WHERE o.sellerId = :sellerId AND o.status = CDProject.vfmarket.domain.entity.OrderStatus.TRANSACTION_IN")
+    List<OrderViewDto> progressOrderData(@Param("sellerId") Long sellerId);
 
 }
