@@ -28,7 +28,7 @@ public class OrderDetail {
     @OneToOne
     @JoinColumn(name = "order_id")
     private Order order;
-    
+
     private String apply_num;
 
     private String pg_provider;
@@ -46,5 +46,7 @@ public class OrderDetail {
     private String card_name;
 
     private String card_number;
+
+    private String billingNumber;
 
 }
