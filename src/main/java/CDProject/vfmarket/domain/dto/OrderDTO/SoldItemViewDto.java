@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SoldItemViewDto {
 
+    private Long orderId;
+
     private String name;
 
     private String image;
 
     private Long price;
-
-    private Long id;
 
     private Integer shoeSize;
 
