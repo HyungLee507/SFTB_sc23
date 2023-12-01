@@ -1,16 +1,17 @@
 package CDProject.vfmarket.controller;
 
 
+import static CDProject.vfmarket.global.AuthenticationUserId.getAuthenticatedUser;
+
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewDto;
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewFormDto;
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewUpdateFormDto;
-import CDProject.vfmarket.global.jwt.TokenValueProvider;
-import CDProject.vfmarket.repository.ItemRepository;
 import CDProject.vfmarket.service.NotificationService;
 import CDProject.vfmarket.service.ReviewService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,11 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 public class ReviewController {
-    private final ItemRepository itemRepository;
 
     private final ReviewService reviewService;
-    private final TokenValueProvider tokenValueProvider;
     private final NotificationService notificationService;
 
 
@@ -39,8 +39,7 @@ public class ReviewController {
     @PostMapping("/review-upload")
     public void reviewUpload(@RequestHeader("Authorization") String token, @RequestBody ReviewFormDto reviewFormDto) {
         try {
-            log.info("sdfsdf");
-            Long buyerId = tokenValueProvider.extractUserId(token);
+            Long buyerId = getAuthenticatedUser();
             reviewService.saveReview(buyerId, reviewFormDto);
             notificationService.generateReviewNotification(reviewFormDto.getItemId(), "상품 리뷰가 작성되었습니다.");
             log.info("save success");
@@ -50,9 +49,8 @@ public class ReviewController {
     }
 
     @PutMapping("/review-update")
-    public void reviewUpdate(@RequestHeader("Authorization") String token, @RequestParam Long reviewId,
+    public void reviewUpdate(@RequestParam Long reviewId,
                              ReviewUpdateFormDto reviewUpdateFormDto) {
-//        Long userId = tokenValueProvider.extractUserId(token);
         reviewService.updateReview(reviewId, reviewUpdateFormDto);
     }
 
