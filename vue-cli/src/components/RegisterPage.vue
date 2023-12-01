@@ -175,9 +175,16 @@
       <label for="text-name">이름</label>
       <b-form-input v-model="form.name" type="text" id="text-name" aria-describedby="name-help-block"
                     required></b-form-input>
-      <label for="text-footsize">신발 사이즈</label>
-      <b-form-input v-model="form.footSize" type="number" id="text-footSize" aria-describedby="footsize-help-block"
-                    required></b-form-input>
+      <b-form-group id="product-shoeSize" label="선호 사이즈" >
+            <b-form-radio-group v-model="form.footSize">
+                <b-form-radio value="85">85</b-form-radio>
+                <b-form-radio value="90">90</b-form-radio>
+                <b-form-radio value="95">95</b-form-radio>
+                <b-form-radio value="100">100</b-form-radio>
+                <b-form-radio value="105">105</b-form-radio>
+                <b-form-radio value="110">110</b-form-radio>
+            </b-form-radio-group>
+          </b-form-group>
 
 
       <b-button type="submit" v-show="isVisable" variant="primary">회원가입</b-button>
