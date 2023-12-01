@@ -1,5 +1,6 @@
 package CDProject.vfmarket.global.jwt.filter;
 
+import CDProject.vfmarket.domain.entity.CustomUserDetails;
 import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.global.jwt.Service.JwtService;
 import CDProject.vfmarket.global.jwt.util.PasswordUtil;
@@ -16,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @RequiredArgsConstructor
@@ -122,11 +122,12 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             password = PasswordUtil.generateRandomPassword();
         }
         log.info("권한 설정 완료");
-        UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
-                .username(myUser.getEmail())
-                .password(password)
-                .roles(myUser.getRole().name())
-                .build();
+//        UserDetails userDetailsUser = org.springframework.security.core.userdetails.User.builder()
+//                .username(myUser.getEmail())
+//                .password(password)
+//                .roles(myUser.getRole().name())
+//                .build();
+        CustomUserDetails userDetailsUser = new CustomUserDetails(myUser.getId());
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(userDetailsUser, null,
