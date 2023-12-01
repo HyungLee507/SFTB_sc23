@@ -1,5 +1,6 @@
 package CDProject.vfmarket.service;
 
+import CDProject.vfmarket.domain.dto.StyleShotDto;
 import CDProject.vfmarket.domain.entity.Item;
 import CDProject.vfmarket.domain.entity.StyleShot;
 import CDProject.vfmarket.domain.entity.User;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,7 +34,7 @@ public class VFService {
     private final String styleshotFolder = "C:/sw-capstone/styleshots";
 
 
-    public void saveStyleShot(Long prodId, Long userId, byte[] resultFile) throws NoSuchFieldException {
+    public void saveStyleShot(Long prodId, Long userId, byte[] resultFile) {
 
         String uuid = UUID.randomUUID().toString();
         String styleshotName = uuid + "_" + prodId.toString() + "_" + userId.toString() + ".png";
@@ -58,5 +60,13 @@ public class VFService {
                 .savedStyleShot(styleshotName)
                 .build();
         styleShotRepository.save(styleShot);
+    }
+
+    public List<StyleShot> getStyleShots(Long userId){
+        return styleShotRepository.findByUser_Id(userId);
+    }
+
+    public void deleteStyleShots(Long styleShotId){
+        styleShotRepository.deleteById(styleShotId);
     }
 }

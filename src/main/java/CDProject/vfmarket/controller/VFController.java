@@ -1,6 +1,9 @@
 package CDProject.vfmarket.controller;
 
+import CDProject.vfmarket.domain.dto.StyleShotDto;
 import CDProject.vfmarket.domain.dto.VFFormDTO;
+import CDProject.vfmarket.domain.entity.Item;
+import CDProject.vfmarket.domain.entity.StyleShot;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.service.ItemService;
 import CDProject.vfmarket.service.VFService;
@@ -8,6 +11,8 @@ import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.*;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -19,7 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Objects;
+import java.net.MalformedURLException;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -119,9 +125,9 @@ public class VFController {
     }
 
     @PostMapping("/vf/savestyle")
-    public ResponseEntity saveStyle(@RequestHeader("Authorization") String token,
+    public ResponseEntity saveStyleShot(@RequestHeader("Authorization") String token,
                                     @RequestParam("dirname") String dirname,
-                                    @RequestParam("prodId") Long prodId) throws NoSuchFieldException {
+                                    @RequestParam("prodId") Long prodId) {
         log.info("dirname: {}", dirname);
         log.info("prodId: {}", prodId);
         if (token == null) {
@@ -169,9 +175,43 @@ public class VFController {
     }
 
     @GetMapping("/vf/viewstyle")
-    public ResponseEntity viewStyles(){
+    public List<StyleShotDto> viewStyleShots(@RequestHeader("Authorization") String token){
+        Long userId = null;
+        try {
+            log.info("token value is {}", token);
 
+            String trim = token.replace("Bearer ", "");
+            log.info("trim value is {}", trim);
+            Claims claims = tokenValueProvider.extractClaims(trim);
+            log.info("claims is {}", claims);
+            userId = Long.parseLong(claims.get("userId").toString());
+        } catch (Exception e) {
+            log.info("token error is {}", e.getMessage());
+        }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        Map<Long, StyleShotDto> styleShotsMap = new HashMap<>();
+        List<StyleShot> styleShots = vfService.getStyleShots(userId);
+        for(StyleShot styleShot : styleShots){
+            Long styleShotId = styleShot.getId();
+            String styleShotName = styleShot.getSavedStyleShot();
+            Item item = styleShot.getItem();
+            StyleShotDto styleShotDto = new StyleShotDto(styleShotId, styleShotName, item.getId(), item.getItemName());
+            styleShotsMap.put(styleShotDto.getStyleShotId(), styleShotDto);
+        }
+
+        return new ArrayList<>(styleShotsMap.values());
+    }
+
+    @DeleteMapping("/vf/deletestyle")
+    public ResponseEntity deleteStyleShot(@RequestParam("styleShotId") Long styleShotId){
+        vfService.deleteStyleShots(styleShotId);
+        return new ResponseEntity<>("삭제가 완료되었습니다.", HttpStatus.OK);
+    }
+
+    @GetMapping("/vf/{filename}")
+    public Resource getImage(@PathVariable String filename) throws MalformedURLException {
+        log.info("file name is {}", filename);
+        return new UrlResource("file:"
+                + "C:/sw-capstone/styleshots/" + filename);
     }
 }
