@@ -5,13 +5,17 @@ import static CDProject.vfmarket.domain.entity.ItemStatus.FOR_SALE;
 import CDProject.vfmarket.domain.dto.itemDTO.ItemFormDto;
 import CDProject.vfmarket.domain.entity.Image;
 import CDProject.vfmarket.domain.entity.Item;
+import CDProject.vfmarket.domain.entity.StyleShot;
 import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.repository.ItemRepository;
+import CDProject.vfmarket.repository.StyleShotRepository;
 import CDProject.vfmarket.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,10 +35,13 @@ public class UploadService {
 
     private final UserRepository userRepository;
 
+    private final StyleShotRepository styleShotRepository;
+
     private final TokenValueProvider tokenValueProvider;
 
     // 저장할 파일 위치 생성
     private final String uploadFolder = "C:/sw-capstone/images";
+    private final String styleshotFolder = "C:/sw-capstone/styleshots";
 
     public void saveItem(String token, ItemFormDto itemFormDto) throws NoSuchFieldException {
 
@@ -87,6 +94,34 @@ public class UploadService {
             log.info("token error is {}", e.getMessage());
         }
 
+    }
+
+    public void saveStyleShot(Long prodId, Long userId, byte[] resultFile) throws NoSuchFieldException {
+
+        String uuid = UUID.randomUUID().toString();
+        String styleshotName = uuid + "_" + prodId.toString() + "_" + userId.toString() + ".png";
+        // 받은 파일 데이터를 파일로 저장
+        File receivedFile = new File(styleshotFolder, styleshotName);
+        try (FileOutputStream outputStream = new FileOutputStream(receivedFile)) {
+            outputStream.write(resultFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Optional<User> buyer = userRepository.findById(userId);
+        Optional<Item> product = itemRepository.findById(prodId);
+        User user = null;
+        Item item = null;
+        if (buyer.isPresent())
+            user = buyer.get();
+        if (product.isPresent())
+            item = product.get();
+        StyleShot styleShot = StyleShot.builder()
+                .user(user)
+                .item(item)
+                .savedStyleShot(styleshotName)
+                .build();
+        styleShotRepository.save(styleShot);
     }
 
 }
