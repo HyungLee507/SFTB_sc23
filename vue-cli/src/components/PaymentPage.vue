@@ -6,12 +6,18 @@
     <b-form-group label="전화번호">
       <b-form-input v-model="buyer_tel"></b-form-input>
     </b-form-group>
+        <b-form-group label="우편번호">
+        <b-form-input v-model="buyer_postcode"></b-form-input>
+        <input type="button" @click="execDaumPostcode()" value="우편번호 찾기"><br>
+
+      </b-form-group>
     <b-form-group label="주소">
       <b-form-input v-model="buyer_addr"></b-form-input>
     </b-form-group>
-    <b-form-group label="우편번호">
-      <b-form-input v-model="buyer_postcode"></b-form-input>
+    <b-form-group label="상세주소">
+      <b-form-input v-model="buyer_addr_detail"></b-form-input>
     </b-form-group>
+    
     <b-button @click="KGpay">결제</b-button>
   </div>
 </template>
@@ -31,6 +37,7 @@ export default {
       receiver_name: '', // Declare the receiver_name property
       buyer_tel: '',
       buyer_addr: '',
+      buyer_addr_detail: '',
       buyer_postcode: '',
       buyer_email: '',
       buyer_name: '',
@@ -58,6 +65,46 @@ export default {
     });
   },
   methods: {
+    execDaumPostcode() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          if (this.buyer_addr_detail !== "") {
+            this.buyer_addr_detail = "";
+          }
+          if (data.userSelectedType === "R") {
+            // 사용자가 도로명 주소를 선택했을 경우
+            this.buyer_addr = data.roadAddress;
+          } else {
+            // 사용자가 지번 주소를 선택했을 경우(J)
+            this.buyer_addr = data.jibunAddress;
+          }
+ 
+          // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+          if (data.userSelectedType === "R") {
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+              this.buyer_addr_detail += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if (data.buildingName !== "" && data.apartment === "Y") {
+              this.buyer_addr_detail +=
+                this.buyer_addr_detail !== ""
+                  ? `, ${data.buildingName}`
+                  : data.buildingName;
+            }
+            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if (this.buyer_addr_detail !== "") {
+              this.buyer_addr_detail = `(${this.buyer_addr_detail})`;
+            }
+          } else {
+            this.buyer_addr_detail = "";
+          }
+          // 우편번호를 입력한다.
+          this.buyer_postcode = data.zonecode;
+        },
+      }).open();
+    },
     KGpay() {
       axios.get('/product-detail/' + this.item_id)
           .then(response => {
@@ -88,7 +135,7 @@ export default {
               buyer_email: this.buyer_email,
               buyer_name: this.buyer_name,
               buyer_tel: this.buyer_tel,
-              buyer_addr: this.buyer_addr,
+              buyer_addr: this.buyer_addr + this.buyer_addr_detail,
               buyer_postcode: this.buyer_postcode,
             }, (response) => {
               if (response.success) {
