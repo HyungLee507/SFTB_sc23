@@ -91,7 +91,7 @@ export default {
       formData.append('dirname', localStorage.getItem("dirname"));
       formData.append('prodId', this.item_id);
 
-      axios.post('/vf/saveStyle', formData)
+      axios.post('/vf/savestyle', formData)
           .then(response => {
             if(response.status == 200){
               alert('이미지가 저장되었습니다!');

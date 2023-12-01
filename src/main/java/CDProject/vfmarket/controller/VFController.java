@@ -3,7 +3,7 @@ package CDProject.vfmarket.controller;
 import CDProject.vfmarket.domain.dto.VFFormDTO;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.service.ItemService;
-import CDProject.vfmarket.service.UploadService;
+import CDProject.vfmarket.service.VFService;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ import java.util.Objects;
 public class VFController {
 
     private final ItemService itemService;
-    private final UploadService uploadService;
+    private final VFService vfService;
     private final TokenValueProvider tokenValueProvider;
     private final String flaskHost = "https://762b-35-247-34-254.ngrok-free.app/";
     @PostMapping("/vf/productimg")
@@ -118,10 +118,10 @@ public class VFController {
         return new ResponseEntity<>(data, response.getStatusCode());
     }
 
-    @PostMapping("/vf/saveStyle")
+    @PostMapping("/vf/savestyle")
     public ResponseEntity saveStyle(@RequestHeader("Authorization") String token,
                                     @RequestParam("dirname") String dirname,
-                                    @RequestParam("prodId") Long prodId) throws NoSuchFieldException, IOException {
+                                    @RequestParam("prodId") Long prodId) throws NoSuchFieldException {
         log.info("dirname: {}", dirname);
         log.info("prodId: {}", prodId);
         if (token == null) {
@@ -163,8 +163,15 @@ public class VFController {
         // 응답 데이터 받기
         byte[] resultByte = response.getBody();
 
-        uploadService.saveStyleShot(prodId, userId, resultByte);
+        vfService.saveStyleShot(prodId, userId, resultByte);
 
         return new ResponseEntity<>("이미지 저장에 성공했습니다.", HttpStatus.OK);
+    }
+
+    @GetMapping("/vf/viewstyle")
+    public ResponseEntity viewStyles(){
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
