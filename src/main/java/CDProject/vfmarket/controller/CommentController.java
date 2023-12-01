@@ -23,6 +23,8 @@ public class CommentController {
     private final CommentService commentService;
     private final TokenValueProvider tokenValueProvider;
 
+
+    // 댓글 관련 프론트와 연결
     @PostMapping("/comment-upload")
     public void commentUpload(@RequestHeader("Authorization") String token, CommentFormDto commentFormDto) {
         Long userId = tokenValueProvider.extractUserId(token);
