@@ -4,7 +4,7 @@
       <br>
       <b-row>
         <b-col md="12">
-          <h1>판매내역 </h1>
+          <h1>판매내역</h1>
           <button @click="goToSellingStatus('product-register')" class="status-button product-register-button">상품등록
           </button>
           <br><br>
@@ -16,8 +16,8 @@
         </b-col>
         <b-col md="9">
           <button @click="goToSellingStatus('selling')" class="status-button">판매중인 상품</button>
+          <button @click="goToSellingStatus('trading')" class="status-button">거래중인 상품</button>
           <button @click="goToSellingStatus('sold')" class="status-button">판매완료 상품</button>
-
         </b-col>
       </b-row>
     </b-container>
@@ -39,7 +39,10 @@ export default {
         this.$router.push('/user/mypage/saleshistory/sold');
       } else if (status === 'product-register') {
         this.$router.push('/product/registration');
+      } else if (status === 'trading') {
+        this.$router.push('/user/mypage/saleshistory/trading');
       }
+
     }
   }
 };
