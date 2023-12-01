@@ -101,7 +101,6 @@ public class ItemService {
 
     public List<SalesItemDto> getSalesItems(Long sellerId) {
         List<Item> items = itemRepository.findAllBySellerId(sellerId);
-//        log.info("allSalesItems is {}", allSalesItems);
         return items.stream()
                 .map(item -> {
                     String firstImageFileName =
