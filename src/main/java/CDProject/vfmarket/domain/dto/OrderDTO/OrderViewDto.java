@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderViewDto {
 
+    private Long orderId;
+
     //상품 이름
     private String name;
 
@@ -22,6 +24,5 @@ public class OrderViewDto {
     private Integer shoeSize;
 
     private LocalDateTime createdDate;
-
 
 }
