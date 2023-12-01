@@ -2,32 +2,17 @@
 <template>
     <div>
         <input type="file" @change="handleFileUpload" />
-        <img :src="imageUrl" alt="Uploaded Image" v-if="imageUrl" style="max-width: 100%; max-height: 100%;" />
+                <p style="font-weight: bold">대표사진의 예시</p>
+            <img class="representative" src="../assets/전신 대표사진.jpg"/>
+            <p >다음과 같이 전신사진을 등록해주세요. (이미지의 크기는 768x1024 혹은 3:4 비율을 권장합니다.) </p>
+            <p >네트워크 환경에 따라 사진 합성에 최대 2분정도 소요될 수 있습니다.</p>
+        <img class="userPreview" :src="imageUrl" alt="Uploaded Image" v-if="imageUrl" style="max-width: 100%; max-height: 100%;" />
         <button class="upload-button" @click="composeImages">이미지 합성</button>
-        <img :src="composedImageUrl" alt="Composed Image" v-if="composedImageUrl" style="max-width: 100%; max-height: 100%;" />
+        <img class="composedPreview"  :src="composedImageUrl" alt="Composed Image" v-if="composedImageUrl" style="max-width: 100%; max-height: 100%;" />
         <button class="save-button" @click="saveImage">이미지 저장</button>
     </div>
 </template>
 
-<style scoped>
-.upload-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.save-button {
-    background-color: #008CBA;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-</style>
 
 <script>
 import axios from 'axios';
@@ -85,3 +70,45 @@ export default {
     }
 };
 </script>
+<style scoped>
+.upload-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.save-button {
+    background-color: #008CBA;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.userPreview {
+width: 250px;
+height: 250px;
+border-radius: 0;
+margin-top: 30px;
+font-weight: bold;
+}
+
+.composedPreview {
+width: 250px;
+height: 250px;
+border-radius: 0;
+margin-top: 30px;
+font-weight: bold;
+}
+
+.representative{
+width: 250px;
+height: 250px;
+border-radius: 0;
+margin-top: 30px;
+font-weight: bold;
+}
+</style>
