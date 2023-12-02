@@ -26,16 +26,16 @@
       <label for="text-name">이름</label>
       <b-form-input v-model="form.name" type="text" id="text-name" aria-describedby="name-help-block"
                     required></b-form-input>
-      <b-form-group id="product-shoeSize" label="선호 사이즈" >
-            <b-form-radio-group v-model="form.footSize">
-                <b-form-radio value="85">85</b-form-radio>
-                <b-form-radio value="90">90</b-form-radio>
-                <b-form-radio value="95">95</b-form-radio>
-                <b-form-radio value="100">100</b-form-radio>
-                <b-form-radio value="105">105</b-form-radio>
-                <b-form-radio value="110">110</b-form-radio>
-            </b-form-radio-group>
-          </b-form-group>
+      <b-form-group id="product-shoeSize" label="선호 사이즈">
+        <b-form-radio-group v-model="form.footSize">
+          <b-form-radio value="85">85</b-form-radio>
+          <b-form-radio value="90">90</b-form-radio>
+          <b-form-radio value="95">95</b-form-radio>
+          <b-form-radio value="100">100</b-form-radio>
+          <b-form-radio value="105">105</b-form-radio>
+          <b-form-radio value="110">110</b-form-radio>
+        </b-form-radio-group>
+      </b-form-group>
 
 
       <b-button type="submit" v-show="isVisable" variant="primary">회원가입</b-button>
@@ -70,6 +70,10 @@ export default {
   },
   methods: {
 
+    validatePassword(password) {
+      const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{10,}$/;
+      return regex.test(password);
+    },
 
     sendVerificationCode() {
       if (this.isVisable) {
@@ -138,6 +142,10 @@ export default {
 
       if (!this.form.email || !this.form.password) {
         alert('모든 항목을 입력하세요.');
+        return;
+      }
+      if (!this.validatePassword(this.form.password)) {
+        alert('비밀번호는 영문, 숫자, 특수문자 중 2종류 이상을 조합하여 최소 10자리 이상 또는 3종류 이상을 조합하여 최소 8자리 이상의 길이로 구성해야 합니다.');
         return;
       }
 
