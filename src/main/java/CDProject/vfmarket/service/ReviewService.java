@@ -33,6 +33,9 @@ public class ReviewService {
 
     private final ItemRepository itemRepository;
 
+    private final NotificationService notificationService;
+
+
     public List<ReviewDto> getReviews(Long itemId) {
         Long sellerId = itemRepository.findSellerIdByItemId(itemId);
         List<ReviewDto> reviews = reviewRepository.findALlReviewBySellerId(sellerId);
@@ -60,47 +63,11 @@ public class ReviewService {
                 .content(reviewFormDto.getContent())
                 .build();
         reviewRepository.save(uploadReview);
+        findItem.setReviewSubmitted(true);
+        itemRepository.save(findItem);
 
-//        List<String> imageList = new ArrayList<>();
-//        for (MultipartFile uploadFile : reviewFormDto.getImages()) {
-//            try {
-//                String uploadFileName = uploadFile.getOriginalFilename();
-//                String uuid = UUID.randomUUID().toString();
-//                uploadFileName = uuid + "_" + uploadFileName;
-//                String uploadFolder = "/Users/leedonghyun/Desktop/images";
-//                File saveFile = new File(uploadFolder, uploadFileName);
-//                log.info("uploadFileName is {}", uploadFileName);
-//                uploadFile.transferTo(saveFile);
-//                imageList.add(uploadFileName);
-//                log.info("imageList is {}", imageList);
-//            } catch (Exception e) {
-//                log.info("file error is {}", e.getMessage());
-//                throw new NoSuchFieldException("해당 파일을 찾을 수 없습니다.");
-//            }
-//        }
-//        log.info("imageList size is {}", imageList.size());
-//        try {
-//            log.info("imageList size is {}", imageList.size());
-//            Optional<User> seller = userRepository.findById(userId);
-//            String sellerName = seller.get().getName();
+        notificationService.generateReviewNotification(reviewFormDto.getItemId(), "상품 리뷰가 작성되었습니다.");
 
-//            Review uploadReview = Review.builder()
-//                    .user(seller.get())
-//                    .item(findItem.get())
-//                    .starRate(reviewFormDto.getStarRate())
-//                    .writeStatus(WriteStatus.REVIEW_AVAILABLE)
-//                    .reviewName(reviewFormDto.getName())
-//                    .content(reviewFormDto.getDescription())
-//                    .build();
-//            for (String fileName : imageList) {
-//                List<ReviewImage> images = uploadReview.getImages();
-//                images.add(new ReviewImage(fileName, uploadReview));
-//            }
-//            log.info("item data is {}", uploadReview.getItem());
-//            reviewRepository.save(uploadReview);
-//        } catch (Exception e) {
-//            log.info("token error is {}", e.getMessage());
-//        }
     }
 
     public void deleteReview(Long reviewId) {

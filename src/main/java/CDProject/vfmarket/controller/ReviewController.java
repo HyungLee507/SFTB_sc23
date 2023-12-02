@@ -6,7 +6,6 @@ import static CDProject.vfmarket.global.AuthenticationUserId.getAuthenticatedUse
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewDto;
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewFormDto;
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewUpdateFormDto;
-import CDProject.vfmarket.service.NotificationService;
 import CDProject.vfmarket.service.ReviewService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
 
     private final ReviewService reviewService;
-    private final NotificationService notificationService;
+//    private final NotificationService notificationService;
 
 
     @GetMapping("/seller-reviews/{productId}")
@@ -37,15 +35,11 @@ public class ReviewController {
     }
 
     @PostMapping("/review-upload")
-    public void reviewUpload(@RequestHeader("Authorization") String token, @RequestBody ReviewFormDto reviewFormDto) {
-        try {
-            Long buyerId = getAuthenticatedUser();
-            reviewService.saveReview(buyerId, reviewFormDto);
-            notificationService.generateReviewNotification(reviewFormDto.getItemId(), "상품 리뷰가 작성되었습니다.");
-            log.info("save success");
-        } catch (RuntimeException e) {
-            log.info("Review and Notification error ", e);
-        }
+    public void reviewUpload(@RequestBody ReviewFormDto reviewFormDto) {
+        Long buyerId = getAuthenticatedUser();
+        reviewService.saveReview(buyerId, reviewFormDto);
+//        notificationService.generateReviewNotification(reviewFormDto.getItemId(), "상품 리뷰가 작성되었습니다.");
+        log.info("review save success");
     }
 
     @PutMapping("/review-update")
@@ -55,7 +49,7 @@ public class ReviewController {
     }
 
     @PutMapping("review-delete")
-    public void reviewDelete(@RequestHeader("Authorization") String token, @RequestParam Long reviewId) {
+    public void reviewDelete(@RequestParam Long reviewId) {
         reviewService.deleteReview(reviewId);
     }
 }
