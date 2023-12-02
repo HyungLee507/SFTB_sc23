@@ -20,6 +20,7 @@ import SellingProductInformationPage from "@/components/SellingProductInformatio
 import ReviewPage from "@/components/ReviewPage.vue";
 import UploadPage from "@/components/UploadPage.vue";
 import TradingPage from "@/components/TradingPage.vue";
+import buyerTradingPage from "@/components/buyerTradingPage"
 // import ReviewManagementPage from "@/components/ReviewManagementPage.vue"
 Vue.use(Router);
 export default new Router({
@@ -61,6 +62,10 @@ export default new Router({
         {
             path: '/user/mypage',
             component: MyPage,
+        },
+        {
+            path: '/user/mypage/buyertrading',
+            component: buyerTradingPage,
         },
         {
             path: '/user/mypage/profile',
@@ -108,7 +113,6 @@ export default new Router({
             component: ReviewPage,
             name: 'reviewPage',
         },
-
 // {
 //     path: '/user/mypage/reviewmanagement',
 //     component: ReviewManagementPage
