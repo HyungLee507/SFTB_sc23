@@ -133,14 +133,12 @@ export default {
 
 
     axios
-        .get("/product-detail/" + id, {
-        })
+        .get("/product-detail/" + id, {})
         .then((response) => {
           this.product = response.data;
           if (this.product.status !== "FOR_SALE") {
-          alert("존재하지 않는 상품입니다.");
-          this.$router.push("/");
-        }
+            alert("존재하지 않는 상품입니다.");
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -184,7 +182,7 @@ export default {
             localStorage.setItem("clothsrc", data.clothsrc);
             localStorage.setItem("hostUrl", data.hostUrl);
             // 업로드 팝업창 열기 로직 추가
-            window.open('/product/upload/'+ this.product.id, 'upload', 'width=500, height=500, left=100, top=50');
+            window.open('/product/upload/' + this.product.id, 'upload', 'width=500, height=500, left=100, top=50');
           })
           .catch((error) => {
             console.log(error);
