@@ -33,7 +33,7 @@ public class UploadService {
     private final TokenValueProvider tokenValueProvider;
 
     // 저장할 파일 위치 생성
-    private final String uploadFolder = "/Users/leedonghyun/Desktop/images";
+    private final String uploadFolder = "C:/sw-capstone/images";
 
     public void saveItem(String token, ItemFormDto itemFormDto) throws NoSuchFieldException {
 

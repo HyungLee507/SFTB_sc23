@@ -19,12 +19,28 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      imageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png',// 하드코딩된 이미지 URL
-      composedImageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png', // 하드코딩된 합성 이미지 URL
+      // imageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png',// 하드코딩된 이미지 URL
+      // composedImageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png', // 하드코딩된 합성 이미지 URL
+      imageUrl: '',// 하드코딩된 이미지 URL
+      composedImageUrl: '', // 하드코딩된 합성 이미지 URL
       item_id: this.$route.params.id,
       file: null, // 추가된 file 데이터
 
     };
+  },
+  created() {
+    axios.interceptors.request.use((config) => {
+      // 요청을 보내기 전에 수행할 작업
+      const token = localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰을 가져옵니다.
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`; // 토큰이 있으면 헤더에 추가합니다.
+      }
+      console.log(config.headers.Authorization);
+      return config;
+    }, function (error) {
+      // 요청 에러 처리
+      return Promise.reject(error);
+    });
   },
   methods: {
     handleFileUpload(event) {
@@ -40,12 +56,17 @@ export default {
     composeImages() {
       const formData = new FormData();
       formData.append('image', this.file);
-      formData.append('item_id', this.item_id);
-
-      axios.post('/api/compose', formData)
+      formData.append('dirname', localStorage.getItem("dirname"));
+      axios.post("/vf/humanimg", formData)
           .then(response => {
-            this.composedImageUrl = response.data.composedImageUrl;
-            alert('이미지가 합성되었습니다!');
+            console.log("실행 시작")
+            if(response.status == 200){
+              console.log("접속 성공")
+              this.composedImageUrl = response.data.resultSrc;
+              alert('이미지가 합성되었습니다!');
+            } else if(response.status == 204){
+              alert('로그인을 해야 가상피팅을 진행할 수 있습니다.');
+            }
           })
           .catch(error => {
             console.error(error);
@@ -54,13 +75,16 @@ export default {
     },
     saveImage() {
       const formData = new FormData();
-      formData.append('image', this.composedImageUrl);
+      formData.append('dirname', localStorage.getItem("dirname"));
+      formData.append('prodId', this.item_id);
 
-      axios.post('/api/save', formData)
+      axios.post('/vf/savestyle', formData)
           .then(response => {
-            console.log(response.data);
-            console.log('Image saved successfully!');
-            alert('이미지가 저장되었습니다!');
+            if(response.status == 200){
+              alert('이미지가 저장되었습니다!');
+            } else if(response.status == 204){
+              alert('로그인을 해야 가상피팅 결과를 저장할 수 있습니다.');
+            }
           })
           .catch(error => {
             console.error(error);
