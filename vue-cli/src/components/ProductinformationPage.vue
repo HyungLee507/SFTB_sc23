@@ -96,7 +96,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      product: {//상품정보를 저장할 객체
+      product: {
         images: [],
         name: "",
         price: 0,
@@ -104,6 +104,7 @@ export default {
         description: "",
         category: '',
         shoeSize: 0,
+        status: '',
       },
       slide: 0,
       id: this.$route.params.id,
@@ -117,30 +118,29 @@ export default {
 
   created() {
     axios.interceptors.request.use((config) => {
-      // 요청을 보내기 전에 수행할 작업
-      const accessToken = localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰을 가져옵니다.
-      // const refreshToken = localStorage.getItem('refreshToken'); // 로컬 스토리지에서 토큰을 가져옵니다.
+
+      const accessToken = localStorage.getItem('accessToken');
       if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`; // 토큰이 있으면 헤더에 추가합니다.
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
 
-      // console.log(config.headers.Authorization);
+
       return config;
     }, function (error) {
-      // 요청 에러 처리
       return Promise.reject(error);
     });
-    const id = this.$route.params.id;//상품의 id를 받아옴
+    const id = this.$route.params.id;
 
-    // const refreshToken = localStorage.getItem('refreshToken'); // 로컬 스토리지에서 토큰을 가져옵니다
+
     axios
         .get("/product-detail/" + id, {
-          // headers: {
-          //   'Authorization-refresh': `Bearer ${refreshToken}`
-          // }
-        }) //상품정보를 받아오는 api호출
+        })
         .then((response) => {
-          this.product = response.data;//상품정보를 받아옴
+          this.product = response.data;
+          if (this.product.status !== "FOR_SALE") {
+          alert("존재하지 않는 상품입니다.");
+          this.$router.push("/");
+        }
         })
         .catch((error) => {
           console.log(error);
@@ -148,18 +148,10 @@ export default {
 
 
     const productId = this.$route.params.id;
-    // axios.get("/seller-reviews/" + productId)   // 리뷰들 받아오는 api
-    //     .then((response) => {
-    //       this.sellerReviews = response.data;
-    //     })
-    //     .catch((error) => {
-    //       console.error(error);
-    //     });
 
     axios.get("/seller-reviews/" + productId)
         .then((response) => {
           this.$set(this, 'sellerReviews', response.data.map(review => ({...review})));
-          console.log('sellerReviews:', this.sellerReviews);
         })
         .catch((error) => {
           console.error(error);
@@ -172,15 +164,14 @@ export default {
       return `http://localhost:8080/product/${imageName}`;
     },
     addToCart() {
-      // axios.post('/save-item', {
-      //   productId: this.product.id,
-      // })
       axios.post('/save-item?itemId=' + this.product.id, {})
           .then((response) => {
-            console.log(response.data);
+            console.log(response);
+            alert('장바구니에 추가되었습니다.');
           })
           .catch((error) => {
             console.log(error);
+            alert('장바구니 추가에 실패했습니다.')
           });
     },
     openUploadPopup() {

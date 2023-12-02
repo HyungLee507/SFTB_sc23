@@ -84,13 +84,13 @@ export default {
         return;
       } else {
         const eform = new FormData();
-        eform.append('email', this.form.email);//이메일 저장
-        axios.post('/mail-verify', eform)//이메일 인증api 호출 form의 형태로 이메일 전달
+        eform.append('email', this.form.email);
+        axios.post('/mail-verify', eform)
             .then((res) => {
               if (res.status == 200) {
-                alert('이메일이 발송되었습니다');//이메일 발송
+                alert('이메일이 발송되었습니다');
               } else if (res.status == 226) {
-                alert('이미 인증번호를 발송한 이메일입니다.');//이메일 발송
+                alert('이미 인증번호를 발송한 이메일입니다.');
               } else {
                 alert('잘못된 이메일입니다');
               }
@@ -162,5 +162,5 @@ export default {
       });
     },
   }
-};//11
+};
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="container d-flex justify-content-center">
-    <b-form @submit="submitForm">
+    <b-form @submit.prevent="submitForm">
       <div class="form-group">
         <label for="text-email">이메일</label>
         <b-form-input v-model="form.email" type="email" id="text-email" aria-describedby="email-help-block"
@@ -35,9 +35,9 @@ export default {
         password: '',
       },
 
-      VerificationCode: '',//사용자가 입력한 인증번호
+      VerificationCode: '',
       isVisable: false,
-      newPassword: '',//서버로 부터 받은 인증번호
+      newPassword: '',
 
     };
   },
@@ -52,18 +52,16 @@ export default {
         return;
       } else {
         const eform = new FormData();
-        eform.append('email', this.form.email);//이메일 저장
-        axios.post('http://localhost:8080/find-password', eform)//이메일 인증api 호출 form의 형태로 이메일 전달
+        eform.append('email', this.form.email);
+        axios.post('http://localhost:8080/find-password', eform)
             .then((res) => {
-              // if(res.data.exist){
-              //     alert(res.data.exist)//중복확인
-              // }
+
               if (res.status == 200) {
-                alert('이메일이 발송되었습니다');//이메일 발송
+                alert('이메일이 발송되었습니다');
                 const key = res.data;
                 alert(res.data);
-                // console.log(res.data)
-                this.newPassword = key;//api로부터 전달받은 key값저장
+
+                this.newPassword = key;
               } else {
                 alert('잘못된 이메일입니다');
               }
@@ -103,11 +101,12 @@ export default {
       }
 
       const eform = new FormData()
-      eform.append('email', this.form.email);//이메일 저장
+      eform.append('email', this.form.email);
       eform.append('password', this.form.password);
       axios.post('http://localhost:8080/change-password', eform).then((res) => {
         if (res.status == 200) {
           alert('비밀번호 변경이 완료되었습니다.');
+          this.$router.push('/account/login');
         } else {
           alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
         }
