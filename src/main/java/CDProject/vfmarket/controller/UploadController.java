@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UploadController {
 
     private final UploadService uploadService;
+    @Value("${imagePath}")
+    private String imagePath;
 
     @PostMapping("product/item-upload")
     @PreAuthorize("isAuthenticated()")
@@ -38,7 +41,7 @@ public class UploadController {
     public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
         log.info("file name is {}", filename);
         return new UrlResource("file:"
-                + "C:/sw-capstone/images/" + filename);
+                + imagePath + filename);
     }
 
 
