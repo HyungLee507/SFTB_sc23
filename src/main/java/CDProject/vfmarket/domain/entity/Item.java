@@ -55,6 +55,7 @@ public class Item extends BaseTimeEntity {
     @OneToOne(mappedBy = "item")
     private Order order;
 
+    private boolean reviewSubmitted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User itemUploadUser;
