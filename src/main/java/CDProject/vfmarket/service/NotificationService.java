@@ -45,7 +45,7 @@ public class NotificationService {
     public void makeNotificationBySellerName(String sellerName, Long itemId, String message) {
 
         User user = userRepository.findByName(sellerName).orElseThrow(() -> new NotFoundException("해당 유저를 찾을 수 없습니다."));
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("해당 상를 찾을 수 없습니다."));
+//        Item item = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("해당 상를 찾을 수 없습니다."));
         Notification notification = Notification.builder().
                 user(user)
                 .isRead(false)
