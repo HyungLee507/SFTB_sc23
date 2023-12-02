@@ -84,7 +84,7 @@ export default {
     submitForm() {
       axios.put('/user-Info/update', this.user)
           .then(response => {
-            console.log(response);
+            // console.log(response);
             this.editMode = false;
           })
           .catch(error => {

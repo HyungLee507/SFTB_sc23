@@ -12,6 +12,7 @@
               <button class="completed-products" @click="goToMyPage">구매완료 상품</button>
             </b-col>
           </b-row>
+
         </b-col>
       </b-row>
       <b-row>
@@ -23,12 +24,11 @@
             <table>
               <thead>
               <tr>
-                <th style="width: 10%;">이미지</th>
-                <th style="width: 10%;">상품명</th>
-                <th style="width: 10%;">가격</th>
-                <th style="width: 10%;">사이즈</th>
-                <th style="width: 20%; text-align: center;">리뷰관리</th>
-                <th style="text-align: center;">배송정보</th>
+                <th>이미지</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>사이즈</th>
+                <th></th>
               </tr>
               </thead>
               <tbody>
@@ -39,23 +39,18 @@
                 <td>{{ item.name }}</td>
                 <td>{{ formatPrice(item.price) }}</td>
                 <td>{{ item.shoeSize }}</td>
-                <td style="text-align: center;">
-                  <div v-if="item.reviewSubmitted">
-                    <p>리뷰작성완료</p>
-                  </div>
-                  <div v-else>
-                    <button @click="openReviewModal(index)" class="review-button">리뷰작성</button>
-                  </div>
-                </td>
-                <td style="text-align: center;">
-                  <div>{{ item.deliveryCompany }}</div>
-                  <div>운송장번호: {{ item.billingNumber }}</div>
+                <td>
+                  <button v-if="isCancellationAllowed(item.createdDate)" @click="openCancelConfirmation(index)"
+                          class="delete-button">결제취소
+                  </button>
+                  <span v-else style="color: rgb(248, 42, 42);">결제 취소 불가</span>
                 </td>
               </tr>
               </tbody>
             </table>
-            <b-modal ref="reviewModal" id="reviewModal" title="상품 리뷰 작성" hide-footer>
-              <ReviewPage @reviewSubmitted="handleReviewSubmitted"/>
+            <b-modal ref="cancelModal" title="결제 취소 확인" @ok="removeItem(selectedItemIndex)" ok-title="예"
+                     cancel-title="아니오">
+              <p>결제를 취소하시겠습니까?</p>
             </b-modal>
           </div>
           <div v-else>
@@ -69,18 +64,15 @@
 
 <script>
 import ButtonList from './ButtonList';
-import ReviewPage from './ReviewPage';
 import axios from 'axios';
 
 export default {
   components: {
     ButtonList,
-    ReviewPage,
   },
   data() {
     return {
       ordersProducts: [],
-      showReviewButton: true,
     };
   },
 
@@ -96,23 +88,13 @@ export default {
     });
 
 
-    // const sampleReviews = [
-    //   { images: "이미지", name: "반팔", price: "10000" , shoeSize: "100", orderId: 1, createdDate: new Date(Date.now() - 0.5 * 60 * 60 * 1000), billingNumber: "운송장1" , deliveryCompany: "cj", reviewSubmitted: true},
-    //   { images: "이미지", name: "긴팔", price: "20000", shoeSize: "110", orderId: 2, createdDate: new Date(Date.now() - 5 * 60 * 60 * 1000), billingNumber: "운송장2" , deliveryCompany: "우체국" , reviewSubmitted: true },
-    //   { images: "이미지", name: "바지", price: "30000", shoeSize: "90", orderId: 3, createdDate: new Date(Date.now() - 5 * 60 * 60 * 1000), billingNumber: "운송장3" , deliveryCompany: "롯데" , reviewSubmitted: false },
-    //   { images: "이미지", name: "신발", price: "40000", shoeSize: "100", orderId: 4, createdDate: new Date(Date.now() - 5 * 60 * 60 * 1000), billingNumber: "운송장4운송장4운송장4운송장4운송장4운송장4운송장4운송장4운송장4운송장4" , deliveryCompany: "cj" , reviewSubmitted: false },
-    // ];
-    // //가상의 리뷰 데이터
-    // this.ordersProducts = sampleReviews;
-
-
     this.getOrdersProducts();
   },
 
   methods: {
     getOrdersProducts() {
       axios
-          .get('/ordersDone')   //api 수정
+          .get('/orderItems')   //api 수정
           .then((response) => {
             this.ordersProducts = response.data.map((item) => ({
               image: item.image,
@@ -121,9 +103,7 @@ export default {
               shoeSize: item.shoeSize,
               orderId: item.id,
               createdDate: item.createdDate,
-              reviewSubmitted: item.reviewSubmitted,
-              billingNumber: item.billingNumber,
-              deliveryCompany: item.deliveryCompany
+
             }));
           })
           .catch((error) => {
@@ -133,17 +113,45 @@ export default {
     getImageUrl(imageName) {
       return `http://localhost:8080/product/${imageName}`;
     },
-    
+
+
+    removeItem(index) {
+      const orderId = this.ordersProducts[index].orderId;
+
+      // axios
+      //     .delete(`/delete-item?itemId=${orderId}`)   //api 맞게 수정
+      //     .then(() => {
+      //       this.ordersProducts.splice(index, 1);
+      //       alert('결제가 취소되었습니다.');
+      //     })
+      //     .catch((error) => {
+      //       console.error(error);
+      //     });
+      axios
+          .put(`/refundItem/${orderId}`)   //api 맞게 수정
+          .then(() => {
+            this.ordersProducts.splice(index, 1);
+            alert("결제가 취소되었습니다.");
+          })
+          .catch((error) => {
+            console.error(error);
+            alert("결제취소 실패.");
+          });
+    },
+
+    isCancellationAllowed(createdDate) {
+      const oneHourAgo = new Date();
+      oneHourAgo.setHours(oneHourAgo.getHours() - 1);
+      return new Date(createdDate) > oneHourAgo;
+    },
+
+    openCancelConfirmation(index) {
+      this.selectedItemIndex = index;
+      this.$refs.cancelModal.show();
+    },
 
     formatPrice(price) {
       return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    },
-
-    openReviewModal(index) {
-      this.reviewSaved = false;
-      this.selectedItemIndex = index;
-      const orderId = this.ordersProducts[index].orderId;
-      this.$router.push({name: 'reviewPage', params: {id: orderId}});
     },
 
     goToMyPage() {
@@ -154,14 +162,6 @@ export default {
     goToBuyerTradingPage() {
       const targetRoute = "/user/mypage/buyertrading";
       this.$router.push(targetRoute).catch(() => {
-      });
-    },
-
-    handleReviewSubmitted(reviewSubmitted) {
-      console.log('Review submitted status:', reviewSubmitted);
-      this.$set(this.ordersProducts, this.selectedItemIndex, {
-        ...this.ordersProducts[this.selectedItemIndex],
-        reviewSubmitted
       });
     },
   },
@@ -178,7 +178,6 @@ export default {
 table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 800px;
 }
 
 th,
@@ -224,17 +223,17 @@ button {
 
 .dealing-products {
   background-color: white;
-  color: gray;
-  font-weight: bold;
-  border: 1px solid gray;
-}
-
-.completed-products {
-  background-color: white;
   color: black;
   font-weight: bold;
   text-decoration: underline;
   border: 1px solid black;
+}
+
+.completed-products {
+  background-color: white;
+  color: gray;
+  font-weight: bold;
+  border: 1px solid gray;
 
 }
 </style>

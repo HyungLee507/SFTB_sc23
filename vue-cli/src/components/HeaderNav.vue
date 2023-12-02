@@ -56,7 +56,7 @@ export default {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`; // 토큰이 있으면 헤더에 추가합니다.
       }
-      console.log(config.headers.Authorization);
+      // console.log(config.headers.Authorization);
       return config;
     }, function (error) {
       // 요청 에러 처리

@@ -36,7 +36,8 @@
                   {{ item.address }}
                 </td>
                 <td>
-                  <button class="bill-button" @click="showBillModal = true; selectedProductId = item.id">
+                  <button class="bill-button"
+                          @click="showBillModal = true; selectedProductId = item.id">
                     운송장번호 입력
                   </button>
                 </td>
@@ -55,8 +56,11 @@
     </b-container>
     <b-modal v-model="showBillModal" title="운송장번호 입력" hide-footer>
       <b-form @submit.prevent="saveBillNumber">
-        <b-form-group label="운송장번호">
+        <b-form-group label="운송장번호" style="font-weight: bold;">
           <b-form-input v-model="billInput" required></b-form-input>
+        </b-form-group>
+        <b-form-group label="택배사" style="font-weight: bold;">
+          <b-form-radio-group v-model="deliveryCompany" :options="deliveryCompanies"></b-form-radio-group>
         </b-form-group>
         <b-button type="submit" variant="primary">배송완료</b-button>
       </b-form>
@@ -77,7 +81,14 @@ export default {
       tradingProducts: [],
       billInput: '',
       showBillModal: false,
-      selectedProductId: null,
+      selectedProductId: '',
+      deliveryCompany: '',
+      deliveryCompanies: [
+        'CJ대한통운',
+        '한진택배',
+        '롯데택배',
+        '우체국택배',
+      ],
     };
   },
 
@@ -96,38 +107,19 @@ export default {
 
     this.getTradingProducts();
 
-    // const temporaryData = [
-    //     {
-    //         image: 'temporary_image1.jpg',
-    //         name: '임시 상품 1',
-    //         price: 10000,
-    //         id: 11111111,
-    //         address: '임시 주소 1',
-    //     },
-    //     {
-    //         image: 'temporary_image2.jpg',
-    //         name: '임시 상품 2',
-    //         price: 20000,
-    //         id: 222222,
-    //         address: '경기도 수원시 센트럴타운로76 광교e편한세상1차, 6111동 101호',
-    //     },
-    // ];
-
-    // this.tradingProducts = temporaryData;
-
   },
 
 
   methods: {
     getTradingProducts() {
       axios
-          .get('/tradeItems')   //api 수정
+          .get('/tradeItems')
           .then((response) => {
             this.tradingProducts = response.data.map((item) => ({
               image: item.image,
               name: item.name,
               price: item.price,
-              id: item.itemId,
+              id: item.orderId,
               address: item.address,
             }));
           })
@@ -148,10 +140,12 @@ export default {
     saveBillNumber() {
       const productId = this.selectedProductId;
       const billingNumber = this.billInput;
+      const deliveryCompany = this.deliveryCompany;
 
       axios.put('/product-bill', {
         orderId: productId,
-        billingNumber: billingNumber
+        billingNumber: billingNumber,
+        deliveryCompany: deliveryCompany,
       })
           .then(response => {
             console.log(response.data);
@@ -163,7 +157,6 @@ export default {
           })
           .catch(error => {
             console.error(error);
-            console.error(productId);
             alert('배송완료처리에 실패했습니다.')
           });
 
@@ -178,7 +171,6 @@ export default {
 
 
 <style scoped>
-
 .container {
   max-width: 800px;
   margin: 0 auto;
@@ -239,5 +231,4 @@ button {
   color: rgba(0, 0, 0, 0.5);
   font-size: 14px;
 }
-
 </style>

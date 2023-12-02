@@ -55,7 +55,7 @@ export default {
   created() {
     axios.interceptors.request.use(function (config) {
       // 요청을 보내기 전에 수행할 작업
-      console.log(config.headers.Authorization);
+      // console.log(config.headers.Authorization);
       return config;
     }, function (error) {
       // 요청 에러 처리
@@ -68,7 +68,7 @@ export default {
       $event.preventDefault();
       await axios.post('/login', this.form)
           .then(response => {
-            console.log(response.headers);
+            // console.log(response.headers);
             const accessToken = response.headers['authorization'];
             const refreshToken = response.headers['authorization-refresh'];
             if (refreshToken) { // refreshToken이 있는지 확인

@@ -27,13 +27,12 @@ export default {
   methods: {
     submitForm() {
       axios.post('/user/update', {
-        //여기에서 이메일을 줄 수 가 있나?
         name: this.name,
         shoeSize: this.shoeSize
       })
           .then(response => {
             this.$router.push('/product/list');
-            console.log(response);
+            // console.log(response);
           })
           .catch(error => {
             console.log(error);
