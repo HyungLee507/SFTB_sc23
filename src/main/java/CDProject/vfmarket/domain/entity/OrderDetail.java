@@ -49,4 +49,6 @@ public class OrderDetail {
 
     private String billingNumber;
 
+    private String deliveryCompany;
+
 }
