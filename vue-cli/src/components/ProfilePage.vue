@@ -15,9 +15,9 @@
         <b-col md="9">
           <div>
             <h2>사용자 정보</h2>
-            <p>이름: {{ user.name }}</p>
+            <p>이름: {{ user.userName }}</p>
             <p>이메일: {{ user.email }}</p>
-            <p>신발 사이즈: {{ user.footsize }}</p>
+            <p>상의 사이즈: {{ user.size }}</p>
             <button @click="editMode = true">수정</button>
           </div>
           <div v-if="editMode">
@@ -50,9 +50,9 @@ export default {
   data() {
     return {
       user: {
-        name: '',
+        userName: '',
         email: '',
-        footsize: '',
+        size: '',
       },
       editMode: false
     }
@@ -71,7 +71,7 @@ export default {
       return Promise.reject(error);
     });
 
-    axios.get('/api/user')
+    axios.get('/user')
         .then(response => {
           this.user = response.data;
         })
@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     submitForm() {
-      axios.put('/api/user', this.user)
+      axios.put('/user-Info/update', this.user)
           .then(response => {
             console.log(response);
             this.editMode = false;
