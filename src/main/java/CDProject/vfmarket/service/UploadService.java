@@ -17,6 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +34,8 @@ public class UploadService {
     private final TokenValueProvider tokenValueProvider;
 
     // 저장할 파일 위치 생성
-    private final String uploadFolder = "C:/sw-capstone/images";
+    @Value("${imagePath}")
+    private String uploadFolder;
 
     public void saveItem(String token, ItemFormDto itemFormDto) throws NoSuchFieldException {
 
