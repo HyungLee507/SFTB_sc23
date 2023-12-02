@@ -1,7 +1,11 @@
+
 <template>
   <div>
     <b-form @submit.prevent="submitForm">
       <div v-for="(image, index) in product.images" :key="index">
+        <p style="font-weight: bold">대표사진의 예시</p>
+        <img class="representative" src="../assets/상품 대표사진.jpg" v-if="index === 0"/>
+        <p >다음과 같이 대표사진을 등록해주세요. (이미지의 크기는 768x1024 혹은 3:4 비율을 권장합니다.) </p>
         <b-form-group :id="'product-image-' + index" :label="`상품 이미지${index === 0 ? ' [대표사진]' : ''}`"
                       style="font-weight: bold; margin-top: 50px; margin-left: 100px; margin-right: 100px;">
           <b-form-file @change="previewImage($event, index)" v-model="product.images[index]"
@@ -20,17 +24,25 @@
       </b-form-group>
       <b-form-group id="product-category" label="상품 카테고리" style="font-weight: bold;">
         <b-form-radio-group v-model="product.category">
-          <b-form-radio value="운동화">운동화</b-form-radio>
-          <b-form-radio value="단화">단화</b-form-radio>
-          <b-form-radio value="캐주얼">캐주얼</b-form-radio>
-          <b-form-radio value="스포츠">스포츠</b-form-radio>
-          <b-form-radio value="기타">기타</b-form-radio>
+            <b-form-radio value="상의">상의</b-form-radio>
+            <b-form-radio value="아우터">아우터</b-form-radio>
+            <b-form-radio value="운동복">운동복</b-form-radio>
+            <b-form-radio value="드레스">드레스</b-form-radio>
+            <b-form-radio value="기타">기타</b-form-radio>
+
         </b-form-radio-group>
       </b-form-group>
-      <b-form-group id="product-showSize" label="상품 사이즈"
-                    style="font-weight: bold; margin-left: 400px; margin-right: 400px;">
-        <b-form-input v-model="product.shoeSize" type="number"></b-form-input>
-      </b-form-group>
+        <b-form-group id="product-shoeSize" label="상품 사이즈" style="font-weight: bold;">
+          <b-form-radio-group v-model="product.shoeSize">
+              <b-form-radio value="85">85</b-form-radio>
+              <b-form-radio value="90">90</b-form-radio>
+              <b-form-radio value="95">95</b-form-radio>
+              <b-form-radio value="100">100</b-form-radio>
+              <b-form-radio value="105">105</b-form-radio>
+              <b-form-radio value="110">110</b-form-radio>
+
+          </b-form-radio-group>
+        </b-form-group>
 
       <b-form-group id="product-price" label="상품 가격"
                     style="font-weight: bold; margin-left: 400px; margin-right: 400px;">
@@ -103,8 +115,8 @@ export default {
       this.product.imagePreviews.splice(-1, 1);
     },
     submitForm() {
-      if (this.product.images.length < 3) {
-        alert('이미지는 3개 이상 등록해주세요.');
+      if (this.product.images.length < 2) {
+        alert('이미지는 2개 이상 등록해주세요.');
 
         return;
       }
@@ -128,9 +140,13 @@ export default {
       })
           .then(response => {
             console.log(response);
+            alert('상품이 등록되었습니다.');
+            this.$router.push('/product/list');
           })
           .catch(error => {
             console.log(error);
+            alert('상품 등록에 실패했습니다.');
+            this.$router.push('/product/list');
           });
     },
   },
@@ -138,6 +154,14 @@ export default {
 </script>
 <style scoped>
 .preview {
+  width: 250px;
+  height: 250px;
+  border-radius: 0;
+  margin-top: 30px;
+  font-weight: bold;
+}
+
+.representative {
   width: 250px;
   height: 250px;
   border-radius: 0;
