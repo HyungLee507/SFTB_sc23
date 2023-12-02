@@ -6,18 +6,18 @@
     <b-form-group label="전화번호">
       <b-form-input v-model="buyer_tel"></b-form-input>
     </b-form-group>
-        <b-form-group label="우편번호">
-        <b-form-input v-model="buyer_postcode"></b-form-input>
-        <input type="button" @click="execDaumPostcode()" value="우편번호 찾기"><br>
+    <b-form-group label="우편번호">
+      <b-form-input v-model="buyer_postcode"></b-form-input>
+      <input type="button" @click="execDaumPostcode()" value="우편번호 찾기"><br>
 
-      </b-form-group>
+    </b-form-group>
     <b-form-group label="주소">
       <b-form-input v-model="buyer_addr"></b-form-input>
     </b-form-group>
     <b-form-group label="상세주소">
       <b-form-input v-model="buyer_addr_detail"></b-form-input>
     </b-form-group>
-    
+
     <b-button @click="KGpay">결제</b-button>
   </div>
 </template>
@@ -26,9 +26,15 @@
 import axios from 'axios';
 
 export default {
+  mounted() {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.iamport.kr/js/iamport.payment-1.1.5.js';
+    script.onload = () => this.initializeIamport();
+    document.head.appendChild(script);
+  },
   data() {
     return {
-      receiver_name: '', 
+      receiver_name: '',
       buyer_tel: '',
       buyer_addr: '',
       buyer_addr_detail: '',
@@ -46,9 +52,9 @@ export default {
   created() {
     this.item_id = this.$route.params.id;
     axios.interceptors.request.use((config) => {
-      const token = localStorage.getItem('accessToken'); 
+      const token = localStorage.getItem('accessToken');
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`; 
+        config.headers.Authorization = `Bearer ${token}`;
       }
       return config;
     }, function (error) {
@@ -74,12 +80,12 @@ export default {
             }
             if (data.buildingName !== "" && data.apartment === "Y") {
               this.buyer_addr_detail +=
-                this.buyer_addr_detail !== ""
-                  ? `, ${data.buildingName}`
-                  : data.buildingName;
+                  this.buyer_addr_detail !== ""
+                      ? `, ${data.buildingName}`
+                      : data.buildingName;
             }
 
-            
+
             if (this.buyer_addr_detail !== "") {
               this.buyer_addr_detail = `(${this.buyer_addr_detail})`;
             }
