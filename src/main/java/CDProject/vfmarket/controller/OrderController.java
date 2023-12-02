@@ -2,6 +2,8 @@ package CDProject.vfmarket.controller;
 
 import static CDProject.vfmarket.global.AuthenticationUserId.getAuthenticatedUser;
 
+import CDProject.vfmarket.domain.dto.OrderDTO.OrderDetailSaveDTO;
+import CDProject.vfmarket.domain.dto.OrderDTO.OrderDoneDTO;
 import CDProject.vfmarket.domain.dto.OrderDTO.OrderViewDto;
 import CDProject.vfmarket.domain.dto.OrderDTO.ProgressOrderDto;
 import CDProject.vfmarket.domain.dto.OrderDTO.SoldItemViewDto;
@@ -15,7 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -28,12 +30,20 @@ public class OrderController {
 
     private final RefundService refundService;
 
-    // 구매 내역 조회
+    // 거래중 내역 조회
     @GetMapping("/orderItems")
     public List<OrderViewDto> orderHistory() {
         Long userId = getAuthenticatedUser();
         return orderService.getOrderHistory(userId);
     }
+
+    // 구매 완료 내역 조회
+    @GetMapping("/ordersDone")
+    public List<OrderDoneDTO> orderDoneHistory() {
+        Long buyerId = getAuthenticatedUser();
+        return orderService.getDoneOrders(buyerId);
+    }
+
 
     //판매 완료 내역 조회
     @GetMapping("/soldItems")
@@ -56,9 +66,9 @@ public class OrderController {
         return orderService.getProgressOrders(sellerId);
     }
 
-    @PutMapping
-    public void updateBillingNumber(@RequestParam Long orderId, @RequestParam String billingNumber) {
-        orderService.updateBillingNumber(orderId, billingNumber);
+    @PutMapping("/product-bill")
+    public void updateBillingNumber(@RequestBody OrderDetailSaveDTO orderDetailSaveDTO) {
+        orderService.updateBillingNumber(orderDetailSaveDTO);
     }
 
 }
