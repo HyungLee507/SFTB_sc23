@@ -30,7 +30,11 @@ export default {
         name: this.name,
         shoeSize: this.shoeSize
       })
-          .then(response => {
+          // .then(response => {
+          //   this.$router.push('/product/list');
+          //   // console.log(response);
+          // })
+          .then(() => {
             this.$router.push('/product/list');
             // console.log(response);
           })

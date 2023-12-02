@@ -65,9 +65,6 @@ public class ReviewService {
         reviewRepository.save(uploadReview);
         findItem.setReviewSubmitted(true);
         itemRepository.save(findItem);
-
-        notificationService.generateReviewNotification(reviewFormDto.getItemId(), "상품 리뷰가 작성되었습니다.");
-
     }
 
     public void deleteReview(Long reviewId) {

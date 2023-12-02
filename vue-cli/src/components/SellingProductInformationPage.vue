@@ -35,7 +35,7 @@
               <b-input v-model="editedProduct.price" type="number" step="100"/>
             </p>
             <p>상품 사이즈:
-              <b-input v-model="editedProduct.showSize" type="number" step="5"/>
+              <b-input v-model="editedProduct.shoeSize" type="number" step="5"/>
             </p>
             <p>상품 카테고리:</p>
             <b-form-group>
@@ -73,7 +73,7 @@
 .product-image {
   width: 200px;
   height: auto;
-  padding-right: 50;
+  padding-right: 50px;
 }
 
 .image-button {
@@ -191,7 +191,7 @@ export default {
         imagePreviews: [],
         name: "",
         price: 0,
-        showSize: 0,
+        shoeSize: 0,
         category: "",
         description: "",
         id: 0,
@@ -200,39 +200,9 @@ export default {
     };
   },
   created() {
-    const productId = this.$route.params.productId;
+    // const productId = this.$route.params.productId;
 
-    if (productId === "1") {
-      const testData1 = {
-        images: [
-          "https://shopping-phinf.pstatic.net/main_1164266/11642661041.20191216104903.jpg?type=f300",
-          "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
-          "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
-        ],
-        name: "나이키운동화",
-        price: 10000,
-        showSize: 250,
-        category: "운동화",
-        description: "운동하기 편함",
-        id: 1,
-      };
-      this.editedProduct = testData1;
-    } else if (productId === "2") {
-      const testData2 = {
-        images: [
-          "https://shopping-phinf.pstatic.net/main_1164266/11642661041.20191216104903.jpg?type=f300",
-          "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
-          "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
-        ],
-        name: "아디다스 샌들",
-        price: 15000,
-        showSize: 270,
-        category: "샌들",
-        description: "편함",
-        id: 2,
-      };
-      this.editedProduct = testData2;
-    }
+
   },
   methods: {
     saveProductInformation() {

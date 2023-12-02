@@ -83,7 +83,11 @@ export default {
   methods: {
     submitForm() {
       axios.put('/user-Info/update', this.user)
-          .then(response => {
+          // .then(response => {
+          //   // console.log(response);
+          //   this.editMode = false;
+          // })
+          .then(() => {
             // console.log(response);
             this.editMode = false;
           })

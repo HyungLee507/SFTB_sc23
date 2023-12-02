@@ -35,7 +35,8 @@ public class VFController {
     private final ItemService itemService;
     private final VFService vfService;
     private final TokenValueProvider tokenValueProvider;
-    private final String flaskHost = "https://762b-35-247-34-254.ngrok-free.app/";
+    private final String flaskHost = "https://c11d-34-127-28-249.ngrok-free.app/";
+    private final String imagePath = "C:/sw-capstone/images/";
     @PostMapping("/vf/productimg")
     public ResponseEntity sendProductImg(@RequestHeader("Authorization") String token, Long productId) {
         if (token == null) {
@@ -44,7 +45,7 @@ public class VFController {
 
         String prodImgUrl = itemService.itemDetailInfo(productId).getImages().get(0);
         // 전송할 파일 정보
-        File file = new File("C:/sw-capstone/images/"+prodImgUrl);
+        File file = new File(imagePath+prodImgUrl);
 
         // Flask ngrok base url. Flask는 colab에서 돌아간다.
         // Flask 백엔드의 엔드포인트 URL
@@ -94,7 +95,8 @@ public class VFController {
         MultipartFile humanImage = vfFormDTO.getImage();
         String dirname = vfFormDTO.getDirname();
 
-        File image = new File(Objects.requireNonNull(humanImage.getOriginalFilename()));
+
+        File image = new File(imagePath+Objects.requireNonNull(humanImage.getOriginalFilename()));
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(image)) {
             FileCopyUtils.copy(humanImage.getInputStream(), fileOutputStream);
@@ -212,6 +214,6 @@ public class VFController {
     public Resource getImage(@PathVariable String filename) throws MalformedURLException {
         log.info("file name is {}", filename);
         return new UrlResource("file:"
-                + "C:/sw-capstone/styleshots/" + filename);
+                + imagePath + filename);
     }
 }

@@ -31,7 +31,7 @@ public class VFService {
     private final UserRepository userRepository;
     private final StyleShotRepository styleShotRepository;
 
-    private final String styleshotFolder = "C:/sw-capstone/styleshots";
+    private final String imagePath = "C:/sw-capstone/images/";
 
 
     public void saveStyleShot(Long prodId, Long userId, byte[] resultFile) {
@@ -39,7 +39,7 @@ public class VFService {
         String uuid = UUID.randomUUID().toString();
         String styleshotName = uuid + "_" + prodId.toString() + "_" + userId.toString() + ".png";
         // 받은 파일 데이터를 파일로 저장
-        File receivedFile = new File(styleshotFolder, styleshotName);
+        File receivedFile = new File(imagePath+styleshotName);
         try (FileOutputStream outputStream = new FileOutputStream(receivedFile)) {
             outputStream.write(resultFile);
         } catch (IOException e) {

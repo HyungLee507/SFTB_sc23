@@ -25,7 +25,7 @@ public class StyleShot extends BaseTimeEntity {
     @JoinColumn(name = "member_Id")
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_Id")
     private Item item;
 
