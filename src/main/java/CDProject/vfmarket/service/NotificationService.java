@@ -8,12 +8,16 @@ import CDProject.vfmarket.exceptions.NotFoundException;
 import CDProject.vfmarket.repository.ItemRepository;
 import CDProject.vfmarket.repository.NotificationRepository;
 import CDProject.vfmarket.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
@@ -34,10 +38,20 @@ public class NotificationService {
                 user(user)
                 .isRead(false)
                 .message(message)
-                .item(item)
                 .build();
         notificationRepository.save(notification);
-//        return notification;
+    }
+
+    public void makeNotificationBySellerName(String sellerName, Long itemId, String message) {
+
+        User user = userRepository.findByName(sellerName).orElseThrow(() -> new NotFoundException("해당 유저를 찾을 수 없습니다."));
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("해당 상를 찾을 수 없습니다."));
+        Notification notification = Notification.builder().
+                user(user)
+                .isRead(false)
+                .message(message)
+                .build();
+        notificationRepository.save(notification);
     }
 
 
@@ -51,7 +65,6 @@ public class NotificationService {
                 user(user)
                 .isRead(false)
                 .message(realMessage)
-                .item(item)
                 .build();
         notificationRepository.save(notification);
     }
