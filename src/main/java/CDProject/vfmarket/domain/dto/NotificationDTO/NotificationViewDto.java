@@ -14,6 +14,6 @@ public class NotificationViewDto {
 
     private boolean isRead;
 
-    private Long itemId;
-    
+//    private Long itemId;
+
 }
