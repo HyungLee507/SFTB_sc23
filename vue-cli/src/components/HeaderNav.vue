@@ -8,7 +8,6 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item v-if="loggedIn" to="/product/registration">상품등록</b-nav-item>
-          <b-nav-item to="/product/list">상품리스트</b-nav-item>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">

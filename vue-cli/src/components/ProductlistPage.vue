@@ -13,7 +13,7 @@
       <router-link v-for="product in sortedProducts" :key="product.id" :to="'/product-list/' + product.id">
         <b-card :title="product.name" :img-src="getImageUrl(product.image)" img-alt="Image" img-top
                 class="fixed-card-size">
-          <b-card-text>가격:{{  product.price }}원</b-card-text>
+          <b-card-text>가격:{{  product.price.toLocaleString()}}원</b-card-text>
         </b-card>
       </router-link>
     </b-card-group>
