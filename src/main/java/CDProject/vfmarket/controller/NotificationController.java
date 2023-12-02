@@ -28,8 +28,7 @@ public class NotificationController {
         Long userId = getAuthenticatedUser();
         return notificationService.getNotifications(userId);
     }
-
-    // 해당 메서드 수정 필요
+    
     @PutMapping("/read-notification/{notificationId}")
     public ResponseEntity<?> markNotificationAsRead(@PathVariable Long notificationId) {
         notificationService.markAsRead(notificationId);

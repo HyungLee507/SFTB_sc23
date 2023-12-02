@@ -6,6 +6,7 @@ import static CDProject.vfmarket.global.AuthenticationUserId.getAuthenticatedUse
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewDto;
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewFormDto;
 import CDProject.vfmarket.domain.dto.ReviewDTO.ReviewUpdateFormDto;
+import CDProject.vfmarket.service.NotificationService;
 import CDProject.vfmarket.service.ReviewService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
 
     private final ReviewService reviewService;
-//    private final NotificationService notificationService;
+    private final NotificationService notificationService;
 
 
     @GetMapping("/seller-reviews/{productId}")
@@ -38,7 +39,7 @@ public class ReviewController {
     public void reviewUpload(@RequestBody ReviewFormDto reviewFormDto) {
         Long buyerId = getAuthenticatedUser();
         reviewService.saveReview(buyerId, reviewFormDto);
-//        notificationService.generateReviewNotification(reviewFormDto.getItemId(), "상품 리뷰가 작성되었습니다.");
+        notificationService.generateReviewNotification(reviewFormDto.getItemId(), "상품 리뷰가 작성되었습니다.");
         log.info("review save success");
     }
 
