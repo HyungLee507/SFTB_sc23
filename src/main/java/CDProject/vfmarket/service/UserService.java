@@ -2,8 +2,10 @@ package CDProject.vfmarket.service;
 
 import CDProject.vfmarket.domain.dto.SignUpDTO.FirstRegistUserInfoDto;
 import CDProject.vfmarket.domain.dto.SignUpDTO.UserSignUpDto;
+import CDProject.vfmarket.domain.dto.UserDTO.UserInfoDTO;
 import CDProject.vfmarket.domain.entity.Role;
 import CDProject.vfmarket.domain.entity.User;
+import CDProject.vfmarket.exceptions.NotFoundException;
 import CDProject.vfmarket.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import java.rmi.NoSuchObjectException;
@@ -89,5 +91,14 @@ public class UserService {
         } else {
             throw new NoSuchObjectException("해당 유저를 찾을 수 없습니다.");
         }
+    }
+
+    public UserInfoDTO userInformation(Long ussrId) {
+        User user = userRepository.findById(ussrId).orElseThrow(() -> new NotFoundException("해당 유저를 찾을 수 없습니다."));
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+        userInfoDTO.setUserName(user.getName());
+        userInfoDTO.setEmail(user.getEmail());
+        userInfoDTO.setSize(user.getFootSize());
+        return userInfoDTO;
     }
 }
