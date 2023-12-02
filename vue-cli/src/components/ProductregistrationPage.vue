@@ -104,7 +104,9 @@ export default {
       }
     },
     formatPrice() {
-      this.product.price = parseFloat(this.product.price.replace(/,/g, '')).toLocaleString();
+      if(this.product.price === 0) {
+        this.product.price = 0;
+      }
     },
     addImage() {
       this.product.images.push(undefined);
