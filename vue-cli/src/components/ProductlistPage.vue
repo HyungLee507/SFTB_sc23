@@ -26,10 +26,10 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      products: [], // 상품정보를 저장할 배열
-      searchTerm: '', // 검색어를 저장할 변수
-      sortKey: '', // 정렬 기준을 저장할 변수
-      sortOrder: '', // 정렬 순서를 저장할 변수
+      products: [], 
+      searchTerm: '', 
+      sortKey: '', 
+      sortOrder: '', 
     };
   },
   created() {
@@ -41,14 +41,13 @@ export default {
           .get('/product-list')
           .then((response) => {
             this.products = response.data;
-            // console.log(response.data);
+            
           })
           .catch((error) => {
             console.log(error);
           });
     },
     searchProducts() {
-      // 검색어에 따라 필터링된 상품 목록을 업데이트합니다.
       this.filteredProducts = this.products.filter((product) => product.name.includes(this.searchTerm));
     },
     sortBy(key, order) {
@@ -57,7 +56,6 @@ export default {
     },
     getImageUrl(imageName) {
       return `http://localhost:8080/product/${imageName}`;
-      // return `https://c6d8-14-63-41-207.ngrok-free.app/product/${imageName}`;
     }
   },
   computed: {
@@ -72,7 +70,7 @@ export default {
           } else if (this.sortKey === 'createdAt') {
             return this.sortOrder === 'asc' ? new Date(a[this.sortKey]) - new Date(b[this.sortKey]) : new Date(b[this.sortKey]) - new Date(a[this.sortKey]);
           }
-          return 0; // 추가된 부분
+          return 0; 
         });
       }
       return sorted;

@@ -7,7 +7,7 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item v-if="isTokenPresent" to="/product/registration">상품등록</b-nav-item>
+          <b-nav-item v-if="loggedIn" to="/product/registration">상품등록</b-nav-item>
           <b-nav-item to="/product/list">상품리스트</b-nav-item>
         </b-navbar-nav>
 
@@ -17,11 +17,11 @@
             <b-button size="sm" my-2 my-sm-0 type="submit">Search</b-button>
           </b-nav-form>
 
-          <b-nav-item v-if="!isTokenPresent" to="/account/login">로그인</b-nav-item>
-          <b-nav-item v-if="!isTokenPresent" to="/account/join">회원가입</b-nav-item>
-          <b-nav-item v-if="isTokenPresent" @click="logout">로그아웃</b-nav-item>
-          <b-nav-item v-if="isTokenPresent" to="/user/mypage">마이페이지</b-nav-item>
-          <b-nav-item v-if="isTokenPresent" @click="toggleModal">알림</b-nav-item>
+          <b-nav-item v-if="!loggedIn" to="/account/login">로그인</b-nav-item>
+          <b-nav-item v-if="!loggedIn" to="/account/join">회원가입</b-nav-item>
+          <b-nav-item v-if="loggedIn" @click="logout">로그아웃</b-nav-item>
+          <b-nav-item v-if="loggedIn" to="/user/mypage">마이페이지</b-nav-item>
+          <b-nav-item v-if="loggedIn" @click="toggleModal">알림</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -38,29 +38,38 @@
 
 <script>
 import axios from 'axios';
+import { EventBus } from '@/event-bus.js';
+
 
 export default {
   name: "HeaderNav",
   data() {
     return {
-      navKey: 0, // 컴포넌트를 강제로 업데이트하기 위한 키
-      token: localStorage.getItem('accessToken'), // 토큰을 데이터로 관리합니다.
-      notifications: [], // 알림 메시지 리스트
-      showModal: false, // 모달 창 표시 여부
+      navKey: 0, 
+      token: localStorage.getItem('accessToken'), 
+      notifications: [], 
+      showModal: false,
+      loggedIn: false,
     };
   },
   created() {
     axios.interceptors.request.use((config) => {
-      // 요청을 보내기 전에 수행할 작업
-      const token = localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰을 가져옵니다.
+
+      const token = localStorage.getItem('accessToken'); 
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`; // 토큰이 있으면 헤더에 추가합니다.
+        config.headers.Authorization = `Bearer ${token}`;
+        
       }
-      // console.log(config.headers.Authorization);
       return config;
     }, function (error) {
-      // 요청 에러 처리
+
       return Promise.reject(error);
+    });
+      if(this.token) {
+        this.loggedIn = true;
+      }
+      EventBus.$on('loggedIn', (status) => {
+      this.loggedIn = status
     });
   },
   computed: {
@@ -80,6 +89,8 @@ export default {
     logout() {
       this.removeToken();
       localStorage.removeItem('refreshToken');
+      this.loggedIn = false;
+      EventBus.$emit('loggedIn', false);
       if (this.$router.currentRoute.path !== '/account/login') {
         this.$router.push('/account/login');
       } else {

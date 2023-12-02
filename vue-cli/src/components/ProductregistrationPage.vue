@@ -3,19 +3,19 @@
   <div>
     <b-form @submit.prevent="submitForm">
       <div v-for="(image, index) in product.images" :key="index">
-        <p style="font-weight: bold">대표사진의 예시</p>
+        <p v-if="index === 0" style="font-weight: bold">대표사진의 예시</p>
         <img class="representative" src="../assets/상품 대표사진.jpg" v-if="index === 0"/>
-        <p >다음과 같이 대표사진을 등록해주세요. (이미지의 크기는 768x1024 혹은 3:4 비율을 권장합니다.) </p>
+        <p v-if="index === 0">다음과 같이 대표사진을 등록해주세요. (이미지의 크기는 768x1024 혹은 3:4 비율을 권장합니다.) </p>
         <b-form-group :id="'product-image-' + index" :label="`상품 이미지${index === 0 ? ' [대표사진]' : ''}`"
                       style="font-weight: bold; margin-top: 50px; margin-left: 100px; margin-right: 100px;">
           <b-form-file @change="previewImage($event, index)" v-model="product.images[index]"
-                       accept="image/*"></b-form-file>
+                      accept="image/*"></b-form-file>
           <img class="preview" :src="product.imagePreviews[index]"
-               v-if="product.imagePreviews[index] !== undefined && index === 0"/>
+              v-if="product.imagePreviews[index] !== undefined && index === 0"/>
         </b-form-group>
       </div>
       <b-button class="add-image" @click="addImage" variant="success">사진 추가</b-button>
-      <b-button class="delete-image" @click="removeImage" v-if="product.images.length > 0" variant="danger">사진
+      <b-button class="delete-image" @click="removeImage" v-if="product.images.length > 1" variant="danger">사진
         제거
       </b-button>
 
@@ -85,7 +85,6 @@ export default {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
-      // console.log(config.headers.Authorization);
       return config;
     }, function (error) {
       return Promise.reject(error);
@@ -122,7 +121,6 @@ export default {
       }
       const formData = new FormData();
 
-      // 이미지와 다른 상품 정보를 FormData 객체에 추가
       for (let i = 0; i < this.product.images.length; i++) {
         formData.append(`images[${i}]`, this.product.images[i]);
       }
@@ -132,7 +130,6 @@ export default {
       formData.append('category', this.product.category);
       formData.append('shoeSize', this.product.shoeSize);
 
-      // FormData 객체를 서버에 제출
       axios.post('/product/item-upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'

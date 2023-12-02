@@ -19,16 +19,15 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      imageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png',// 하드코딩된 이미지 URL
-      composedImageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png', // 하드코딩된 합성 이미지 URL
+      imageUrl: '',
+      composedImageUrl: '', 
       item_id: this.$route.params.id,
-      file: null, // 추가된 file 데이터
-
+      file: null, 
     };
   },
   methods: {
     handleFileUpload(event) {
-      this.file = event.target.files[0]; // file 데이터 업데이트
+      this.file = event.target.files[0]; 
       const reader = new FileReader();
 
       reader.onload = () => {
