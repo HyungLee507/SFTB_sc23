@@ -8,7 +8,6 @@ import CDProject.vfmarket.domain.dto.SignUpDTO.UserSignUpDto;
 import CDProject.vfmarket.domain.dto.UserDTO.UserInfoDTO;
 import CDProject.vfmarket.domain.entity.EmailVerification;
 import CDProject.vfmarket.domain.entity.User;
-import CDProject.vfmarket.global.login.service.LoginService;
 import CDProject.vfmarket.service.MailService;
 import CDProject.vfmarket.service.UserService;
 import java.rmi.NoSuchObjectException;
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
     private final MailService mailService;
-    private final LoginService loginService;
 
     @Value("${spring.mail.username}")
     private String senderEmail;

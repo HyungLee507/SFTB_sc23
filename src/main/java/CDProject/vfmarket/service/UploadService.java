@@ -44,26 +44,15 @@ public class UploadService {
                 String uuid = UUID.randomUUID().toString();
                 uploadFileName = uuid + "_" + uploadFileName;
                 File saveFile = new File(uploadFolder, uploadFileName);
-                log.info("uploadFileName is {}", uploadFileName);
                 uploadFile.transferTo(saveFile);
                 imageList.add(uploadFileName);
-                log.info("imageList is {}", imageList);
             } catch (Exception e) {
                 log.info("file error is {}", e.getMessage());
                 throw new NoSuchFieldException("해당 파일을 찾을 수 없습니다.");
             }
         }
-        log.info("imageList size is {}", imageList.size());
 
         try {
-            log.info("token value is {}", token);
-
-//            String trim = token.replace("Bearer ", "");
-//            log.info("trim value is {}", trim);
-//            Claims claims = tokenValueProvider.extractClaims(trim);
-//            log.info("claims is {}", claims);
-            log.info("imageList size is {}", imageList.size());
-//            long userId = Long.parseLong(claims.get("userId").toString());
             Long userId = tokenValueProvider.extractUserId(token);
             Optional<User> seller = userRepository.findById(userId);
             String sellerName = seller.get().getName();
@@ -76,8 +65,9 @@ public class UploadService {
                     .category(itemFormDto.getCategory())
                     .description(itemFormDto.getDescription())
                     .status(FOR_SALE)
+                    .reviewSubmitted(false)
                     .build();
-            log.info("item data is {}", uploadItem.getItemName());
+
             for (String fileName : imageList) {
                 List<Image> images = uploadItem.getImages();
                 images.add(new Image(fileName, uploadItem));

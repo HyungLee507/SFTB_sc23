@@ -1,5 +1,7 @@
 package CDProject.vfmarket.payment;
 
+import static CDProject.vfmarket.global.AuthenticationUserId.getAuthenticatedUser;
+
 import CDProject.vfmarket.domain.dto.OrderDTO.OrderSaveDto;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.service.NotificationService;
@@ -17,7 +19,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -48,23 +49,23 @@ public class PaymentController {
     }
 
     @PostMapping("/payment")
-    public ResponseEntity<String> paymentComplete(@RequestHeader("Authorization") String token,
-                                                  @RequestBody OrderSaveDto orderSaveDto) throws IOException {
-        Long userId = tokenValueProvider.extractUserId(token);
+    public ResponseEntity<String> paymentComplete(@RequestBody OrderSaveDto orderSaveDto) throws IOException {
+        Long userId = getAuthenticatedUser();
         String orderNumber = orderSaveDto.getMerchant_uid();
         try {
             paymentService.saveOrder(userId, orderSaveDto);
-            notificationService.makeNotification(userId, orderSaveDto.getId(),
-                    orderSaveDto.getName() + " 상품 결제를 하셨습니다.");
-
             log.info("결제 성공 : 주문 번호 {}", orderNumber);
-            return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             log.info("주문 상품 환불 진행 : 주문 번호 {}", orderNumber);
             String impToken = refundService.getToken(apiKey, secretKey);
             refundService.refundRequest(impToken, orderNumber, e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+//        notificationService.makeNotification(userId, orderSaveDto.getId(),
+//                orderSaveDto.getName() + " 상품 결제를 하셨습니다.");
+//        notificationService.makeNotificationBySellerName(orderSaveDto.getSeller_name(), orderSaveDto.getId(),
+//                orderSaveDto.getName() + " 상품에 대한 거래가 체결되었습니다.");
+        return ResponseEntity.ok().build();
     }
 
     //portOne 결제 내역 조회

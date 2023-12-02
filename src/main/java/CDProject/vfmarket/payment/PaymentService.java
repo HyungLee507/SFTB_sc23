@@ -9,7 +9,6 @@ import CDProject.vfmarket.domain.entity.OrderDetail;
 import CDProject.vfmarket.domain.entity.OrderStatus;
 import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.repository.ItemRepository;
-import CDProject.vfmarket.repository.NotificationRepository;
 import CDProject.vfmarket.repository.OrderDetailRepository;
 import CDProject.vfmarket.repository.OrderRepository;
 import CDProject.vfmarket.repository.UserRepository;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class PaymentService {
-    private final NotificationRepository notificationRepository;
     private final OrderDetailRepository orderDetailRepository;
 
 
@@ -41,39 +39,28 @@ public class PaymentService {
 
         Item items = itemRepository.findById(orderSaveDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Item not found with id: " + orderSaveDto.getId()));
-        log.info("item sellerName is {}", items.getSellerName());
-        items.setStatus(ItemStatus.STOP_SELLING);
+        items.setStatus(ItemStatus.TRANSACTION_IN);
 
         User sellerUser = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + userId));
-        log.info("sellerUser name is {}", sellerUser.getName());
         Image firstImage = getFirstImage(items.getId());
 
         String fileName = firstImage.getFileName();
-        log.info("findImage name is {}", fileName);
-        try {
-            Order order = Order.builder()
-                    .paymentPrice(orderSaveDto.getPaid_amount())
-                    .sellerName(orderSaveDto.getSeller_name())
-                    .sellerId(items.getSellerId())
-                    .merchant_uid(orderSaveDto.getMerchant_uid())
-                    .status(OrderStatus.COMPLETE_PAYMENT)
-                    .representativeImage(fileName)
-                    .build();
-            if (userRepository.findById(userId).isPresent()) {
-                order.setBuyer(userRepository.findById(userId).get());
-            }
-            order.setItem(items);
-
-            orderRepository.save(order);
-            itemRepository.save(items);
-        } catch (Exception e) {
-            log.info("order error!! {}", e.getMessage());
-            Item resetItem = itemRepository.findById(orderSaveDto.getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Item not found with id: " + orderSaveDto.getId()));
-            log.info("reset.... {}", resetItem.getSellerName());
-            items.setStatus(ItemStatus.FOR_SALE);
+        Order order = Order.builder()
+                .paymentPrice(orderSaveDto.getPaid_amount())
+                .sellerName(orderSaveDto.getSeller_name())
+                .sellerId(items.getSellerId())
+                .merchant_uid(orderSaveDto.getMerchant_uid())
+                .status(OrderStatus.TRANSACTION_IN)
+                .representativeImage(fileName)
+                .build();
+        if (userRepository.findById(userId).isPresent()) {
+            order.setBuyer(userRepository.findById(userId).get());
         }
+        order.setItem(items);
+
+        orderRepository.save(order);
+        itemRepository.save(items);
 
         Order savedOrder = orderRepository.findByItem_Id(orderSaveDto.getId());
         OrderDetail orderDetail = OrderDetail.builder()
@@ -89,6 +76,10 @@ public class PaymentService {
                 .build();
         orderDetail.setOrder(savedOrder);
         orderDetailRepository.save(orderDetail);
+        notificationService.makeNotification(userId, orderSaveDto.getId(),
+                orderSaveDto.getName() + " 상품 결제를 하셨습니다.");
+        notificationService.makeNotificationBySellerName(orderSaveDto.getSeller_name(), orderSaveDto.getId(),
+                orderSaveDto.getName() + " 상품에 대한 거래가 체결되었습니다.");
     }
 
     public Image getFirstImage(Long itemId) {

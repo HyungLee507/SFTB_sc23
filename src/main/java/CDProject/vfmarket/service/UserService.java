@@ -38,16 +38,11 @@ public class UserService {
             user.passwordEncode(passwordEncoder);
             userRepository.save(user);
         }
-//        if (userRepository.findByName(userSignUpDto.getName()).isPresent()) {
-//            throw new Exception("이미 존재하는 닉네임입니다.");
-//        }
 
     }
 
     public void signOut(String email) {
-        log.info("회원 탈퇴 진입111");
         Optional<User> user = userRepository.findByEmail(email);
-        log.info("value is {}", user);
         if (user.isPresent()) {
             userRepository.deleteById(user.get().getId());
             log.info("회원 탈퇴 성공!! db 삭제");
