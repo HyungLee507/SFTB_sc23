@@ -1,8 +1,11 @@
 package CDProject.vfmarket.controller;
 
+import static CDProject.vfmarket.global.AuthenticationUserId.getAuthenticatedUser;
+
 import CDProject.vfmarket.domain.dto.SignUpDTO.EmailVerificationResponseDto;
 import CDProject.vfmarket.domain.dto.SignUpDTO.FirstRegistUserInfoDto;
 import CDProject.vfmarket.domain.dto.SignUpDTO.UserSignUpDto;
+import CDProject.vfmarket.domain.dto.UserDTO.UserInfoDTO;
 import CDProject.vfmarket.domain.entity.EmailVerification;
 import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.global.login.service.LoginService;
@@ -14,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -129,5 +133,12 @@ public class UserController {
         } catch (NoSuchObjectException e) {
             return "해당 유저를 찾을 수 없습니다. => 근데 이럴리 없지";
         }
+    }
+
+    @GetMapping("/user")
+    @PreAuthorize("isAuthenticated()")
+    public UserInfoDTO getUserInfo() {
+        Long userId = getAuthenticatedUser();
+        return userService.userInformation(userId);
     }
 }
