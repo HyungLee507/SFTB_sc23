@@ -1,3 +1,4 @@
+
 <template>
   <div class="container d-flex justify-content-center">
     <b-form @submit.prevent="submitForm">
@@ -70,6 +71,10 @@ export default {
   },
   methods: {
 
+      validatePassword(password) {
+      const regex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{10,}$/;
+      return regex.test(password);
+    },
 
     sendVerificationCode() {
       if (this.isVisable) {
@@ -138,6 +143,10 @@ export default {
 
       if (!this.form.email || !this.form.password) {
         alert('모든 항목을 입력하세요.');
+        return;
+      }
+      if (!this.validatePassword(this.form.password)) {
+        alert('비밀번호는 영문, 숫자, 특수문자 중 2종류 이상을 조합하여 최소 10자리 이상 또는 3종류 이상을 조합하여 최소 8자리 이상의 길이로 구성해야 합니다.');
         return;
       }
 
