@@ -1,12 +1,12 @@
 <template>
   <div class="container d-flex justify-content-center">
     <b-form @submit.prevent="submitForm" v-if="show">
-      <b-form-group
+      <b-form-group style="margin-top: 40px;"
           id="input-group-1"
           label="이메일"
           label-for="input-1"
       >
-        <b-form-input
+        <b-form-input style="font-weight: bold;"
             type="email"
             v-model="form.email"
             id="input-1"
@@ -20,15 +20,10 @@
                       required></b-form-input>
       </b-form-group>
 
-      <b-button @click="submitForm" variant="primary">로그인</b-button>
-      <b-button to="/account/join" variant="primary">회원가입</b-button>
-      <b-button to="/account/findpassword" variant="primary">비밀번호 찾기</b-button>
-      <button @click="loginWithNaver">
-        <img src="https://static.nid.naver.com/oauth/small_g_in.PNG" alt="naver login" class="naver-logo"/>
-      </button>
+      <b-button style="margin-right: 10px;" class="submit-button" @click="submitForm" variant="primary">로그인</b-button>
+      <b-button style="margin-right: 10px;" class="submit-button" to="/account/join" variant="primary">회원가입</b-button>
+      <b-button class="submit-button" to="/account/findpassword" variant="primary">비밀번호 찾기</b-button>
 
-
-      <!-- Error message display -->
       <div v-if="error" class="alert alert-danger">
         {{ error }}
       </div>
@@ -121,11 +116,15 @@ export default {
 };
 </script>
 <style scoped>
-.naver-logo {
-  width: 100px;
 
-  height: auto;
+.container {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
 
-
+.submit-button {
+  background-color: rgba(0, 0, 0, 0.753);
+  border: 1px solid black;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 </style>

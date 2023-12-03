@@ -1,24 +1,24 @@
 <template>
-  <div>
-    <b-form-group label=" 수령인 이름">
-      <b-form-input v-model="receiver_name"></b-form-input>
+  <div class="paymentpage text-center">
+    <b-form-group label=" 수령인 이름" style="margin-top: 40px;">
+      <b-form-input style="width: 200px; font-weight: bold;" v-model="receiver_name" class="mx-auto"></b-form-input>
     </b-form-group>
-    <b-form-group label="전화번호">
-      <b-form-input v-model="buyer_tel"></b-form-input>
+    <b-form-group label="전화번호" style="margin-top: 30px;">
+      <b-form-input style="width: 300px; font-weight: bold;" v-model="buyer_tel" class="mx-auto"></b-form-input>
     </b-form-group>
-        <b-form-group label="우편번호">
-        <b-form-input v-model="buyer_postcode"></b-form-input>
-        <input type="button" @click="execDaumPostcode()" value="우편번호 찾기"><br>
+        <b-form-group label="우편번호" style="margin-top: 30px;">
+        <b-form-input style="width: 200px; font-weight: bold;" v-model="buyer_postcode" class="mx-auto"></b-form-input>
+        <input type="button" @click="execDaumPostcode()" value="우편번호 찾기" style="margin-top: 10px;">
 
       </b-form-group>
-    <b-form-group label="주소">
-      <b-form-input v-model="buyer_addr"></b-form-input>
+    <b-form-group label="주소" style="margin-top: 30px;">
+      <b-form-input style="width: 500px; font-weight: bold;" v-model="buyer_addr" class="mx-auto"></b-form-input>
     </b-form-group>
-    <b-form-group label="상세주소">
-      <b-form-input v-model="buyer_addr_detail"></b-form-input>
+    <b-form-group label="상세주소" style="margin-top: 30px;">
+      <b-form-input style="width: 500px; font-weight: bold;" v-model="buyer_addr_detail" class="mx-auto"></b-form-input>
     </b-form-group>
     
-    <b-button @click="KGpay">결제</b-button>
+    <b-button @click="KGpay" variant="info" class="pay-button">결제</b-button>
   </div>
 </template>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      receiver_name: '', // Declare the receiver_name property
+      receiver_name: '', 
       buyer_tel: '',
       buyer_addr: '',
       buyer_addr_detail: '',
@@ -52,15 +52,13 @@ export default {
   created() {
     this.item_id = this.$route.params.id;
     axios.interceptors.request.use((config) => {
-      // 요청을 보내기 전에 수행할 작업
-      const token = localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰을 가져옵니다.
+      const token = localStorage.getItem('accessToken'); 
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`; // 토큰이 있으면 헤더에 추가합니다.
+        config.headers.Authorization = `Bearer ${token}`; 
       }
       console.log(config.headers.Authorization);
       return config;
     }, function (error) {
-      // 요청 에러 처리
       return Promise.reject(error);
     });
   },
@@ -72,35 +70,26 @@ export default {
             this.buyer_addr_detail = "";
           }
           if (data.userSelectedType === "R") {
-            // 사용자가 도로명 주소를 선택했을 경우
             this.buyer_addr = data.roadAddress;
           } else {
-            // 사용자가 지번 주소를 선택했을 경우(J)
             this.buyer_addr = data.jibunAddress;
           }
- 
-          // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
           if (data.userSelectedType === "R") {
-            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
             if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
               this.buyer_addr_detail += data.bname;
             }
-            // 건물명이 있고, 공동주택일 경우 추가한다.
             if (data.buildingName !== "" && data.apartment === "Y") {
               this.buyer_addr_detail +=
                 this.buyer_addr_detail !== ""
                   ? `, ${data.buildingName}`
                   : data.buildingName;
             }
-            // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
             if (this.buyer_addr_detail !== "") {
               this.buyer_addr_detail = `(${this.buyer_addr_detail})`;
             }
           } else {
             this.buyer_addr_detail = "";
           }
-          // 우편번호를 입력한다.
           this.buyer_postcode = data.zonecode;
         },
       }).open();
@@ -192,3 +181,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.paymentpage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.pay-button {
+  margin-bottom: 40px;
+  margin-top: 30px;
+}
+</style>

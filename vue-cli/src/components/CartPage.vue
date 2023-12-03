@@ -1,12 +1,11 @@
 <template>
   <div class="cartpage">
-    <b-container>
-      <br>
+    <b-container class="full-container"> 
       <b-row>
         <b-col md="12">
-          <h1>장바구니</h1>
-          <br><br>
+          <h1 class="h1">장바구니</h1>
         </b-col>
+        <div class="long-line"></div>
       </b-row>
       <b-row>
         <b-col md="3">
@@ -17,31 +16,29 @@
             <table>
               <thead>
               <tr>
-                <th>선택</th>
                 <th>이미지</th>
                 <th>상품명</th>
                 <th>가격</th>
-                <th>삭제</th>
+                <th>장바구니 삭제</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="(item, index) in cartItems" :key="index">
                 <td>
-                  <input type="checkbox" v-model="item.selected"/>
-                </td>
-                <td>
                   <img :src=getImageUrl(item.image) alt="Image" width="50">
                 </td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.price }}</td>
                 <td>
-                  <button @click="removeItem(index)" class="delete-button">X</button>
+                  <router-link :to="'/product-list/' + item.id">
+                    {{ item.name }}
+                  </router-link>
+                </td>
+                <td>{{ formatPrice(item.price) }}</td>
+                <td>
+                  <button @click="confirmRemoveItem(index)" class="delete-button">X</button>
                 </td>
               </tr>
               </tbody>
             </table>
-            <p>총 결제금액: {{ totalAmount }} 원</p>
-            <button @click="onCheckout">주문하기</button>
           </div>
           <div v-else>
             <p>장바구니가 비어 있습니다.</p>
@@ -49,6 +46,7 @@
         </b-col>
       </b-row>
     </b-container>
+    
   </div>
 </template>
 <script>
@@ -87,6 +85,7 @@ export default {
     }, function (error) {
       return Promise.reject(error);
     });
+
     this.getCartItems();
   },
   methods: {
@@ -104,16 +103,11 @@ export default {
               id: item.id,
             }));
           })
-          .catch((error) => {
-            console.error(error);
+          .catch(() => {
           });
-    },
-    onCheckout() {
-      // 결제 로직 추가
     },
     getImageUrl(imageName) {
       return `http://localhost:8080/product/${imageName}`;
-      // return `https://c6d8-14-63-41-207.ngrok-free.app/product/${imageName}`;
     },
     removeItem(index) {
       const itemId = this.cartItems[index].id;
@@ -122,9 +116,17 @@ export default {
           .then(() => {
             this.cartItems.splice(index, 1);
           })
-          .catch((error) => {
-            console.error(error);
+          .catch(() => {
           });
+    },
+    formatPrice(price) {
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
+    confirmRemoveItem(index) {
+      const confirmed = window.confirm("상품을 삭제하시겠습니까?");
+      if (confirmed) {
+        this.removeItem(index);
+      }
     },
   },
 };
@@ -141,21 +143,25 @@ table {
   width: 100%;
 }
 
-th,
-td {
-  text-align: left;
+th {
+  text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  background-color: #000000e5;
+  color: white;
 }
 
-th {
-  background-color: #F2F2F2;
+td {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
 }
 
 img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 90px;
+  height: 120px;
 }
 
 button {
@@ -174,5 +180,34 @@ button {
   border: none;
   font-size: 16px;
   cursor: pointer;
+  font-weight: bold;
+}
+
+.cartpage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.full-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.h1 {
+  margin-bottom: 40px; 
+  margin-top: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px; 
+  background-color: black; 
+  margin-top: 20px; 
+  margin-bottom: 40px; 
+  margin-left: 5%;
+  width: 90%;
 }
 </style>

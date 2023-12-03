@@ -1,9 +1,9 @@
 
 <template>
-  <div>
+  <div class="productregistration">
+    <p style="margin-top: 30px; font-size: 30px;">대표사진의 예시</p>
     <b-form @submit.prevent="submitForm">
-      <div v-for="(image, index) in product.images" :key="index">
-        <p style="font-weight: bold">대표사진의 예시</p>
+      <div v-for="(image, index) in product.images" :key="index">      
         <img class="representative" src="../assets/상품 대표사진.jpg" v-if="index === 0"/>
         <p >다음과 같이 대표사진을 등록해주세요. (이미지의 크기는 768x1024 혹은 3:4 비율을 권장합니다.) </p>
         <b-form-group :id="'product-image-' + index" :label="`상품 이미지${index === 0 ? ' [대표사진]' : ''}`"
@@ -18,7 +18,6 @@
       <b-button class="delete-image" @click="removeImage" v-if="product.images.length > 0" variant="danger">사진
         제거
       </b-button>
-
       <b-form-group id="product-name" label="상품 이름" style="font-weight: bold; margin-left: 200px; margin-right: 200px;">
         <b-form-input v-model="product.name"></b-form-input>
       </b-form-group>
@@ -45,7 +44,7 @@
         </b-form-group>
 
       <b-form-group id="product-price" label="상품 가격"
-                    style="font-weight: bold; margin-left: 400px; margin-right: 400px;">
+                    style="font-weight: bold; margin-left: 280px; margin-right: 280px;">
         <b-input-group>
           <b-form-input v-model="product.price" type="text" @input="formatPrice" min="0"></b-form-input>
         </b-input-group>
@@ -56,7 +55,7 @@
         <b-form-textarea v-model="product.description"></b-form-textarea>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">등록</b-button>
+      <b-button type="submit" variant="primary" style="margin-bottom: 40px;">등록</b-button>
     </b-form>
   </div>
 </template>
@@ -85,7 +84,6 @@ export default {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
-      // console.log(config.headers.Authorization);
       return config;
     }, function (error) {
       return Promise.reject(error);
@@ -103,9 +101,6 @@ export default {
       } else {
         this.$set(this.product.imagePreviews, index, undefined);
       }
-    },
-    formatPrice() {
-      this.product.price = parseFloat(this.product.price.replace(/,/g, '')).toLocaleString();
     },
     addImage() {
       this.product.images.push(undefined);
@@ -132,7 +127,6 @@ export default {
       formData.append('category', this.product.category);
       formData.append('shoeSize', this.product.shoeSize);
 
-      // FormData 객체를 서버에 제출
       axios.post('/product/item-upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -186,6 +180,20 @@ export default {
   margin-right: 4rem;
   margin-left: 4rem;
   font-weight: bold;
+}
+
+.productregistration {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px; 
+  background-color: black; 
+  margin-top: 20px; 
+  margin-bottom: 40px; 
+  margin-left: 3%;
+  width: 94%;
 }
 
 </style>

@@ -98,7 +98,7 @@
 }
 </style>
 
-<!-- <script>
+<script>
 import ButtonList from './ButtonList';
 import axios from 'axios';
 
@@ -124,7 +124,7 @@ export default {
     created() {
         const productId = this.$route.params.ProductId;
         
-        axios.get(`/products/${productId}`)   // api
+        axios.get(`/products/${productId}`)  
             .then(response => {
                 this.editedProduct = response.data;
             })
@@ -164,7 +164,7 @@ export default {
                     }
                     if (this.selectedImageIndex !== null) {
                         this.editedProduct.images[this.selectedImageIndex] = reader.result;
-                        this.selectedImageIndex = null; // 선택 인덱스 초기화
+                        this.selectedImageIndex = null; 
                     } else {
                         this.editedProduct.images.push(reader.result);
                     }
@@ -175,119 +175,6 @@ export default {
         },
     },
 };
-</script> -->
-
-<script>
-import ButtonList from "./ButtonList";
-
-export default {
-  components: {
-    ButtonList,
-  },
-  data() {
-    return {
-      editedProduct: {
-        images: [],
-        imagePreviews: [],
-        name: "",
-        price: 0,
-        showSize: 0,
-        category: "",
-        description: "",
-        id: 0,
-      },
-      selectedImageIndex: null,
-    };
-  },
-  created() {
-    const productId = this.$route.params.productId;
-
-    if (productId === "1") {
-      const testData1 = {
-        images: [
-          "https://shopping-phinf.pstatic.net/main_1164266/11642661041.20191216104903.jpg?type=f300",
-          "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
-          "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
-        ],
-        name: "나이키운동화",
-        price: 10000,
-        showSize: 250,
-        category: "운동화",
-        description: "운동하기 편함",
-        id: 1,
-      };
-      this.editedProduct = testData1;
-    } else if (productId === "2") {
-      const testData2 = {
-        images: [
-          "https://shopping-phinf.pstatic.net/main_1164266/11642661041.20191216104903.jpg?type=f300",
-          "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
-          "https://shopping-phinf.pstatic.net/main_2955567/29555674431.20221013162919.jpg?type=f300",
-        ],
-        name: "아디다스 샌들",
-        price: 15000,
-        showSize: 270,
-        category: "샌들",
-        description: "편함",
-        id: 2,
-      };
-      this.editedProduct = testData2;
-    }
-  },
-  methods: {
-    saveProductInformation() {
-      // 서버에 저장하는 로직
-    },
-    cancelProduct() {
-      // 상품판매 취소
-    },
-    editImage(index) {
-      this.selectedImageIndex = index;
-      this.$refs.fileInput.click();
-    },
-    addImage() {
-      if (this.editedProduct.images.length < 5) {
-        this.$refs.fileInput.click();
-      } else {
-        alert("이미지는 최대 5개까지만 추가할 수 있습니다.");
-      }
-    },
-
-    deleteImage(index) {
-      if (this.isRepresentativeImage(index)) {
-        alert("대표이미지는 삭제할 수 없습니다.");
-      } else if (this.editedProduct.images.length > 3) {
-        this.editedProduct.images.splice(index, 1);
-      } else {
-        alert("이미지는 최소 3개까지 유지되어야 합니다.");
-      }
-    },
-    isRepresentativeImage(index) {
-      return index === 0;
-    },
-    handleImageUpload(event) {
-      const file = event.target.files[0];
-
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          if (!this.editedProduct.images) {
-            this.$set(this.editedProduct, "images", []);
-          }
-          if (this.selectedImageIndex !== null) {
-            this.editedProduct.images[this.selectedImageIndex] = reader.result;
-            this.selectedImageIndex = null;
-          } else {
-            this.editedProduct.images.push(reader.result);
-          }
-
-          // console.log("Edited product:", this.editedProduct);
-          this.$forceUpdate();
-        };
-        reader.readAsDataURL(file);
-      }
-    },
-  },
-};
 </script>
+
 

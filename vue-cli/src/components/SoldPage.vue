@@ -1,11 +1,12 @@
 <template>
   <div class="soldpage">
-    <b-container>
+    <b-container class="full-container">
       <b-row>
         <b-col md="12">
-          <h1 style="margin-top: 40px;">판매완료 상품</h1>
+          <h1 class="h1">판매완료 상품</h1>
           <button @click="goToProductRegisterPage" class=" product-register-button">상품등록</button>
         </b-col>
+        <div class="long-line"></div>
       </b-row>
       <b-row>
         <b-col md="3">
@@ -19,28 +20,19 @@
                 <th>이미지</th>
                 <th>상품명</th>
                 <th>가격</th>
-                <th>내역 삭제</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="(item, index) in soldProducts" :key="index">
                 <td>
-                  <!-- <img :src="item.images[0]" alt="Image" width="50"> -->
                   <img :src=getImageUrl(item.image) alt="Image" width="50">
                 </td>
                 <td>{{ item.name }}</td>
-                <td>{{ item.price }}</td>
-                <td>
-                  <button @click="openCancelConfirmation(index)" class="delete-button">내역 삭제</button>
-                </td>
+                <td>{{ formatPrice(item.price) }}</td>
               </tr>
               </tbody>
             </table>
-            <b-modal ref="cancelModal" title="내역 삭제" @ok="removeItem(selectedItemIndex)" ok-title="예"
-                     cancel-title="아니오">
-              <p>판매내역을 삭제하시겠습니까?</p>
-            </b-modal>
-            <p>총 판매금액: {{ totalAmount }} 원</p>
+            <p style="margin-top: 40px;">총 판매금액: {{ formatPrice(totalAmount) }} 원</p>
           </div>
           <div v-else>
             <p>판매한 상품이 없습니다.</p>
@@ -67,7 +59,7 @@ export default {
 
   computed: {
     totalAmount() {
-      return this.soldProducts.reduce((total, item) => total + item.price, 0);
+      return this.soldProducts.reduce((total, item) => total + Number(item.price), 0);
     },
   },
 
@@ -88,34 +80,30 @@ export default {
   methods: {
     getSoldProducts() {
       axios
-          .get('/soldItems')  //판매완료 페이지
+          .get('/soldItems')  
           .then((response) => {
             this.soldProducts = response.data.map((item) => ({
               image: item.image,
               name: item.name,
               price: item.price,
               shoeSize: item.shoeSize,
-              // category: item.category,
-              // description: item.description,
               id: item.id,
               createdDate: item.createdDate,
             }));
           })
-          .catch((error) => {
-            console.error(error);
+          .catch(() => {
           });
     },
     removeItem(index) {
       const id = this.soldProducts[index].id;
 
       axios
-          .delete(`/delete-item?itemId=${id}`)   //api 맞게 수정
+          .delete(`/delete-item?itemId=${id}`) 
           .then(() => {
             this.soldProducts.splice(index, 1);
             alert('결제가 취소되었습니다.');
           })
-          .catch((error) => {
-            console.error(error);
+          .catch(() => {
           });
     },
     goToProductRegisterPage() {
@@ -125,11 +113,13 @@ export default {
     },
     getImageUrl(imageName) {
       return `http://localhost:8080/product/${imageName}`;
-      // return `https://c6d8-14-63-41-207.ngrok-free.app/product/${imageName}`;
     },
     openCancelConfirmation(index) {
       this.selectedItemIndex = index;
       this.$refs.cancelModal.show();
+    },
+    formatPrice(price) {
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
   },
 };
@@ -137,12 +127,15 @@ export default {
 
 <style scoped>
 .product-register-button {
-  background-color: #007bff;
+  background-color: black;
   color: white;
-  margin-left: 500px;
-  margin-bottom: 30px;
+  font-weight: bold;
+  border: 1px solid black;
+  margin-left: 700px;
+  border-radius: 5px; 
   width: 150px;
   height: 40px;
+  text-align: center;
 }
 
 .container {
@@ -156,38 +149,52 @@ table {
   width: 100%;
 }
 
-th,
-td {
-  text-align: left;
+th {
+  text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  background-color: #000000e5;
+  color: white;
 }
 
-th {
-  background-color: #f2f2f2;
+td {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
 }
 
 img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 90px;
+  height: 120px;
 }
 
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+.soldpage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
 }
 
-.delete-button {
-  background-color: transparent;
-  color: red;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
+.h1 {
+  margin-bottom: 40px; 
+  margin-top: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px; 
+  background-color: black; 
+  margin-top: 20px; 
+  margin-bottom: 40px; 
+  margin-left: 5%;
+  width: 90%;
+}
+
+.full-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 1200px;
 }
 </style>

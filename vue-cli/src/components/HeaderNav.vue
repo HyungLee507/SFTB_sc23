@@ -1,7 +1,8 @@
 <template>
   <div>
-    <b-navbar :key="navKey" toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand to="/">VFMarket</b-navbar-brand>
+    <img src="@/assets/logo.png" alt="Logo" class="logo">
+    <b-navbar :key="navKey" toggleable="lg" type="dark" class="nav-bar">
+      <b-navbar-brand to="/" style="font-size: 40px; margin-right: 40px;">VFMarket</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -43,23 +44,20 @@ export default {
   name: "HeaderNav",
   data() {
     return {
-      navKey: 0, // 컴포넌트를 강제로 업데이트하기 위한 키
-      token: localStorage.getItem('accessToken'), // 토큰을 데이터로 관리합니다.
-      notifications: [], // 알림 메시지 리스트
-      showModal: false, // 모달 창 표시 여부
+      navKey: 0, 
+      token: localStorage.getItem('accessToken'), 
+      notifications: [], 
+      showModal: false, 
     };
   },
   created() {
     axios.interceptors.request.use((config) => {
-      // 요청을 보내기 전에 수행할 작업
-      const token = localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰을 가져옵니다.
+      const token = localStorage.getItem('accessToken'); 
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`; // 토큰이 있으면 헤더에 추가합니다.
+        config.headers.Authorization = `Bearer ${token}`; 
       }
-      // console.log(config.headers.Authorization);
       return config;
     }, function (error) {
-      // 요청 에러 처리
       return Promise.reject(error);
     });
   },
@@ -103,8 +101,7 @@ export default {
           .then(response => {
             this.notifications = response.data;
           })
-          .catch(error => {
-            console.error(error);
+          .catch(() => {
           });
     },
   },
@@ -113,3 +110,26 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.nav-bar{
+  background: black;
+  font-family: impact, sans-serif;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(230, 230, 230, 0.87);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: large;
+}
+
+.form-inline {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.logo {
+  margin-bottom: 40px;
+  width: 150px;
+  height: auto;
+}
+</style>

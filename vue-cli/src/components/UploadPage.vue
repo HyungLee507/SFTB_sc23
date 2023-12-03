@@ -1,17 +1,22 @@
 
 <template>
-    <div>
-        <input type="file" @change="handleFileUpload" />
-                <p style="font-weight: bold">대표사진의 예시</p>
+    <div class="uploadpage">
+        <input style= "margin-top: 40px; margin-bottom: 40px;" type="file" @change="handleFileUpload" />
+                <p style="font-weight: bold; font-size: 28px;">대표사진의 예시</p>
             <img class="representative" src="../assets/전신 대표사진.jpg"/>
-            <p >다음과 같이 전신사진을 등록해주세요. (이미지의 크기는 768x1024 혹은 3:4 비율을 권장합니다.) </p>
-            <p >네트워크 환경에 따라 사진 합성에 최대 2분정도 소요될 수 있습니다.</p>
-        <img class="userPreview" :src="imageUrl" alt="Uploaded Image" v-if="imageUrl" style="max-width: 100%; max-height: 100%;" />
-        <button class="upload-button" @click="composeImages">이미지 합성</button>
-        <img class="composedPreview"  :src="composedImageUrl" alt="Composed Image" v-if="composedImageUrl" style="max-width: 100%; max-height: 100%;" />
-        <button class="save-button" @click="saveImage">이미지 저장</button>
-    </div>
-</template>
+            <p class="guideline" style="margin-top: 40px;">다음과 같이 전신사진을 등록해주세요. (이미지의 크기는 768x1024 혹은 3:4 비율을 권장합니다.) </p>
+            <p class="guideline" >네트워크 환경에 따라 사진 합성에 최대 2분정도 소요될 수 있습니다.</p>
+            <div class="long-line"></div>    
+        <div>
+          <img class="userPreview" :src="imageUrl" alt="Uploaded Image" v-if="imageUrl" />
+          <button class="upload-button" @click="composeImages">이미지 합성</button>
+        </div>
+        <div>
+          <img class="composedPreview" :src="composedImageUrl" alt="Composed Image" v-if="composedImageUrl" />
+          <button class="save-button" @click="saveImage">이미지 저장</button>
+        </div>
+      </div>
+  </template>
 
 
 <script>
@@ -19,16 +24,16 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      imageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png',// 하드코딩된 이미지 URL
-      composedImageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png', // 하드코딩된 합성 이미지 URL
+      imageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png',
+      composedImageUrl: 'https://i.ibb.co/9HpY1rp/2021-11-21-193906.png', 
       item_id: this.$route.params.id,
-      file: null, // 추가된 file 데이터
+      file: null, 
 
     };
   },
   methods: {
     handleFileUpload(event) {
-      this.file = event.target.files[0]; // file 데이터 업데이트
+      this.file = event.target.files[0]; 
       const reader = new FileReader();
 
       reader.onload = () => {
@@ -59,7 +64,6 @@ export default {
       axios.post('/api/save', formData)
           .then(response => {
             console.log(response.data);
-            console.log('Image saved successfully!');
             alert('이미지가 저장되었습니다!');
           })
           .catch(error => {
@@ -78,6 +82,8 @@ export default {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-left: 30px;
+    font-weight: bold;
 }
 
 .save-button {
@@ -87,6 +93,8 @@ export default {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-left: 30px;
+    font-weight: bold;
 }
 .userPreview {
 width: 250px;
@@ -111,4 +119,20 @@ border-radius: 0;
 margin-top: 30px;
 font-weight: bold;
 }
+
+.uploadpage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px; 
+  background-color: black; 
+  margin-top: 20px; 
+  margin-bottom: 40px; 
+  margin-left: 5%;
+  width: 90%;
+}
+
+
 </style>

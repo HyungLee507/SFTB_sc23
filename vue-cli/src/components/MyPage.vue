@@ -1,9 +1,9 @@
 <template>
   <div class="mypage">
-    <b-container>
+    <b-container class="full-container">
       <b-row>
         <b-col md="12">
-          <h1 style="margin-bottom: 40px; margin-top: 40px;">주문내역</h1>
+          <h1 class="h1" >주문내역</h1>
           <b-row class="select">
             <b-col md="6">
               <button class="dealing-products" @click="goToBuyerTradingPage">거래중인 상품</button>
@@ -13,6 +13,7 @@
             </b-col>
           </b-row>
         </b-col>
+        <div class="long-line"></div>
       </b-row>
       <b-row>
         <b-col md="3">
@@ -22,13 +23,13 @@
           <div v-if="ordersProducts.length > 0">
             <table>
               <thead>
-              <tr>
+              <tr class="table-head">
                 <th style="width: 10%;">이미지</th>
                 <th style="width: 10%;">상품명</th>
                 <th style="width: 10%;">가격</th>
                 <th style="width: 10%;">사이즈</th>
                 <th style="width: 20%; text-align: center;">리뷰관리</th>
-                <th style="text-align: center;">배송정보</th>
+                <th>배송정보</th>
               </tr>
               </thead>
               <tbody>
@@ -95,24 +96,13 @@ export default {
       return Promise.reject(error);
     });
 
-
-    // const sampleReviews = [
-    //   { images: "이미지", name: "반팔", price: "10000" , shoeSize: "100", orderId: 1, createdDate: new Date(Date.now() - 0.5 * 60 * 60 * 1000), billingNumber: "운송장1" , deliveryCompany: "cj", reviewSubmitted: true},
-    //   { images: "이미지", name: "긴팔", price: "20000", shoeSize: "110", orderId: 2, createdDate: new Date(Date.now() - 5 * 60 * 60 * 1000), billingNumber: "운송장2" , deliveryCompany: "우체국" , reviewSubmitted: true },
-    //   { images: "이미지", name: "바지", price: "30000", shoeSize: "90", orderId: 3, createdDate: new Date(Date.now() - 5 * 60 * 60 * 1000), billingNumber: "운송장3" , deliveryCompany: "롯데" , reviewSubmitted: false },
-    //   { images: "이미지", name: "신발", price: "40000", shoeSize: "100", orderId: 4, createdDate: new Date(Date.now() - 5 * 60 * 60 * 1000), billingNumber: "운송장4운송장4운송장4운송장4운송장4운송장4운송장4운송장4운송장4운송장4" , deliveryCompany: "cj" , reviewSubmitted: false },
-    // ];
-    // //가상의 리뷰 데이터
-    // this.ordersProducts = sampleReviews;
-
-
     this.getOrdersProducts();
   },
 
   methods: {
     getOrdersProducts() {
       axios
-          .get('/ordersDone')   //api 수정
+          .get('/ordersDone') 
           .then((response) => {
             this.ordersProducts = response.data.map((item) => ({
               image: item.image,
@@ -126,8 +116,7 @@ export default {
               deliveryCompany: item.deliveryCompany
             }));
           })
-          .catch((error) => {
-            console.error(error);
+          .catch(() => {
           });
     },
     getImageUrl(imageName) {
@@ -158,7 +147,6 @@ export default {
     },
 
     handleReviewSubmitted(reviewSubmitted) {
-      console.log('Review submitted status:', reviewSubmitted);
       this.$set(this.ordersProducts, this.selectedItemIndex, {
         ...this.ordersProducts[this.selectedItemIndex],
         reviewSubmitted
@@ -178,44 +166,41 @@ export default {
 table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 800px;
+  overflow-x: auto;
 }
 
-th,
+th {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  background-color: #000000e5;
+  color: white;
+}
+
 td {
-  text-align: left;
+  text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ddd;
   font-weight: bold;
 }
 
-th {
-  background-color: #f2f2f2;
-}
-
 img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 10px;
+  height: 100px;
 }
 
 button {
-  background-color: #4CAF50;
-  color: white;
+  background-color: white;
+  color: black;
   padding: 10px 20px;
-  border: none;
+  border: 2px solid black;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: bold;
 }
 
-.delete-button {
-  background-color: red;
-  color: white;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-}
 
 .select {
   margin-bottom: 40px;
@@ -225,16 +210,43 @@ button {
 .dealing-products {
   background-color: white;
   color: gray;
-  font-weight: bold;
   border: 1px solid gray;
 }
 
 .completed-products {
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
   font-weight: bold;
   text-decoration: underline;
   border: 1px solid black;
+  
+}
 
+.full-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.h1 {
+  margin-bottom: 40px; 
+  margin-top: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px; 
+  background-color: black; 
+  margin-top: 20px; 
+  margin-bottom: 40px; 
+  margin-left: 5%;
+  width: 90%;
+}
+
+.mypage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
 }
 </style>

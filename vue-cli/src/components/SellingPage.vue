@@ -1,11 +1,12 @@
 <template>
   <div class="sellingpage">
-    <b-container>
+    <b-container class="full-container">
       <b-row>
         <b-col md="12">
-          <h1 style="margin-top: 40px;">판매중인 상품</h1>
+          <h1 class="h1">판매중인 상품</h1>
           <button @click="goToProductRegisterPage" class=" product-register-button">상품등록</button>
         </b-col>
+        <div class="long-line"></div>
       </b-row>
       <b-row>
         <b-col md="3">
@@ -26,12 +27,11 @@
               <tr v-for="(item, index) in sellingProducts" :key="index">
                 <td>
                   <img :src=getImageUrl(item.image) alt="Image" width="50">
-                  <!-- <img :src="item.images[0]" alt="Image" width="50"> -->
                 </td>
                 <td>{{ item.name }}</td>
-                <td>{{ item.price }}</td>
+                <td>{{ formatPrice(item.price) }}</td>
                 <td>
-                  <button @click="goToSellingProductInformationPage(item.id)">수정</button>
+                  <button class= "edit-button" @click="goToSellingProductInformationPage(item.id)">수정</button>
                 </td>
               </tr>
               </tbody>
@@ -79,25 +79,20 @@ export default {
   methods: {
     getSellingProducts() {
       axios
-          .get('/salesItems')   //api 수정
+          .get('/salesItems')  
           .then((response) => {
             this.sellingProducts = response.data.map((item) => ({
               image: item.imageName,
               name: item.itemName,
               price: item.price,
-              //shoeSize: item.shoeSize,
-              //category: item.category,
-              //description: item.description,
               id: item.itemId,
             }));
           })
-          .catch((error) => {
-            console.error(error);
+          .catch(() => {
           });
     },
     getImageUrl(imageName) {
       return `http://localhost:8080/product/${imageName}`;
-      // return `https://c6d8-14-63-41-207.ngrok-free.app/product/${imageName}`;
     },
 
     goToProductRegisterPage() {
@@ -109,6 +104,9 @@ export default {
       const targetRoute = `/user/mypage/saleshistory/sellingproduct/${productId}`;
       this.$router.push(targetRoute).catch(() => {
       });
+    },
+    formatPrice(price) {
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
   },
 };
@@ -126,49 +124,75 @@ table {
   width: 100%;
 }
 
-th,
-td {
-  text-align: left;
+th {
+  text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  background-color: #000000e5;
+  color: white;
 }
 
-th {
-  background-color: #f2f2f2;
+td {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
 }
 
 img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 90px;
+  height: 120px;
 }
 
-button {
-  background-color: #4CAF50;
+.product-register-button {
+  background-color: black;
   color: white;
+  font-weight: bold;
+  border: 1px solid black;
+  margin-left: 700px;
+  border-radius: 5px; 
+  width: 150px;
+  height: 40px;
+  text-align: center;
+}
+
+.sellingpage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.h1 {
+  margin-bottom: 40px; 
+  margin-top: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px; 
+  background-color: black; 
+  margin-top: 20px; 
+  margin-bottom: 40px; 
+  margin-left: 5%;
+  width: 90%;
+}
+
+.full-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.edit-button {
+  background-color: white;
+  color: black;
   padding: 10px 20px;
-  border: none;
+  border: 2px solid black;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  font-weight: bold;
 }
-
-.product-register-button {
-  background-color: #007bff;
-  color: white;
-  margin-left: 500px;
-  margin-bottom: 30px;
-  width: 150px;
-  height: 40px;
-}
-
-.product-register-button {
-  background-color: #007bff;
-  color: white;
-  margin-left: 500px;
-  margin-bottom: 30px;
-  width: 150px;
-  height: 40px;
-}
-
 </style>

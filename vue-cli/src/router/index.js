@@ -11,7 +11,6 @@ import CartPage from "@/components/CartPage.vue";
 import MyPage from "@/components/MyPage.vue";
 import ProfilePage from "@/components/ProfilePage.vue";
 import VirtualFittingPage from "@/components/VirtualFittingPage.vue";
-import OrdersPage from "@/components/OrdersPage.vue";
 import SalesHistoryPage from "@/components/SalesHistoryPage.vue";
 import SellingPage from "@/components/SellingPage.vue";
 import PaymentPage from "@/components/PaymentPage.vue";
@@ -21,7 +20,7 @@ import ReviewPage from "@/components/ReviewPage.vue";
 import UploadPage from "@/components/UploadPage.vue";
 import TradingPage from "@/components/TradingPage.vue";
 import buyerTradingPage from "@/components/buyerTradingPage"
-// import ReviewManagementPage from "@/components/ReviewManagementPage.vue"
+
 Vue.use(Router);
 export default new Router({
     mode: 'history',
@@ -72,10 +71,6 @@ export default new Router({
             component: ProfilePage,
         },
         {
-            path: '/user/mypage/orders',   //없앨지말지
-            component: OrdersPage,
-        },
-        {
             path: '/user/mypage/virtualfitting',
             component: VirtualFittingPage,
         },
@@ -113,9 +108,5 @@ export default new Router({
             component: ReviewPage,
             name: 'reviewPage',
         },
-// {
-//     path: '/user/mypage/reviewmanagement',
-//     component: ReviewManagementPage
-// }
     ]
 });
