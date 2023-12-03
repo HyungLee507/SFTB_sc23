@@ -186,8 +186,8 @@ td {
 }
 
 img {
-  width: 10px;
-  height: 100px;
+  width: 90px;
+  height: 120px;
 }
 
 button {
