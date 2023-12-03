@@ -9,7 +9,7 @@
         <b-form-group :id="'product-image-' + index" :label="`상품 이미지${index === 0 ? ' [대표사진]' : ''}`"
                       style="font-weight: bold; margin-top: 50px; margin-left: 100px; margin-right: 100px;">
           <b-form-file @change="previewImage($event, index)" v-model="product.images[index]"
-                      accept="image/*"></b-form-file>
+                      accept=".jpg"></b-form-file>
           <img class="preview" :src="product.imagePreviews[index]"
               v-if="product.imagePreviews[index] !== undefined && index === 0"/>
         </b-form-group>
@@ -92,7 +92,7 @@ export default {
   methods: {
     previewImage(event, index) {
       const file = event.target.files[0];
-      if (file) {
+      if (file && file.type === 'image/jpeg') {
         const reader = new FileReader();
         reader.onload = e => {
           this.$set(this.product.imagePreviews, index, e.target.result);
