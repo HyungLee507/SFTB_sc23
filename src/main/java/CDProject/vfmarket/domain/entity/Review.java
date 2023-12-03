@@ -43,7 +43,7 @@ public class Review extends BaseTimeEntity {
     @JoinColumn(name = "seller_id")
     private User seller;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "buyer_id")
     private User buyer;
 
