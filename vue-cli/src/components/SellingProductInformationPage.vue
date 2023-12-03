@@ -98,87 +98,11 @@
 }
 </style>
 
-<!-- <script>
-import ButtonList from './ButtonList';
-import axios from 'axios';
 
-export default {
-    components: {
-        ButtonList,
-    },
-    data() {
-        return {
-            editedProduct: {
-                images: [],
-                imagePreviews: [],
-                name: "",
-                price: 0,
-                showSize: 0,
-                category: "",
-                description: "",
-                id: 0,
-            },
-            selectedImageIndex: null,
-        };
-    },
-    created() {
-        const productId = this.$route.params.ProductId;
-        
-        axios.get(`/products/${productId}`)   // api
-            .then(response => {
-                this.editedProduct = response.data;
-            })
-    },
-    methods: {
-        saveProductInformation() {
-            // 서버에 저장하는 로직
-        },
-        editImage(index) {
-            this.selectedImageIndex = index;
-            this.$refs.fileInput.click();
-        },
-        addImage() {
-            this.$refs.fileInput.click();
-        },
-        cancelProduct() {
-            // 상품판매 취소
-        },
-        deleteImage(index) {
-            if (this.isRepresentativeImage(index)) {
-                alert("대표이미지는 삭제할 수 없습니다.");
-            } else {
-                this.editedProduct.images.splice(index, 1);
-            }
-        },
-        isRepresentativeImage(index) {
-            return index === 0;
-        },
-        handleImageUpload(event) {
-            const file = event.target.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    if (!this.editedProduct.images) {
-                        this.$set(this.editedProduct, "images", []);
-                    }
-                    if (this.selectedImageIndex !== null) {
-                        this.editedProduct.images[this.selectedImageIndex] = reader.result;
-                        this.selectedImageIndex = null; // 선택 인덱스 초기화
-                    } else {
-                        this.editedProduct.images.push(reader.result);
-                    }
-                    this.$forceUpdate(); 
-                };
-                reader.readAsDataURL(file);
-            }
-        },
-    },
-};
-</script> -->
 
 <script>
-import ButtonList from "./ButtonList";
+import ButtonList from './ButtonList';
+import axios from 'axios';
 
 export default {
   components: {
@@ -191,7 +115,7 @@ export default {
         imagePreviews: [],
         name: "",
         price: 0,
-        shoeSize: 0,
+        showSize: 0,
         category: "",
         description: "",
         id: 0,
@@ -200,36 +124,32 @@ export default {
     };
   },
   created() {
-    // const productId = this.$route.params.productId;
+    const productId = this.$route.params.ProductId;
 
-
+    axios.get(`/products/${productId}`)
+        .then(response => {
+          this.editedProduct = response.data;
+        })
   },
   methods: {
     saveProductInformation() {
       // 서버에 저장하는 로직
-    },
-    cancelProduct() {
-      // 상품판매 취소
     },
     editImage(index) {
       this.selectedImageIndex = index;
       this.$refs.fileInput.click();
     },
     addImage() {
-      if (this.editedProduct.images.length < 5) {
-        this.$refs.fileInput.click();
-      } else {
-        alert("이미지는 최대 5개까지만 추가할 수 있습니다.");
-      }
+      this.$refs.fileInput.click();
     },
-
+    cancelProduct() {
+      // 상품판매 취소
+    },
     deleteImage(index) {
       if (this.isRepresentativeImage(index)) {
         alert("대표이미지는 삭제할 수 없습니다.");
-      } else if (this.editedProduct.images.length > 3) {
-        this.editedProduct.images.splice(index, 1);
       } else {
-        alert("이미지는 최소 3개까지 유지되어야 합니다.");
+        this.editedProduct.images.splice(index, 1);
       }
     },
     isRepresentativeImage(index) {
@@ -250,8 +170,6 @@ export default {
           } else {
             this.editedProduct.images.push(reader.result);
           }
-
-          // console.log("Edited product:", this.editedProduct);
           this.$forceUpdate();
         };
         reader.readAsDataURL(file);

@@ -1,9 +1,9 @@
 <template>
   <div class="mypage">
-    <b-container>
+    <b-container class="full-container">
       <b-row>
         <b-col md="12">
-          <h1 style="margin-bottom: 40px; margin-top: 40px;">주문내역</h1>
+          <h1 class="h1">주문내역</h1>
           <b-row class="select">
             <b-col md="6">
               <button class="dealing-products" @click="goToBuyerTradingPage">거래중인 상품</button>
@@ -12,8 +12,8 @@
               <button class="completed-products" @click="goToMyPage">구매완료 상품</button>
             </b-col>
           </b-row>
-
         </b-col>
+        <div class="long-line"></div>
       </b-row>
       <b-row>
         <b-col md="3">
@@ -49,7 +49,7 @@
               </tbody>
             </table>
             <b-modal ref="cancelModal" title="결제 취소 확인" @ok="removeItem(selectedItemIndex)" ok-title="예"
-                     cancel-title="아니오">
+                    cancel-title="아니오">
               <p>결제를 취소하시겠습니까?</p>
             </b-modal>
           </div>
@@ -87,14 +87,13 @@ export default {
       return Promise.reject(error);
     });
 
-
     this.getOrdersProducts();
   },
 
   methods: {
     getOrdersProducts() {
       axios
-          .get('/orderItems')   //api 수정
+          .get('/orderItems')  
           .then((response) => {
             this.ordersProducts = response.data.map((item) => ({
               image: item.image,
@@ -106,8 +105,7 @@ export default {
 
             }));
           })
-          .catch((error) => {
-            console.error(error);
+          .catch(() => {
           });
     },
     getImageUrl(imageName) {
@@ -118,23 +116,13 @@ export default {
     removeItem(index) {
       const orderId = this.ordersProducts[index].orderId;
 
-      // axios
-      //     .delete(`/delete-item?itemId=${orderId}`)   //api 맞게 수정
-      //     .then(() => {
-      //       this.ordersProducts.splice(index, 1);
-      //       alert('결제가 취소되었습니다.');
-      //     })
-      //     .catch((error) => {
-      //       console.error(error);
-      //     });
       axios
-          .put(`/refundItem/${orderId}`)   //api 맞게 수정
+          .put(`/refundItem/${orderId}`) 
           .then(() => {
             this.ordersProducts.splice(index, 1);
             alert("결제가 취소되었습니다.");
           })
-          .catch((error) => {
-            console.error(error);
+          .catch(() => {
             alert("결제취소 실패.");
           });
     },
@@ -180,22 +168,25 @@ table {
   width: 100%;
 }
 
-th,
+th {
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  background-color: #000000e5;
+  color: white;
+}
+
 td {
-  text-align: left;
+  text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ddd;
   font-weight: bold;
 }
 
-th {
-  background-color: #f2f2f2;
-}
-
 img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 90px;
+  height: 120px;
 }
 
 button {
@@ -209,11 +200,12 @@ button {
 }
 
 .delete-button {
-  background-color: red;
-  color: white;
-  border: none;
+  color: red;
+  background-color: white;
+  border: 2px solid red;
   font-size: 16px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .select {
@@ -222,18 +214,48 @@ button {
 }
 
 .dealing-products {
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
   font-weight: bold;
   text-decoration: underline;
   border: 1px solid black;
+  
 }
 
 .completed-products {
   background-color: white;
   color: gray;
-  font-weight: bold;
   border: 1px solid gray;
+  font-weight: bold;
 
 }
+
+.mypage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.full-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.h1 {
+  margin-bottom: 40px; 
+  margin-top: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px; 
+  background-color: black; 
+  margin-top: 20px; 
+  margin-bottom: 40px; 
+  margin-left: 5%;
+  width: 90%;
+}
 </style>
+

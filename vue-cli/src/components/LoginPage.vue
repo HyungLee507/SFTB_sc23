@@ -1,8 +1,8 @@
 <template>
   <div class="container d-flex justify-content-center">
     <b-form @submit.prevent="submitForm" v-if="show">
-      <b-form-group id="input-group-1" label="이메일" label-for="input-1">
-        <b-form-input type="email" v-model="form.email" id="input-1" aria-describedby="email-help-block"
+      <b-form-group  style="margin-top: 40px;" id="input-group-1" label="이메일" label-for="input-1">
+        <b-form-input  style="font-weight: bold;" type="email" v-model="form.email" id="input-1" aria-describedby="email-help-block"
           required></b-form-input>
       </b-form-group>
 
@@ -11,9 +11,9 @@
           required></b-form-input>
       </b-form-group>
 
-      <b-button @click="submitForm" variant="primary">로그인</b-button>
-      <b-button to="/account/join" variant="primary">회원가입</b-button>
-      <b-button to="/account/findpassword" variant="primary">비밀번호 찾기</b-button>
+      <b-button style="margin-right: 10px;" class="submit-button" @click="submitForm" variant="primary">로그인</b-button>
+      <b-button style="margin-right: 10px;" class="submit-button" to="/account/join" variant="primary">회원가입</b-button>
+      <b-button class="submit-button" to="/account/findpassword" variant="primary">비밀번호 찾기</b-button>
 
 
 
@@ -33,7 +33,7 @@ import { EventBus } from '@/event-bus.js';
 export default {
   data() {
     return {
-      show: true, 
+      show: true,
       form: {
         email: '',
         password: '',
@@ -68,7 +68,7 @@ export default {
           EventBus.$emit('loggedIn', true);
           const accessToken = response.headers['authorization'];
           const refreshToken = response.headers['authorization-refresh'];
-          if (refreshToken) { 
+          if (refreshToken) {
             localStorage.setItem('refreshToken', refreshToken);
             axios.defaults.headers.common['Refresh'] = refreshToken;
           }
@@ -86,11 +86,15 @@ export default {
 };
 </script>
 <style scoped>
-.naver-logo {
-  width: 100px;
 
-  height: auto;
+.container {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
 
-
+.submit-button {
+  background-color: rgba(0, 0, 0, 0.753);
+  border: 1px solid black;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 </style>

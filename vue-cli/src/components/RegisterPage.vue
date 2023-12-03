@@ -2,42 +2,40 @@
   <div class="container d-flex justify-content-center">
     <b-form @submit.prevent="submitForm">
       <div class="form-group">
-        <label for="text-email">이메일</label>
-        <b-form-input v-model="form.email" type="email" id="text-email" aria-describedby="email-help-block"
+        <label for="text-email" class="info">이메일</label>
+        <b-form-input class="input" v-model="form.email" type="email" id="text-email" aria-describedby="email-help-block"
                       required></b-form-input>
-        <b-button @click="sendVerificationCode" variant="info" style="margin-left: 10px;">인증번호 발송</b-button>
+        <b-button @click="sendVerificationCode" class="info-button">인증번호 발송</b-button>
       </div>
       <div class="form-group">
-        <label for="text-password">인증번호 입력</label>
-        <b-form-input v-model="form.verificationCode" type="number" id="text-verificationcode"
+        <label for="text-password" class="info">인증번호 입력</label>
+        <b-form-input class="input" v-model="form.verificationCode" type="number" id="text-verificationcode"
                       aria-describedby="verificationcode-help-block" required></b-form-input>
-        <b-button @click="VerificationCheck" variant="info" style="margin-left: 10px;">확인</b-button>
+        <b-button @click="VerificationCheck" class="info-button" style="margin-left: 10px;">확인</b-button>
       </div>
 
-      <label for="text-password">비밀번호</label>
-      <b-form-input v-model="form.password" type="password" id="text-password" aria-describedby="password-help-block"
+      <label for="text-password" class="info">비밀번호</label>
+      <b-form-input class="input" v-model="form.password" type="password" id="text-password" aria-describedby="password-help-block"
                     required></b-form-input>
       <div class="form-group">
         <label for="password-confirm">비밀번호 확인</label>
-        <b-form-input type="password" id="password-confirm" v-model="passwordConfirm" required></b-form-input>
+        <b-form-input class="input" type="password" id="password-confirm" v-model="passwordConfirm" required></b-form-input>
         <p v-if="passwordsMatch && form.password && passwordConfirm" style="color: green;">비밀번호가 같습니다.</p>
         <p v-else-if="form.password && passwordConfirm" style="color: red;">비밀번호가 다릅니다.</p>
       </div>
-      <label for="text-name">이름</label>
-      <b-form-input v-model="form.name" type="text" id="text-name" aria-describedby="name-help-block"
+      <label for="text-name" class="info">이름</label>
+      <b-form-input class="input" v-model="form.name" type="text" id="text-name" aria-describedby="name-help-block"
                     required></b-form-input>
-      <b-form-group id="product-shoeSize" label="선호 사이즈">
-        <b-form-radio-group v-model="form.footSize">
-          <b-form-radio value="85">85</b-form-radio>
-          <b-form-radio value="90">90</b-form-radio>
-          <b-form-radio value="95">95</b-form-radio>
-          <b-form-radio value="100">100</b-form-radio>
-          <b-form-radio value="105">105</b-form-radio>
-          <b-form-radio value="110">110</b-form-radio>
-        </b-form-radio-group>
-      </b-form-group>
-
-
+      <b-form-group id="product-shoeSize" label="선호 사이즈" class="info">
+            <b-form-radio-group v-model="form.footSize">
+                <b-form-radio value="85">85</b-form-radio>
+                <b-form-radio value="90">90</b-form-radio>
+                <b-form-radio value="95">95</b-form-radio>
+                <b-form-radio value="100">100</b-form-radio>
+                <b-form-radio value="105">105</b-form-radio>
+                <b-form-radio value="110">110</b-form-radio>
+            </b-form-radio-group>
+          </b-form-group>
       <b-button type="submit" v-show="isVisable" variant="primary">회원가입</b-button>
     </b-form>
 
@@ -172,3 +170,28 @@ export default {
   }
 };
 </script>
+
+
+<style scoped>
+.container {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.info-button {
+  margin-top: 10px;
+  background-color: rgb(39, 161, 39);
+  font-weight: bolder;
+}
+
+.info {
+  margin-top: 35px;
+}
+
+.input {
+  font-weight: bold;
+}
+</style>
+
+

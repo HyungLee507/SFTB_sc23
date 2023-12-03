@@ -66,6 +66,7 @@ export default {
       console.log(config.headers.Authorization);
       return config;
     }, function (error) {
+
       return Promise.reject(error);
     });
 
@@ -85,8 +86,7 @@ export default {
             console.log(response);
             this.editMode = false;
           })
-          .catch(error => {
-            console.log(error);
+          .catch(() => {
           });
     }
   }

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <b-form-input v-model="searchTerm" placeholder="Search by name" @input="searchProducts"></b-form-input>
-    <b-dropdown variant="outline-secondary" text="Sort by" class="ml-2">
+  <div class="productlistpage">
+    <b-form-input class="search" v-model="searchTerm" placeholder="이름으로 검색" @input="searchProducts"></b-form-input>
+    <b-dropdown variant="outline-secondary" text="정렬" class="ml-2">
       <b-dropdown-item @click="sortBy('price', 'asc')">가격 (오름차순)</b-dropdown-item>
       <b-dropdown-item @click="sortBy('price', 'desc')">가격 (내림차순)</b-dropdown-item>
       <b-dropdown-item @click="sortBy('name', 'asc')">상품 이름 (오름차순)</b-dropdown-item>
@@ -9,11 +9,12 @@
       <b-dropdown-item @click="sortBy('createdAt', 'asc')">상품 등록일 (오름차순)</b-dropdown-item>
       <b-dropdown-item @click="sortBy('createdAt', 'desc')">상품 등록일 (내림차순)</b-dropdown-item>
     </b-dropdown>
-    <b-card-group deck>
-      <router-link v-for="product in sortedProducts" :key="product.id" :to="'/product-list/' + product.id">
+    <div class="long-line"></div>
+    <b-card-group>
+      <router-link v-for="product in sortedProducts" :key="product.id" :to="'/product-list/' + product.id" style="margin-bottom: 3rem;">
         <b-card :title="product.name" :img-src="getImageUrl(product.image)" img-alt="Image" img-top
-                class="fixed-card-size">
-          <b-card-text>가격:{{  product.price.toLocaleString()}}원</b-card-text>
+                class="fixed-card-size mx-3 mb-3">
+          <b-card-text>{{ formatPrice(product.price) }}원</b-card-text>
         </b-card>
       </router-link>
     </b-card-group>
@@ -26,14 +27,16 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      products: [], 
-      searchTerm: '', 
-      sortKey: '', 
-      sortOrder: '', 
+      products: [],
+      searchTerm: '',
+      sortKey: '',
+      sortOrder: '',
     };
   },
+
   created() {
     this.fetchProducts();
+
   },
   methods: {
     fetchProducts() {
@@ -41,7 +44,7 @@ export default {
           .get('/product-list')
           .then((response) => {
             this.products = response.data;
-            
+
           })
           .catch((error) => {
             console.log(error);
@@ -56,7 +59,10 @@ export default {
     },
     getImageUrl(imageName) {
       return `http://localhost:8080/product/${imageName}`;
-    }
+    },
+    formatPrice(price) {
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
   },
   computed: {
     sortedProducts() {
@@ -70,7 +76,7 @@ export default {
           } else if (this.sortKey === 'createdAt') {
             return this.sortOrder === 'asc' ? new Date(a[this.sortKey]) - new Date(b[this.sortKey]) : new Date(b[this.sortKey]) - new Date(a[this.sortKey]);
           }
-          return 0; 
+          return 0;
         });
       }
       return sorted;
@@ -95,6 +101,32 @@ export default {
 .fixed-card-size {
   width: 20rem;
   height: 100%;
+}
+
+.productlistpage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.fixed-card-size {
+  color: black;
+}
+
+.ml-2 {
+  margin-bottom: 40px;
+}
+
+.search {
+  margin-bottom: 20px;
+}
+
+.long-line {
+  height: 3px;
+  background-color: black;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  margin-left: 3%;
+  width: 94%;
 }
 </style>
 

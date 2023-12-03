@@ -1,5 +1,5 @@
 <template>
-  <b-container>
+  <b-container class="productinformation">
     <h1 class="head1">{{ product.name }}</h1>
     <b-row>
       <b-col>
@@ -33,6 +33,7 @@
               @click="changeSlide(index)"
           />
         </div>
+        <div class="long-line"></div>
         <h1 class="head1">{{ product.name }}</h1>
         <div class="product-info">
           <p style="margin-top: 20px;">판매자: <strong>{{ product.sellerName }}</strong></p>
@@ -40,13 +41,13 @@
           <p>카테고리: <strong>{{ product.category }}</strong></p>
           <p>사이즈: <strong>{{ product.shoeSize }}</strong></p>
         </div>
-        <p style="font-size: large"><strong>상품설명</strong></p>
+        <p style="font-size: 22px; text-decoration: underline;" ><strong>상품설명</strong></p>
         <div class="description-box" style="margin-bottom: 30px">
           <p><strong>{{ product.description }}</strong></p>
         </div>
         <p style="font-weight: bold">판매자 후기 ({{ sellerReviews.length }})</p>
         <div v-for="(sellerReview, index) in sellerReviews.slice(0, showAllReviews ? sellerReviews.length : 5)"
-             :key="index" class="review-container">
+            :key="index" class="review-container">
           <div class="reviewer-name">{{ maskReviewerName(sellerReview.reviewerName) }}</div>
           <div class="review-item">
             <p class="review-title">제목: {{ sellerReview.title }}</p>
@@ -62,11 +63,6 @@
               </p>
             </div>
           </div>
-          <div class="review-comment">
-            <p style="white-space: pre-line; word-break: break-all;">
-              <strong>↳ 판매자: {{ product.sellerName }} <br></strong>{{ sellerReview.comments.content }}
-            </p>
-          </div>
         </div>
 
 
@@ -81,7 +77,6 @@
         <div class="buttons">
           <b-button variant="primary" @click="addToCart" style="margin-right: 30px">장바구니</b-button>
           <b-button variant="success" @click="openUploadPopup" style="margin-right: 30px">VR Fitting</b-button>
-          <!--        <b-button variant="info" to="#">결제</b-button>-->
           <b-button variant="info" :to="'/product/payment/' + this.id">결제</b-button>
         </div>
       </b-col>
@@ -118,7 +113,6 @@ export default {
 
   created() {
     axios.interceptors.request.use((config) => {
-
       const accessToken = localStorage.getItem('accessToken');
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
@@ -233,8 +227,8 @@ export default {
 
 .small-images img {
   cursor: pointer;
-  width: 180px;
-  height: 120px;
+  width: 120px;
+  height: 180px;
   object-fit: cover;
   border: 1px solid #ddd;
 }
@@ -244,7 +238,7 @@ export default {
 }
 
 .description-box {
-  border: 2px solid #87CEEB;
+  border: 2px solid #000000;
   padding: 15px;
   margin-top: 10px;
   border-radius: 5px;
@@ -255,10 +249,10 @@ export default {
 }
 
 .product-info {
-  border: 2px solid #0936ca;
   margin-left: 150px;
   margin-right: 150px;
   margin-bottom: 60px;
+  font-size: 18px;
 }
 
 
@@ -294,6 +288,7 @@ export default {
 
 .review-content {
   font-size: 16px;
+  text-align: left;
 }
 
 .average-rating {
@@ -304,7 +299,7 @@ export default {
 }
 
 .review-container {
-  border: 5px solid #ff7c02;
+  border: 5px solid #0000008a;
 }
 
 .review-button {
@@ -325,8 +320,10 @@ export default {
 }
 
 .head1 {
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
+  margin-top: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
 }
 
 .buttons {
@@ -339,4 +336,40 @@ export default {
   border-color: white;
 }
 
+.productinformation {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px;
+  background-color: black;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  margin-left: 5%;
+  width: 90%;
+}
+
+.carousel-slide img {
+  max-width: 400px;
+  max-height: 300px;
+}
+
+.carousel-item active {
+  max-width: 400px;
+  max-height: 300px;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.img-fluid {
+  max-width: 400px;
+  max-height: 300px;
+}
 </style>

@@ -1,13 +1,14 @@
 <template>
   <div class="tradingpage">
-    <b-container style="max-width: 1200px;">
+    <b-container class="full-container">
       <b-row>
         <b-col md="12">
-          <h1 style="margin-top: 40px;">거래중인 상품</h1>
+          <h1 class="h1">거래중인 상품</h1>
           <button @click="goToSellingStatus('product-register')"
                   class="status-button product-register-button">상품등록
           </button>
         </b-col>
+        <div class="long-line"></div>
       </b-row>
       <b-row>
         <b-col md="3">
@@ -22,7 +23,7 @@
                 <th style="width: 20%;">상품명</th>
                 <th style="width: 10%;">가격</th>
                 <th style="width: 25%">구매자 주소</th>
-                <th></th>
+                <th>배송처리</th>
               </tr>
               </thead>
               <tbody>
@@ -31,7 +32,7 @@
                   <img :src=getImageUrl(item.image) alt="Image" width="50">
                 </td>
                 <td>{{ item.name }}</td>
-                <td>{{ item.price }}</td>
+                <td>{{ formatPrice(item.price) }}</td>
                 <td>
                   {{ item.address }}
                 </td>
@@ -123,8 +124,7 @@ export default {
               address: item.address,
             }));
           })
-          .catch((error) => {
-            console.error(error);
+          .catch(() => {
           });
     },
     getImageUrl(imageName) {
@@ -147,23 +147,23 @@ export default {
         billingNumber: billingNumber,
         deliveryCompany: deliveryCompany,
       })
-          .then(response => {
-            console.log(response.data);
+          .then(() => {
             alert('배송완료처리 되었습니다.')
             const indexToRemove = this.tradingProducts.findIndex(item => item.id === productId);
             if (indexToRemove !== -1) {
               this.tradingProducts.splice(indexToRemove, 1);
             }
           })
-          .catch(error => {
-            console.error(error);
+          .catch(() => {
             alert('배송완료처리에 실패했습니다.')
           });
 
 
       this.showBillModal = false;
     },
-
+    formatPrice(price) {
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
 
   },
 };
@@ -186,40 +186,37 @@ export default {
 }
 
 
-td {
+th {
+  text-align: center;
   padding: 10px;
   border-bottom: 1px solid #ddd;
-  vertical-align: middle;
+  font-weight: bold;
+  background-color: #000000e5;
+  color: white;
 }
 
-th {
-  background-color: #f2f2f2;
+td {
   text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
 }
 
 img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-}
-
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+  width: 90px;
+  height: 120px;
 }
 
 .product-register-button {
-  background-color: #007bff;
+  background-color: black;
   color: white;
-  margin-left: 500px;
-  margin-bottom: 30px;
+  font-weight: bold;
+  border: 1px solid black;
+  margin-left: 700px;
+  border-radius: 5px; 
   width: 150px;
   height: 40px;
+  text-align: center;
 }
 
 .shipping-note {
@@ -230,5 +227,44 @@ button {
 .guide-text {
   color: rgba(0, 0, 0, 0.5);
   font-size: 14px;
+}
+
+.tradingpage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.h1 {
+  margin-bottom: 40px; 
+  margin-top: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px; 
+  background-color: black; 
+  margin-top: 20px; 
+  margin-bottom: 40px; 
+  margin-left: 5%;
+  width: 90%;
+}
+
+.full-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.bill-button {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  border: 2px solid rgb(3, 160, 3);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
 }
 </style>

@@ -1,24 +1,24 @@
 <template>
-  <div>
-    <b-form-group label=" 수령인 이름">
-      <b-form-input v-model="receiver_name"></b-form-input>
+  <div class="paymentpage text-center">
+    <b-form-group label=" 수령인 이름" style="margin-top: 40px;">
+      <b-form-input style="width: 200px; font-weight: bold;" v-model="receiver_name" class="mx-auto"></b-form-input>
     </b-form-group>
-    <b-form-group label="전화번호">
-      <b-form-input v-model="buyer_tel"></b-form-input>
+    <b-form-group label="전화번호" style="margin-top: 30px;">
+      <b-form-input style="width: 300px; font-weight: bold;" v-model="buyer_tel" class="mx-auto"></b-form-input>
     </b-form-group>
-    <b-form-group label="우편번호">
-      <b-form-input v-model="buyer_postcode"></b-form-input>
-      <input type="button" @click="execDaumPostcode()" value="우편번호 찾기"><br>
+        <b-form-group label="우편번호" style="margin-top: 30px;">
+        <b-form-input style="width: 200px; font-weight: bold;" v-model="buyer_postcode" class="mx-auto"></b-form-input>
+        <input type="button" @click="execDaumPostcode()" value="우편번호 찾기" style="margin-top: 10px;">
 
+      </b-form-group>
+    <b-form-group label="주소" style="margin-top: 30px;">
+      <b-form-input style="width: 500px; font-weight: bold;" v-model="buyer_addr" class="mx-auto"></b-form-input>
     </b-form-group>
-    <b-form-group label="주소">
-      <b-form-input v-model="buyer_addr"></b-form-input>
+    <b-form-group label="상세주소" style="margin-top: 30px;">
+      <b-form-input style="width: 500px; font-weight: bold;" v-model="buyer_addr_detail" class="mx-auto"></b-form-input>
     </b-form-group>
-    <b-form-group label="상세주소">
-      <b-form-input v-model="buyer_addr_detail"></b-form-input>
-    </b-form-group>
-
-    <b-button @click="KGpay">결제</b-button>
+    
+    <b-button @click="KGpay" variant="info" class="pay-button">결제</b-button>
   </div>
 </template>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
@@ -180,3 +180,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.paymentpage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.pay-button {
+  margin-bottom: 40px;
+  margin-top: 30px;
+}
+</style>

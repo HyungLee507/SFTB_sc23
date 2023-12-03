@@ -11,7 +11,6 @@ import CartPage from "@/components/CartPage.vue";
 import MyPage from "@/components/MyPage.vue";
 import ProfilePage from "@/components/ProfilePage.vue";
 import VirtualFittingPage from "@/components/VirtualFittingPage.vue";
-import OrdersPage from "@/components/OrdersPage.vue";
 import SalesHistoryPage from "@/components/SalesHistoryPage.vue";
 import SellingPage from "@/components/SellingPage.vue";
 import PaymentPage from "@/components/PaymentPage.vue";
@@ -21,7 +20,7 @@ import ReviewPage from "@/components/ReviewPage.vue";
 import UploadPage from "@/components/UploadPage.vue";
 import TradingPage from "@/components/TradingPage.vue";
 import buyerTradingPage from "@/components/buyerTradingPage"
-// import ReviewManagementPage from "@/components/ReviewManagementPage.vue"
+
 Vue.use(Router);
 export default new Router({
     mode: 'history',
@@ -34,7 +33,7 @@ export default new Router({
                 if (accessToken) {
                     alert('이미 로그인 되어있습니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -48,7 +47,7 @@ export default new Router({
                 if (accessToken) {
                     alert('이미 로그인 되어있습니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -62,7 +61,7 @@ export default new Router({
                 if (accessToken) {
                     alert('이미 로그인 되어있습니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -77,7 +76,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -100,7 +99,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -114,7 +113,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -128,7 +127,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -142,12 +141,12 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
             }
-            
+
         },
         {
             path: '/user/mypage/profile',
@@ -157,21 +156,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
-                } else {
-                    next();
-                }
-            }
-        },
-        {
-            path: '/user/mypage/orders',   //없앨지말지
-            component: OrdersPage,
-                            beforeEnter: (to, from, next) => {
-                const accessToken = localStorage.getItem('accessToken');
-                if (!accessToken) {
-                    alert('로그인이 필요합니다.')
-                    next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -185,7 +170,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -199,7 +184,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -213,7 +198,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -227,7 +212,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -241,7 +226,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -255,7 +240,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -269,7 +254,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -284,7 +269,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -299,7 +284,7 @@ export default new Router({
                 if (!accessToken) {
                     alert('로그인이 필요합니다.')
                     next('/');
-                    
+
                 } else {
                     next();
                 }
@@ -309,9 +294,5 @@ export default new Router({
             path: '/',
             component: ProductlistPage,
         },
-// {
-//     path: '/user/mypage/reviewmanagement',
-//     component: ReviewManagementPage
-// }
     ]
 });

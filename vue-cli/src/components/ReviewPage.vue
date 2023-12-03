@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="reviewpage">
     <h1 class="text-center" style="margin-top: 30px">상품 리뷰</h1>
     <form @submit.prevent="saveReview" class="p-4 d-flex flex-column align-items-center">
       <div class="form-group w-60">
         <label for="title" style="font-weight: bold">제목:</label>
-        <input type="text" id="title" v-model="review.title" required class="form-control">
+        <input style="font-weight: bold;"  type="text" id="title" v-model="review.title" required class="form-control">
       </div>
       <div class="form-group w-70">
         <label for="rating" style="font-weight: bold">평가:</label>
@@ -18,7 +18,7 @@
       </div>
       <div class="form-group w-50">
         <label for="content" style="font-weight: bold">내용:</label>
-        <textarea id="content" v-model="review.content" required class="form-control"></textarea>
+        <textarea style="font-weight: bold;" id="content" v-model="review.content" required class="form-control"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">저장</button>
     </form>
@@ -27,7 +27,6 @@
 
 <script>
 import axios from 'axios';
-//npm install vue-star-rating
 import StarRating from 'vue-star-rating';
 
 export default {
@@ -47,7 +46,6 @@ export default {
 
   methods: {
     saveReview() {
-      // const productId = this.$route.params.id;
       this.review.itemId = this.$route.params.id;
       axios
           .post("/review-upload", {
@@ -57,19 +55,28 @@ export default {
             content: this.review.content,
 
           })
-          .then(response => {
+          .then(() => {
             alert('후기가 저장되었습니다!');
             this.$router.push({name: 'productinformationPage', params: {id: this.$route.params.id}});
-            console.log(response.data);
           })
-          .catch(error => {
+          .catch(() => {
             alert('후기 저장에 실패했습니다!');
-            console.error(error);
           })
-          .finally(() => {
-            this.$bvModal.hide('reviewModal');
-          });
     },
   },
 };
 </script>
+
+<style scoped>
+.text-center {
+  margin-bottom: 40px; 
+  margin-top: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.reviewpage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+</style>

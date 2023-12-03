@@ -1,14 +1,13 @@
 <template>
-  <div class="orderspage">
-    <b-container>
-      <br>
+  <div class="saleshistorypage">
+    <b-container class="full-container">
       <b-row>
         <b-col md="12">
-          <h1>판매내역</h1>
+          <h1 class="h1">판매내역</h1>
           <button @click="goToSellingStatus('product-register')" class="status-button product-register-button">상품등록
           </button>
-          <br><br>
         </b-col>
+        <div class="long-line"></div>
       </b-row>
       <b-row>
         <b-col md="3">
@@ -52,12 +51,45 @@ export default {
 .status-button {
   width: 150px;
   height: 40px;
-  margin-right: 10px;
+  margin-right: 80px;
+  border-radius: 5px;
+  font-weight: bold;
 }
 
 .product-register-button {
-  background-color: #007bff;
+  background-color: black;
   color: white;
-  margin-left: 500px;
+  font-weight: bold;
+  border: 1px solid black;
+  margin-left: 700px;
+  border-radius: 5px;
+}
+
+.saleshistorypage {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.full-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.h1 {
+  margin-bottom: 40px; 
+  margin-top: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px; 
+  background-color: black; 
+  margin-top: 20px; 
+  margin-bottom: 40px; 
+  margin-left: 5%;
+  width: 90%;
 }
 </style>

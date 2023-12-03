@@ -1,7 +1,8 @@
 <template>
   <div>
-    <b-navbar :key="navKey" toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand to="/">VFMarket</b-navbar-brand>
+    <img src="@/assets/logo.png" alt="Logo" class="logo">
+    <b-navbar :key="navKey" toggleable="lg" type="dark" class="nav-bar">
+      <b-navbar-brand to="/" style="font-size: 40px; margin-right: 40px;">VFMarket</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -44,9 +45,9 @@ export default {
   name: "HeaderNav",
   data() {
     return {
-      navKey: 0, 
-      token: localStorage.getItem('accessToken'), 
-      notifications: [], 
+      navKey: 0,
+      token: localStorage.getItem('accessToken'),
+      notifications: [],
       showModal: false,
       loggedIn: false,
     };
@@ -54,10 +55,10 @@ export default {
   created() {
     axios.interceptors.request.use((config) => {
 
-      const token = localStorage.getItem('accessToken'); 
+      const token = localStorage.getItem('accessToken');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
-        
+
       }
       return config;
     }, function (error) {
@@ -123,3 +124,26 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.nav-bar{
+  background: black;
+  font-family: impact, sans-serif;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(230, 230, 230, 0.87);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: large;
+}
+
+.form-inline {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.logo {
+  margin-bottom: 40px;
+  width: 150px;
+  height: auto;
+}
+</style>
