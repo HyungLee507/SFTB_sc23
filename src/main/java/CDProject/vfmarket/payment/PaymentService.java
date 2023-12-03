@@ -59,10 +59,10 @@ public class PaymentService {
         }
         order.setItem(items);
 
-        orderRepository.save(order);
+//        orderRepository.save(order);
         itemRepository.save(items);
 
-        Order savedOrder = orderRepository.findByItem_Id(orderSaveDto.getId());
+//        Order savedOrder = orderRepository.findByItem_Id(orderSaveDto.getId());
         OrderDetail orderDetail = OrderDetail.builder()
                 .apply_num(orderSaveDto.getApply_num())
                 .buyer_addr(orderSaveDto.getBuyer_addr())
@@ -74,7 +74,9 @@ public class PaymentService {
                 .pg_provider(orderSaveDto.getPg_provider())
                 .imp_uid(orderSaveDto.getImp_uid())
                 .build();
-        orderDetail.setOrder(savedOrder);
+        orderDetail.setOrder(order);
+        orderRepository.save(order);
+
         orderDetailRepository.save(orderDetail);
         notificationService.makeNotification(userId, orderSaveDto.getId(),
                 orderSaveDto.getName() + " 상품 결제를 하셨습니다.");

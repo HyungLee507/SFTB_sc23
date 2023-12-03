@@ -1,4 +1,3 @@
-
 <template>
   <div class="productregistration">
     <p style="margin-top: 30px; font-size: 30px;">대표사진의 예시</p>
@@ -9,9 +8,9 @@
         <b-form-group :id="'product-image-' + index" :label="`상품 이미지${index === 0 ? ' [대표사진]' : ''}`"
                       style="font-weight: bold; margin-top: 50px; margin-left: 100px; margin-right: 100px;">
           <b-form-file @change="previewImage($event, index)" v-model="product.images[index]"
-                      accept="image/*"></b-form-file>
+                       accept=".jpg"></b-form-file>
           <img class="preview" :src="product.imagePreviews[index]"
-              v-if="product.imagePreviews[index] !== undefined && index === 0"/>
+               v-if="product.imagePreviews[index] !== undefined && index === 0"/>
         </b-form-group>
       </div>
       <b-button class="add-image" @click="addImage" variant="success">사진 추가</b-button>
@@ -23,25 +22,25 @@
       </b-form-group>
       <b-form-group id="product-category" label="상품 카테고리" style="font-weight: bold;">
         <b-form-radio-group v-model="product.category">
-            <b-form-radio value="상의">상의</b-form-radio>
-            <b-form-radio value="아우터">아우터</b-form-radio>
-            <b-form-radio value="운동복">운동복</b-form-radio>
-            <b-form-radio value="드레스">드레스</b-form-radio>
-            <b-form-radio value="기타">기타</b-form-radio>
+          <b-form-radio value="상의">상의</b-form-radio>
+          <b-form-radio value="아우터">아우터</b-form-radio>
+          <b-form-radio value="운동복">운동복</b-form-radio>
+          <b-form-radio value="드레스">드레스</b-form-radio>
+          <b-form-radio value="기타">기타</b-form-radio>
 
         </b-form-radio-group>
       </b-form-group>
-        <b-form-group id="product-shoeSize" label="상품 사이즈" style="font-weight: bold;">
-          <b-form-radio-group v-model="product.shoeSize">
-              <b-form-radio value="85">85</b-form-radio>
-              <b-form-radio value="90">90</b-form-radio>
-              <b-form-radio value="95">95</b-form-radio>
-              <b-form-radio value="100">100</b-form-radio>
-              <b-form-radio value="105">105</b-form-radio>
-              <b-form-radio value="110">110</b-form-radio>
+      <b-form-group id="product-shoeSize" label="상품 사이즈" style="font-weight: bold;">
+        <b-form-radio-group v-model="product.shoeSize">
+          <b-form-radio value="85">85</b-form-radio>
+          <b-form-radio value="90">90</b-form-radio>
+          <b-form-radio value="95">95</b-form-radio>
+          <b-form-radio value="100">100</b-form-radio>
+          <b-form-radio value="105">105</b-form-radio>
+          <b-form-radio value="110">110</b-form-radio>
 
-          </b-form-radio-group>
-        </b-form-group>
+        </b-form-radio-group>
+      </b-form-group>
 
       <b-form-group id="product-price" label="상품 가격"
                     style="font-weight: bold; margin-left: 280px; margin-right: 280px;">
@@ -92,7 +91,7 @@ export default {
   methods: {
     previewImage(event, index) {
       const file = event.target.files[0];
-      if (file) {
+      if (file && file.type === 'image/jpeg') {
         const reader = new FileReader();
         reader.onload = e => {
           this.$set(this.product.imagePreviews, index, e.target.result);
@@ -196,4 +195,3 @@ export default {
 }
 
 </style>
-

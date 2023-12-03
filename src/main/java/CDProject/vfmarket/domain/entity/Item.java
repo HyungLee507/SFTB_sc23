@@ -52,8 +52,8 @@ public class Item extends BaseTimeEntity {
 
     private String category;
 
-    @OneToOne(mappedBy = "item")
-    private Order order;
+    @OneToMany(mappedBy = "item")
+    private List<Order> order;
 
     private boolean reviewSubmitted;
 
