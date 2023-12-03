@@ -157,24 +157,29 @@ export default {
                           .then((res) => {
                             console.log(res);
                             alert('결제완료');
+                            this.$router.push('/user/mypage/buyertrading');
                           })
                           .catch((error) => {
                             console.error(error);
                             alert('결제실패 : ' + response.error_msg);
+                            this.$router.push('/');
                           });
                     })
                     .catch((error) => {
                       console.error(error);
                       alert('결제실패 : ' + response.error_msg);
+                      this.$router.push('/');
                     });
               } else {
                 alert('결제실패 : ' + response.error_msg);
+                this.$router.push('/');
               }
             });
           })
           .catch(error => {
             console.error(error);
             alert('결제실패 : ' + response.error_msg);
+            this.$router.push('/');
           });
     },
   },
