@@ -50,7 +50,7 @@ public class VFController {
     private final ItemService itemService;
     private final VFService vfService;
     private final TokenValueProvider tokenValueProvider;
-    private final String flaskHost = "https://c11d-34-127-28-249.ngrok-free.app/";
+    private final String flaskHost = "https://sftb-virtualfit.ngrok.app/";
     @Value("${imagePath}")
     private String imagePath;
 
