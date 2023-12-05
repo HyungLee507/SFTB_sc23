@@ -1,5 +1,5 @@
 <template>
-  <div class="mypage">
+  <div class="buyertradingpage">
     <b-container class="full-container">
       <b-row>
         <b-col md="12">
@@ -230,9 +230,10 @@ button {
 
 }
 
-.mypage {
+.buyertradingpage {
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
+  margin-bottom: 400px;
 }
 
 .full-container {
