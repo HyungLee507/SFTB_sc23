@@ -8,7 +8,7 @@
         <b-form-group :id="'product-image-' + index" :label="`상품 이미지${index === 0 ? ' [대표사진]' : ''}`"
                       style="font-weight: bold; margin-top: 50px; margin-left: 100px; margin-right: 100px;">
           <b-form-file @change="previewImage($event, index)" v-model="product.images[index]"
-                       accept=".jpg"></b-form-file>
+                      accept=".jpg"></b-form-file>
           <img class="preview" :src="product.imagePreviews[index]"
                v-if="product.imagePreviews[index] !== undefined && index === 0"/>
         </b-form-group>

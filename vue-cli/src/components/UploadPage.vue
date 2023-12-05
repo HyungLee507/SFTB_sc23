@@ -1,7 +1,6 @@
-
 <template>
     <div class="uploadpage">
-        <input style= "margin-top: 40px; margin-bottom: 40px;" type="file" @change="handleFileUpload" />
+        <input style= "margin-top: 40px; margin-bottom: 40px;" type="file" accept=".jpg" @change="handleFileUpload" />
                 <p style="font-weight: bold; font-size: 28px;">대표사진의 예시</p>
             <img class="representative" src="../assets/전신 대표사진.jpg"/>
             <p class="guideline" style="margin-top: 40px;">다음과 같이 전신사진을 등록해주세요. (이미지의 크기는 768x1024 혹은 3:4 비율을 권장합니다.) </p>
@@ -33,15 +32,13 @@ export default {
   },
   created() {
     axios.interceptors.request.use((config) => {
-      // 요청을 보내기 전에 수행할 작업
-      const token = localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰을 가져옵니다.
+      const token = localStorage.getItem('accessToken'); 
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`; // 토큰이 있으면 헤더에 추가합니다.
+        config.headers.Authorization = `Bearer ${token}`; 
       }
       console.log(config.headers.Authorization);
       return config;
     }, function (error) {
-      // 요청 에러 처리
       return Promise.reject(error);
     });
   },
