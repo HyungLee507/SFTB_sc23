@@ -68,6 +68,7 @@ export default {
 .saleshistorypage {
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
+  margin-bottom: 400px;
 }
 
 .full-container {

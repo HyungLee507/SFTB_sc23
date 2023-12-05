@@ -1,37 +1,34 @@
 <template>
   <div class="profilepage">
     <b-container>
-      <br>
       <b-row>
         <b-col md="12">
-          <h1>내정보</h1>
-          <br><br>
+          <h1 class="h1">내정보</h1>
         </b-col>
+        <div class="long-line"></div>
       </b-row>
       <b-row>
         <b-col md="3">
-          <button-list/>
+          <button-list />
         </b-col>
         <b-col md="9">
-          <div>
-            <h2>사용자 정보</h2>
-            <p>이름: {{ user.userName }}</p>
-            <p>이메일: {{ user.email }}</p>
-            <p>상의 사이즈: {{ user.size }}</p>
-            <button @click="editMode = true">수정</button>
-          </div>
-          <div v-if="editMode">
+          <div class="content-container">
             <form @submit.prevent="submitForm">
-              <label>이름:</label>
-              <input type="text" v-model="user.name">
-              <label>이메일:</label>
-              <input type="text" v-model="user.email">
-              <label>신발 사이즈:</label>
-              <input type="text" v-model="user.footsize">
-              <button type="submit">저장</button>
-              <button @click="editMode = false">취소</button>
+              <div style="margin-bottom: 30px;">
+                <label for="userName" style="margin-right:80px;">이름</label>
+                <input type="text" id="userName" v-model="user.userName" class="input" />
+              </div>
+              <div style="margin-bottom: 30px;">
+                <label for="email" style="margin-right:62px;">이메일</label>
+                <input type="text" id="email" v-model="user.email" class="input" />
+              </div>
+              <div style="margin-bottom: 30px;">
+                <label for="size" style="margin-right:20px;">상의 사이즈</label>
+                <input type="text" id="size" v-model="user.size" class="input" />
+              </div>
             </form>
           </div>
+          <button class="buttons" type="submit">저장</button>
         </b-col>
       </b-row>
     </b-container>
@@ -71,26 +68,65 @@ export default {
     });
 
     axios.get('/user')
-        .then(response => {
-          this.user = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      .then(response => {
+        this.user = response.data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
 
   },
   methods: {
-    submitForm() {
-      axios.put('/user-Info/update', this.user)
-          .then(response => {
-            console.log(response);
-            this.editMode = false;
-          })
-          .catch(() => {
-          });
-    }
+
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.profilepage {
+  margin-bottom: 400px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.h1 {
+  margin-bottom: 40px;
+  margin-top: 40px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+}
+
+.long-line {
+  height: 3px;
+  background-color: black;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  margin-left: 5%;
+  width: 90%;
+}
+
+.h2 {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.buttons {
+  background-color: black;
+  color: white;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 20px;
+}
+
+.content-container {
+  font-size: 20px;
+  text-align: left;
+}
+
+.input {
+  text-align: center;
+}
+</style>

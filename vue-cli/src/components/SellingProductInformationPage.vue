@@ -96,6 +96,10 @@
   margin-top: 30px;
   margin-bottom: 30px;
 }
+
+.sellingproductinformation {
+  margin-bottom: 200px;
+}
 </style>
 
 

@@ -3,20 +3,20 @@
   <div class="container d-flex justify-content-center">
     <b-form @submit.prevent="submitForm">
       <div class="form-group">
-        <label for="text-name">이름</label>
+        <label for="text-name" style="margin-top: 30px;">이름</label>
         <b-form-input v-model="form.name" type="text" id="text-name" :readonly="isEmailSent" required></b-form-input>
       </div>
       <div class="form-group">
-        <label for="text-email">이메일</label>
+        <label for="text-email" style="margin-top: 30px;">이메일</label>
         <b-form-input v-model="form.email" type="email" id="text-email" aria-describedby="email-help-block"
                       :readonly="isEmailSent" required></b-form-input>
-        <b-button @click="sendVerificationCode" variant="info" style="margin-left: 10px;">인증번호 발송</b-button>
+        <b-button @click="sendVerificationCode" variant="info" class="buttons">인증번호 발송</b-button>
       </div>
       <div class="form-group">
         <label for="text-password">인증번호 입력</label>
         <b-form-input v-model="form.verificationCode" type="number" id="text-verificationcode"
                       aria-describedby="verificationcode-help-block" required></b-form-input>
-        <b-button @click="VerificationCheck" variant="info" style="margin-left: 10px;">확인</b-button>
+        <b-button @click="VerificationCheck" variant="info" class="buttons">확인</b-button>
       </div>
 
       <label for="text-password" v-show="isVisable">새 비밀번호</label>
@@ -152,3 +152,18 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.container {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: bold;
+  margin-bottom: 200px;
+}
+
+.buttons {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  background-color: rgba(0, 0, 0, 0.753);
+  border: 0px;
+}
+</style>

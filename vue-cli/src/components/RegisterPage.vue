@@ -179,6 +179,7 @@ export default {
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
   font-size: 20px;
+  margin-bottom: 200px;
 }
 
 .info-button {
