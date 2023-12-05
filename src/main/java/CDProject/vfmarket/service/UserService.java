@@ -63,6 +63,29 @@ public class UserService {
         }
     }
 
+//    public int checkPassword(String email, String password) {
+//        Optional<User> optionalUser = userRepository.findByEmail(email);
+//        if (optionalUser.isEmpty()) {
+//            // 이메일이 없음
+//            return -1;
+//        } else {
+//            // 이메일이 있음
+//            User user = optionalUser.get();
+//            User tempUser = User.builder().password(password).build();
+//            tempUser.passwordEncode(passwordEncoder);
+//            String tempPassword = tempUser.getPassword();
+//            log.info("password: {}", user.getPassword());
+//            log.info("tempPassword: {}", tempPassword);
+//            if (user.getPassword().equals(tempPassword)){
+//                // 임시 비밀번호 인증 성공
+//                return 1;
+//            } else {
+//                // 임시 인증 실패
+//                return 0;
+//            }
+//        }
+//    }
+
     public void updatePassword(User user, String password) {
         user.updatePassword(password, passwordEncoder);
         userRepository.save(user);

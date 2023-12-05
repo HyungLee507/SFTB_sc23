@@ -128,6 +128,8 @@ export default {
             }).catch((err) => {
           if (err.response.status == 401) {
             alert('인증번호가 틀렸습니다.');
+          } else if(err.response.status == 408){
+            alert("인증 기간이 만료되었습니다.")
           } else {
             alert('잘못된 요청입니다.')
           }

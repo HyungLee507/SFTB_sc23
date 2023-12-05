@@ -1,5 +1,6 @@
 <template>
   <b-container class="productinformation">
+    <h1 v-if="this.product.status !== 'FOR_SALE'" style="color: red; font-size: 2em;">판매완료된 상품입니다</h1>
     <h1 class="head1">{{ product.name }}</h1>
     <b-row>
       <b-col>
@@ -130,9 +131,6 @@ export default {
         .get("/product-detail/" + id, {})
         .then((response) => {
           this.product = response.data;
-          if (this.product.status !== "FOR_SALE") {
-            alert("존재하지 않는 상품입니다.");
-          }
         })
         .catch((error) => {
           console.log(error);
