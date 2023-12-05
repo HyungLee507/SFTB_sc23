@@ -128,7 +128,7 @@ export default {
           });
     },
     getImageUrl(imageName) {
-      return `http://localhost:8080/product/${imageName}`;
+      return `https://vfmarket.store/product/${imageName}`;
     },
 
     goToProductRegisterPage() {
@@ -213,7 +213,7 @@ img {
   font-weight: bold;
   border: 1px solid black;
   margin-left: 700px;
-  border-radius: 5px; 
+  border-radius: 5px;
   width: 150px;
   height: 40px;
   text-align: center;
@@ -235,17 +235,17 @@ img {
 }
 
 .h1 {
-  margin-bottom: 40px; 
+  margin-bottom: 40px;
   margin-top: 40px;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
 }
 
 .long-line {
-  height: 3px; 
-  background-color: black; 
-  margin-top: 20px; 
-  margin-bottom: 40px; 
+  height: 3px;
+  background-color: black;
+  margin-top: 20px;
+  margin-bottom: 40px;
   margin-left: 5%;
   width: 90%;
 }

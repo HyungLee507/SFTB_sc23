@@ -3,7 +3,7 @@
     <b-container class="full-container">
       <b-row>
         <b-col md="12">
-          <h1 class="h1" >주문내역</h1>
+          <h1 class="h1">주문내역</h1>
           <b-row class="select">
             <b-col md="6">
               <button class="dealing-products" @click="goToBuyerTradingPage">거래중인 상품</button>
@@ -102,7 +102,7 @@ export default {
   methods: {
     getOrdersProducts() {
       axios
-          .get('/ordersDone') 
+          .get('/ordersDone')
           .then((response) => {
             this.ordersProducts = response.data.map((item) => ({
               image: item.image,
@@ -120,9 +120,9 @@ export default {
           });
     },
     getImageUrl(imageName) {
-      return `http://localhost:8080/product/${imageName}`;
+      return `https://vfmarket.store/product/${imageName}`;
     },
-    
+
 
     formatPrice(price) {
       return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -219,7 +219,7 @@ button {
   font-weight: bold;
   text-decoration: underline;
   border: 1px solid black;
-  
+
 }
 
 .full-container {
@@ -230,17 +230,17 @@ button {
 }
 
 .h1 {
-  margin-bottom: 40px; 
+  margin-bottom: 40px;
   margin-top: 40px;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
 }
 
 .long-line {
-  height: 3px; 
-  background-color: black; 
-  margin-top: 20px; 
-  margin-bottom: 40px; 
+  height: 3px;
+  background-color: black;
+  margin-top: 20px;
+  margin-bottom: 40px;
   margin-left: 5%;
   width: 90%;
 }

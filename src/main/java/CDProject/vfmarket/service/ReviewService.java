@@ -33,8 +33,6 @@ public class ReviewService {
 
     private final ItemRepository itemRepository;
 
-    private final NotificationService notificationService;
-
 
     public List<ReviewDto> getReviews(Long itemId) {
         Long sellerId = itemRepository.findSellerIdByItemId(itemId);

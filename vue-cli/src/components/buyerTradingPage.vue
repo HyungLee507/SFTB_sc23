@@ -49,7 +49,7 @@
               </tbody>
             </table>
             <b-modal ref="cancelModal" title="결제 취소 확인" @ok="removeItem(selectedItemIndex)" ok-title="예"
-                    cancel-title="아니오">
+                     cancel-title="아니오">
               <p>결제를 취소하시겠습니까?</p>
             </b-modal>
           </div>
@@ -93,7 +93,7 @@ export default {
   methods: {
     getOrdersProducts() {
       axios
-          .get('/orderItems')  
+          .get('/orderItems')
           .then((response) => {
             this.ordersProducts = response.data.map((item) => ({
               image: item.image,
@@ -109,7 +109,7 @@ export default {
           });
     },
     getImageUrl(imageName) {
-      return `http://localhost:8080/product/${imageName}`;
+      return `https://vfmarket.store/product/${imageName}`;
     },
 
 
@@ -117,7 +117,7 @@ export default {
       const orderId = this.ordersProducts[index].orderId;
 
       axios
-          .put(`/refundItem/${orderId}`) 
+          .put(`/refundItem/${orderId}`)
           .then(() => {
             this.ordersProducts.splice(index, 1);
             alert("결제가 취소되었습니다.");
@@ -219,7 +219,7 @@ button {
   font-weight: bold;
   text-decoration: underline;
   border: 1px solid black;
-  
+
 }
 
 .completed-products {
@@ -243,17 +243,17 @@ button {
 }
 
 .h1 {
-  margin-bottom: 40px; 
+  margin-bottom: 40px;
   margin-top: 40px;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
 }
 
 .long-line {
-  height: 3px; 
-  background-color: black; 
-  margin-top: 20px; 
-  margin-bottom: 40px; 
+  height: 3px;
+  background-color: black;
+  margin-top: 20px;
+  margin-bottom: 40px;
   margin-left: 5%;
   width: 90%;
 }

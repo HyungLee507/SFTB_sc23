@@ -12,7 +12,6 @@ import CDProject.vfmarket.service.MailService;
 import CDProject.vfmarket.service.UserService;
 import java.rmi.NoSuchObjectException;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,7 +57,7 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:3000/")
     public ResponseEntity mailVerify(String email) {
         EmailVerification emailVerification = mailService.findByEmail(email);
-        if (emailVerification != null){
+        if (emailVerification != null) {
             return new ResponseEntity(HttpStatus.IM_USED);
         }
 
@@ -89,7 +88,7 @@ public class UserController {
         } else if (emailVerification.getVerificationCode().equals(verificationCode)) {
             // 인증 성공
             mailService.deleteVerificationCode(emailVerification);
-            return new ResponseEntity("인증에 성공했습니다.",HttpStatus.OK);
+            return new ResponseEntity("인증에 성공했습니다.", HttpStatus.OK);
         } else if (LocalDateTime.now().isAfter(emailVerification.getCreateDate().plusMinutes(3L))) {
             // 인증 기간 만료
             return new ResponseEntity("인증 기간이 만료되었습니다.", HttpStatus.REQUEST_TIMEOUT);
@@ -100,18 +99,18 @@ public class UserController {
     }
 
     @PostMapping("/find-password")
-    @CrossOrigin(origins = "http://localhost:3000/")
+//    @CrossOrigin(origins = "http://localhost:3000/")
     public ResponseEntity findPassword(String email, String name) {
         int verificationCode = mailService.createNumber();
 
         try {
             User user = userService.findEmail(email);           // 임의의 비밀번호 설정
-            if (user.getName().equals(name)){
+            if (user.getName().equals(name)) {
                 mailService.sendFindPasswordMail(email, String.valueOf(verificationCode));   // 메일 발송
                 mailService.saveVerificationCode(email, verificationCode);  // 인증 번호 DB 저장
                 return new ResponseEntity<>(
                         "인증번호가 이메일로 발송되었습니다\n3분 내로 입력 바랍니다", HttpStatus.OK);  // 메일 발송 성공
-            }else{
+            } else {
                 return new ResponseEntity<>("일치하는 정보가 없습니다.", HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {

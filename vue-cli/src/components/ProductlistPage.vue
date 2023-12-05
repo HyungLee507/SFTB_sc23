@@ -11,7 +11,8 @@
     </b-dropdown>
     <div class="long-line"></div>
     <b-card-group>
-      <router-link v-for="product in sortedProducts" :key="product.id" :to="'/product-list/' + product.id" style="margin-bottom: 3rem;">
+      <router-link v-for="product in sortedProducts" :key="product.id" :to="'/product-list/' + product.id"
+                   style="margin-bottom: 3rem;">
         <b-card :title="product.name" :img-src="getImageUrl(product.image)" img-alt="Image" img-top
                 class="fixed-card-size mx-3 mb-3">
           <b-card-text>{{ formatPrice(product.price) }}원</b-card-text>
@@ -58,7 +59,7 @@ export default {
       this.sortOrder = order;
     },
     getImageUrl(imageName) {
-      return `http://localhost:8080/product/${imageName}`;
+      return `https://vfmarket.store/product/${imageName}`;
     },
     formatPrice(price) {
       return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');

@@ -1,4 +1,3 @@
-
 <template>
   <div class="container d-flex justify-content-center">
     <b-form @submit.prevent="submitForm">
@@ -24,7 +23,8 @@
                     aria-describedby="password-help-block" required></b-form-input>
       <div class="form-group" v-show="isVisable">
         <label for="password-confirm">새 비밀번호 확인</label>
-        <b-form-input class="input" type="password" id="password-confirm" v-model="passwordConfirm" required></b-form-input>
+        <b-form-input class="input" type="password" id="password-confirm" v-model="passwordConfirm"
+                      required></b-form-input>
         <p v-if="passwordsMatch && form.password && passwordConfirm" style="color: green;">비밀번호가 같습니다.</p>
         <p v-else-if="form.password && passwordConfirm" style="color: red;">비밀번호가 다릅니다.</p>
       </div>
@@ -70,7 +70,7 @@ export default {
         const eform = new FormData();
         eform.append('name', this.form.name);
         eform.append('email', this.form.email);
-        axios.post('http://localhost:8080/find-password', eform)
+        axios.post('/find-password', eform)
             .then((res) => {
               if (res.status == 200) {
                 alert('인증번호가 이메일로 발송되었습니다\n3분 내로 입력 바랍니다');
@@ -81,7 +81,7 @@ export default {
                 alert('존재하지 않는 이메일입니다.');
               }
             }).catch((err) => {
-          if(err.response.status == 401){
+          if (err.response.status == 401) {
             alert('일치하는 정보가 없습니다.');
           } else {
             alert('잘못된 요청입니다.')
@@ -110,7 +110,7 @@ export default {
             }).catch((err) => {
           if (err.response.status == 401) {
             alert('인증번호가 틀렸습니다.');
-          } else if(err.response.status == 408){
+          } else if (err.response.status == 408) {
             alert("인증 기간이 만료되었습니다.")
           } else {
             alert('잘못된 요청입니다.')
@@ -138,7 +138,7 @@ export default {
       const eform = new FormData()
       eform.append('email', this.form.email);
       eform.append('password', this.form.password);
-      axios.post('http://localhost:8080/change-password', eform).then((res) => {
+      axios.post('/change-password', eform).then((res) => {
         if (res.status == 200) {
           alert('비밀번호 변경이 완료되었습니다.');
           this.$router.push('/account/login');

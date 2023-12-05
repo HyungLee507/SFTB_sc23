@@ -1,6 +1,6 @@
 <template>
   <div class="cartpage">
-    <b-container class="full-container"> 
+    <b-container class="full-container">
       <b-row>
         <b-col md="12">
           <h1 class="h1">장바구니</h1>
@@ -46,7 +46,7 @@
         </b-col>
       </b-row>
     </b-container>
-    
+
   </div>
 </template>
 <script>
@@ -107,7 +107,9 @@ export default {
           });
     },
     getImageUrl(imageName) {
-      return `http://localhost:8080/product/${imageName}`;
+      // return `https://vfmarket.store/product/${imageName}`;
+      return `https://vfmarket.store/product/${imageName}`;
+
     },
     removeItem(index) {
       const itemId = this.cartItems[index].id;
@@ -196,17 +198,17 @@ button {
 }
 
 .h1 {
-  margin-bottom: 40px; 
+  margin-bottom: 40px;
   margin-top: 40px;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: bold;
 }
 
 .long-line {
-  height: 3px; 
-  background-color: black; 
-  margin-top: 20px; 
-  margin-bottom: 40px; 
+  height: 3px;
+  background-color: black;
+  margin-top: 20px;
+  margin-bottom: 40px;
   margin-left: 5%;
   width: 90%;
 }

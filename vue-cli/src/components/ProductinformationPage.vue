@@ -42,13 +42,13 @@
           <p>카테고리: <strong>{{ product.category }}</strong></p>
           <p>사이즈: <strong>{{ product.shoeSize }}</strong></p>
         </div>
-        <p style="font-size: 22px; text-decoration: underline;" ><strong>상품설명</strong></p>
+        <p style="font-size: 22px; text-decoration: underline;"><strong>상품설명</strong></p>
         <div class="description-box" style="margin-bottom: 30px">
           <p><strong>{{ product.description }}</strong></p>
         </div>
         <p style="font-weight: bold">판매자 후기 ({{ sellerReviews.length }})</p>
         <div v-for="(sellerReview, index) in sellerReviews.slice(0, showAllReviews ? sellerReviews.length : 5)"
-            :key="index" class="review-container">
+             :key="index" class="review-container">
           <div class="reviewer-name">{{ maskReviewerName(sellerReview.reviewerName) }}</div>
           <div class="review-item">
             <p class="review-title">제목: {{ sellerReview.title }}</p>
@@ -151,7 +151,7 @@ export default {
 
   methods: {
     getImageUrl(imageName) {
-      return `http://localhost:8080/product/${imageName}`;
+      return `https://vfmarket.store/product/${imageName}`;
     },
     addToCart() {
       axios.post('/save-item?itemId=' + this.product.id, {})

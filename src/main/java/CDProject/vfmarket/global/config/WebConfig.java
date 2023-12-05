@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         String flaskHost = "https://sftb-virtualfit.ngrok.app/";
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", flaskHost)
+                .allowedOrigins("http://localhost:3000", flaskHost, "https://vfmarket.store")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true);
     }
