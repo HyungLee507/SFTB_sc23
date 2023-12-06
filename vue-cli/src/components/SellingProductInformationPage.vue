@@ -133,7 +133,16 @@ export default {
     axios.get(`/products/${productId}`)
         .then(response => {
           this.editedProduct = response.data;
-        })
+        });
+            axios.interceptors.response.use((config) => {
+      return config;
+    }, function (error) {
+      if (error.response && error.response.status === 401) {
+        alert('로그인이 필요합니다.');
+        this.$router.push('/account/login');
+      }
+      return Promise.reject(error);
+    });
   },
   methods: {
     saveProductInformation() {
