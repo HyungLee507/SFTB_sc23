@@ -11,9 +11,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
 
 @Service
@@ -50,7 +48,6 @@ public class MailService {
                 EmailVerification.builder()
                         .email(receiver)
                         .verificationCode(verificationCode)
-                        .createDate(LocalDateTime.now())
                         .build();
 
         emailVerificationRepository.save(emailVerification);
