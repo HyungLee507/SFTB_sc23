@@ -48,7 +48,7 @@
         </div>
         <p style="font-weight: bold">판매자 후기 ({{ sellerReviews.length }})</p>
         <div v-for="(sellerReview, index) in sellerReviews.slice(0, showAllReviews ? sellerReviews.length : 5)"
-             :key="index" class="review-container">
+            :key="index" class="review-container">
           <div class="reviewer-name">{{ maskReviewerName(sellerReview.reviewerName) }}</div>
           <div class="review-item">
             <p class="review-title">제목: {{ sellerReview.title }}</p>
@@ -128,6 +128,8 @@ export default {
       return config;
     }, function (error) {
       if (error.response && error.response.status === 401) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         alert('로그인이 필요합니다.');
         this.$router.push('/account/login');
       }

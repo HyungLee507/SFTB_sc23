@@ -91,6 +91,8 @@ export default {
       return config;
     }, function (error) {
       if (error.response && error.response.status === 401) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         alert('로그인이 필요합니다.');
         this.$router.push('/account/login');
       }

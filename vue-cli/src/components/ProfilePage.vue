@@ -70,6 +70,8 @@ export default {
     }, function (error) {
       if (error.response && error.response.status === 401) {
         alert('로그인이 필요합니다.');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         this.$router.push('/account/login');
       }
       return Promise.reject(error);
