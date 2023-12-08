@@ -2,7 +2,6 @@ package CDProject.vfmarket.controller;
 
 import static CDProject.vfmarket.global.AuthenticationUserId.getAuthenticatedUser;
 
-import CDProject.vfmarket.domain.dto.SignUpDTO.EmailVerificationResponseDto;
 import CDProject.vfmarket.domain.dto.SignUpDTO.FirstRegistUserInfoDto;
 import CDProject.vfmarket.domain.dto.SignUpDTO.UserSignUpDto;
 import CDProject.vfmarket.domain.dto.UserDTO.UserInfoDTO;
@@ -33,9 +32,6 @@ public class UserController {
     private final UserService userService;
     private final MailService mailService;
 
-    @Value("${spring.mail.username}")
-    private String senderEmail;
-
     @PostMapping("/sign-up")
     public String signUp(@RequestBody UserSignUpDto userSignUpDto) throws Exception {
         userService.signUp(userSignUpDto);
@@ -54,7 +50,6 @@ public class UserController {
     }
 
     @PostMapping("/mail-verify")
-    @CrossOrigin(origins = "http://localhost:3000/")
     public ResponseEntity mailVerify(String email) {
         EmailVerification emailVerification = mailService.findByEmail(email);
         if (emailVerification != null) {
@@ -63,35 +58,28 @@ public class UserController {
 
         int sendCode = mailService.createNumber();
 
-        EmailVerificationResponseDto emailVerificationResponse =
-                EmailVerificationResponseDto.builder()
-                        .email(senderEmail)
-                        .sendCode(sendCode)
-                        .message("입력하신 이메일로 인증번호가 전송되었습니다.\n인증번호를 입력하세요.")
-                        .build();
-
         mailService.sendVerificationMail(email, sendCode);  // 인증 코드 메일 전송
 
         mailService.saveVerificationCode(email, sendCode);  // 인증 코드 DB 저장
 
-        return new ResponseEntity(emailVerificationResponse, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/check-verification")
-    @CrossOrigin(origins = "http://localhost:3000/")
     public ResponseEntity checkVerification(String email, String verificationCode) {
         EmailVerification emailVerification = mailService.findByEmail(email);
 
         if (emailVerification == null) {
             // 이메일 정보 없음
             return new ResponseEntity("이메일을 다시 확인해주십시오.", HttpStatus.NO_CONTENT);
+        } else if (LocalDateTime.now().isAfter(emailVerification.getCreateDate().plusMinutes(3L))) {
+            // 인증 기간 만료
+            mailService.deleteVerificationCode(emailVerification);
+            return new ResponseEntity("인증 기간이 만료되었습니다.", HttpStatus.REQUEST_TIMEOUT);
         } else if (emailVerification.getVerificationCode().equals(verificationCode)) {
             // 인증 성공
             mailService.deleteVerificationCode(emailVerification);
-            return new ResponseEntity("인증에 성공했습니다.", HttpStatus.OK);
-        } else if (LocalDateTime.now().isAfter(emailVerification.getCreateDate().plusMinutes(3L))) {
-            // 인증 기간 만료
-            return new ResponseEntity("인증 기간이 만료되었습니다.", HttpStatus.REQUEST_TIMEOUT);
+            return new ResponseEntity("인증에 성공했습니다.",HttpStatus.OK);
         } else {
             // 인증번호 틀림
             return new ResponseEntity("인증번호가 틀렸습니다.", HttpStatus.UNAUTHORIZED);
@@ -99,7 +87,6 @@ public class UserController {
     }
 
     @PostMapping("/find-password")
-//    @CrossOrigin(origins = "http://localhost:3000/")
     public ResponseEntity findPassword(String email, String name) {
         int verificationCode = mailService.createNumber();
 

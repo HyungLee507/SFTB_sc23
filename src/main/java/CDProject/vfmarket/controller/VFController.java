@@ -4,6 +4,7 @@ import CDProject.vfmarket.domain.dto.StyleShotDto;
 import CDProject.vfmarket.domain.dto.VFFormDTO;
 import CDProject.vfmarket.domain.entity.Item;
 import CDProject.vfmarket.domain.entity.StyleShot;
+import CDProject.vfmarket.global.AuthenticationUserId;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.service.ItemService;
 import CDProject.vfmarket.service.VFService;
@@ -55,10 +56,7 @@ public class VFController {
     private String imagePath;
 
     @PostMapping("/vf/productimg")
-    public ResponseEntity sendProductImg(@RequestHeader("Authorization") String token, Long productId) {
-        if (token == null) {
-            return new ResponseEntity("로그인을 해야 가상피팅을 진행할 수 있습니다.", HttpStatus.NO_CONTENT);
-        }
+    public ResponseEntity sendProductImg(Long productId) {
 
         String prodImgUrl = itemService.itemDetailInfo(productId).getImages().get(0);
         // 전송할 파일 정보
@@ -67,18 +65,7 @@ public class VFController {
         // Flask ngrok base url. Flask는 colab에서 돌아간다.
         // Flask 백엔드의 엔드포인트 URL
         String url = flaskHost + "getprod";
-        Long userId = null;
-        try {
-            log.info("token value is {}", token);
-
-            String trim = token.replace("Bearer ", "");
-            log.info("trim value is {}", trim);
-            Claims claims = tokenValueProvider.extractClaims(trim);
-            log.info("claims is {}", claims);
-            userId = Long.parseLong(claims.get("userId").toString());
-        } catch (Exception e) {
-            log.info("token error is {}", e.getMessage());
-        }
+        Long userId = AuthenticationUserId.getAuthenticatedUser();
 
         // MultiValueMap에 파일 데이터 추가
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -142,28 +129,10 @@ public class VFController {
     }
 
     @PostMapping("/vf/savestyle")
-    public ResponseEntity saveStyleShot(@RequestHeader("Authorization") String token,
-                                        @RequestParam("dirname") String dirname,
-                                        @RequestParam("prodId") Long prodId) {
-        log.info("dirname: {}", dirname);
-        log.info("prodId: {}", prodId);
-        if (token == null) {
-            return new ResponseEntity("로그인을 해야 가상피팅 결과를 저장할 수 있습니다.", HttpStatus.NO_CONTENT);
-        }
+    public ResponseEntity saveStyleShot(@RequestParam("dirname") String dirname, @RequestParam("prodId") Long prodId) {
 
         String url = flaskHost + "export";
-        Long userId = null;
-        try {
-            log.info("token value is {}", token);
-
-            String trim = token.replace("Bearer ", "");
-            log.info("trim value is {}", trim);
-            Claims claims = tokenValueProvider.extractClaims(trim);
-            log.info("claims is {}", claims);
-            userId = Long.parseLong(claims.get("userId").toString());
-        } catch (Exception e) {
-            log.info("token error is {}", e.getMessage());
-        }
+        Long userId = AuthenticationUserId.getAuthenticatedUser();
 
         // MultiValueMap에 파일 데이터 추가
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -192,19 +161,8 @@ public class VFController {
     }
 
     @GetMapping("/vf/viewstyle")
-    public List<StyleShotDto> viewStyleShots(@RequestHeader("Authorization") String token) {
-        Long userId = null;
-        try {
-            log.info("token value is {}", token);
-
-            String trim = token.replace("Bearer ", "");
-            log.info("trim value is {}", trim);
-            Claims claims = tokenValueProvider.extractClaims(trim);
-            log.info("claims is {}", claims);
-            userId = Long.parseLong(claims.get("userId").toString());
-        } catch (Exception e) {
-            log.info("token error is {}", e.getMessage());
-        }
+    public List<StyleShotDto> viewStyleShots() {
+        Long userId = AuthenticationUserId.getAuthenticatedUser();
 
         Map<Long, StyleShotDto> styleShotsMap = new HashMap<>();
         List<StyleShot> styleShots = vfService.getStyleShots(userId);

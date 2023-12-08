@@ -1,4 +1,3 @@
-
 <template>
   <div class="uploadpage">
     <input style="margin-top: 40px; margin-bottom: 40px;" type="file" accept=".jpg" @change="handleFileUpload" />
@@ -23,6 +22,7 @@
   </div>
 </template>
 
+
 <script>
 import axios from 'axios';
 export default {
@@ -41,6 +41,7 @@ export default {
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
+      console.log(config.headers.Authorization);
       return config;
     }, function (error) {
       return Promise.reject(error);
@@ -67,29 +68,26 @@ export default {
       reader.readAsDataURL(this.file);
     },
     composeImages() {
-      this.showModal = true;
+      this.showModal = true; // Show the modal
 
       const formData = new FormData();
       formData.append('image', this.file);
       formData.append('dirname', localStorage.getItem("dirname"));
       axios.post("/vf/humanimg", formData)
-        .then(response => {
-          console.log("실행 시작")
-          if (response.status == 200) {
-            console.log("접속 성공")
-            this.composedImageUrl = response.data.resultSrc;
-            alert('이미지가 합성되었습니다!');
-          } else if (response.status == 204) {
-            alert('로그인을 해야 가상피팅을 진행할 수 있습니다.');
-          }
-        })
-        .catch(error => {
-          console.error(error);
-          alert('이미지 합성에 실패했습니다!');
-        })
-        .finally(() => {
-          this.showModal = false; 
-        });
+          .then(response => {
+            console.log("실행 시작")
+            if(response.status == 200){
+              console.log("접속 성공")
+              this.composedImageUrl = response.data.resultSrc;
+              alert('이미지가 합성되었습니다!');
+            } else if(response.status == 204){
+              alert('로그인을 해야 가상피팅을 진행할 수 있습니다.');
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            alert('이미지 합성에 실패했습니다!');
+          });
     },
     saveImage() {
       const formData = new FormData();
@@ -143,37 +141,37 @@ export default {
 }
 
 .save-button {
-    background-color: #008CBA;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-left: 30px;
-    font-weight: bold;
+  background-color: #008CBA;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 30px;
+  font-weight: bold;
 }
 .userPreview {
-width: 250px;
-height: 250px;
-border-radius: 0;
-margin-top: 30px;
-font-weight: bold;
+  width: 250px;
+  height: 250px;
+  border-radius: 0;
+  margin-top: 30px;
+  font-weight: bold;
 }
 
 .composedPreview {
-width: 250px;
-height: 250px;
-border-radius: 0;
-margin-top: 30px;
-font-weight: bold;
+  width: 250px;
+  height: 250px;
+  border-radius: 0;
+  margin-top: 30px;
+  font-weight: bold;
 }
 
 .representative{
-width: 250px;
-height: 250px;
-border-radius: 0;
-margin-top: 30px;
-font-weight: bold;
+  width: 250px;
+  height: 250px;
+  border-radius: 0;
+  margin-top: 30px;
+  font-weight: bold;
 }
 
 .uploadpage {
