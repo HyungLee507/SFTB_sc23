@@ -49,7 +49,7 @@ public class UploadController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> addImage(@ModelAttribute ImageUpdateForm imageUpdateForm)
             throws IOException, NoSuchFieldException {
-        uploadService.updateIamge(imageUpdateForm);
+        uploadService.updateImage(imageUpdateForm);
         return new ResponseEntity<>("이미지 추가 성공", HttpStatus.OK);
     }
 
