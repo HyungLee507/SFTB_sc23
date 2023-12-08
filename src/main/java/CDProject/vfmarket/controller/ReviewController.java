@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@PreAuthorize("isAuthenticated()")
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -35,7 +34,14 @@ public class ReviewController {
         return reviewService.getReviews(productId);
     }
 
+    @GetMapping("/reviews")
+    public List<ReviewDto> allReviews() {
+        Long sellerId = getAuthenticatedUser();
+        return reviewService.reviews(sellerId);
+    }
+
     @PostMapping("/review-upload")
+    @PreAuthorize("isAuthenticated()")
     public void reviewUpload(@RequestBody ReviewFormDto reviewFormDto) {
         Long buyerId = getAuthenticatedUser();
         reviewService.saveReview(buyerId, reviewFormDto);
@@ -44,12 +50,14 @@ public class ReviewController {
     }
 
     @PutMapping("/review-update")
+    @PreAuthorize("isAuthenticated()")
     public void reviewUpdate(@RequestParam Long reviewId,
                              ReviewUpdateFormDto reviewUpdateFormDto) {
         reviewService.updateReview(reviewId, reviewUpdateFormDto);
     }
 
     @PutMapping("review-delete")
+    @PreAuthorize("isAuthenticated()")
     public void reviewDelete(@RequestParam Long reviewId) {
         reviewService.deleteReview(reviewId);
     }
