@@ -48,11 +48,6 @@ public class RefundService {
         if (orderRepository.findById(orderId).isEmpty()) {
             return;
         }
-//        Optional<Order> findByIdOrder = orderRepository.findById(orderId);
-//        Order order = findByIdOrder.get();
-//        Item item = order.getItem();
-//        item.setStatus(ItemStatus.FOR_SALE);
-//        order.setStatus(OrderStatus.CANCEL_TRANSACTION);
         Order order = findByIdOrder.orElseThrow(
                 () -> new EntityNotFoundException("Order not found with id: " + orderId));
         Item item = order.getItem();
