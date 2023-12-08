@@ -1,5 +1,6 @@
 package CDProject.vfmarket.controller;
 
+import CDProject.vfmarket.domain.dto.itemDTO.ImageUpdateForm;
 import CDProject.vfmarket.domain.dto.itemDTO.ItemFormDto;
 import CDProject.vfmarket.service.UploadService;
 import java.io.IOException;
@@ -42,6 +43,14 @@ public class UploadController {
         log.info("file name is {}", filename);
         return new UrlResource("file:"
                 + imagePath + filename);
+    }
+
+    @PostMapping("/add-image")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> addImage(@ModelAttribute ImageUpdateForm imageUpdateForm)
+            throws IOException, NoSuchFieldException {
+        uploadService.updateIamge(imageUpdateForm);
+        return new ResponseEntity<>("이미지 추가 성공", HttpStatus.OK);
     }
 
 

@@ -2,6 +2,7 @@ package CDProject.vfmarket.service;
 
 import static CDProject.vfmarket.domain.entity.ItemStatus.FOR_SALE;
 
+import CDProject.vfmarket.domain.dto.itemDTO.ImageUpdateForm;
 import CDProject.vfmarket.domain.dto.itemDTO.ItemFormDto;
 import CDProject.vfmarket.domain.entity.Image;
 import CDProject.vfmarket.domain.entity.Item;
@@ -9,6 +10,7 @@ import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
 import CDProject.vfmarket.repository.ItemRepository;
 import CDProject.vfmarket.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.io.File;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.asm.ex.NoSuchFieldException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,4 +83,21 @@ public class UploadService {
         }
     }
 
+    public void updateIamge(ImageUpdateForm imageUpdateFormDto) throws NoSuchFieldException {
+
+        Item item = itemRepository.findById(imageUpdateFormDto.getItemId())
+                .orElseThrow(() -> new EntityNotFoundException("해당 아이템을 찾을 수 없습니다."));
+
+        try {
+            MultipartFile uploadFile = imageUpdateFormDto.getImage();
+            String uploadFileName = uploadFile.getOriginalFilename();
+            String uuid = UUID.randomUUID().toString();
+            uploadFileName = uuid + "_" + uploadFileName;
+            File saveFile = new File(uploadFolder, uploadFileName);
+            uploadFile.transferTo(saveFile);
+            new Image(uploadFileName, item);
+        } catch (Exception e) {
+            log.info("item image Update error is {}", e.getMessage());
+        }
+    }
 }
