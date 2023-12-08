@@ -49,8 +49,13 @@ public class ItemController {
 
     @PutMapping("/updateItem/text/{itemId}")
     @PreAuthorize("isAuthenticated()")
-    public void textUpdate(@RequestBody ItemTextUpdateForm updateForm) {
-        itemService.updateText(updateForm);
+    public ResponseEntity<?> textUpdate(@RequestBody ItemTextUpdateForm updateForm) {
+        try{
+            itemService.updateText(updateForm);
+        } catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/product-detail/{itemId}")
