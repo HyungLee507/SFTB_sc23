@@ -2,6 +2,7 @@ package CDProject.vfmarket.service;
 
 
 import CDProject.vfmarket.domain.dto.itemDTO.ItemDetailDto;
+import CDProject.vfmarket.domain.dto.itemDTO.ItemTextUpdateForm;
 import CDProject.vfmarket.domain.dto.itemDTO.ItemUpdateDto;
 import CDProject.vfmarket.domain.dto.itemDTO.ItemViewDto;
 import CDProject.vfmarket.domain.dto.itemDTO.SalesItemDto;
@@ -12,6 +13,7 @@ import CDProject.vfmarket.exceptions.ResourceNotFoundException;
 import CDProject.vfmarket.repository.ImageRepository;
 import CDProject.vfmarket.repository.ItemRepository;
 import CDProject.vfmarket.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,16 @@ public class ItemService {
         List<MultipartFile> images = itemUpdateDto.getImages();
 
         return itemRepository.save(item);
+    }
+
+    public void updateText(ItemTextUpdateForm itemTextUpdateForm) {
+        Item item = itemRepository.findById(itemTextUpdateForm.getItemId()).orElseThrow(
+                () -> new EntityNotFoundException("Item not found with id: " + itemTextUpdateForm.getItemId()));
+        item.setDescription(itemTextUpdateForm.getDescription());
+        item.setItemName(itemTextUpdateForm.getName());
+        item.setCategory(itemTextUpdateForm.getCategory());
+        item.setShoeSize(itemTextUpdateForm.getShoeSize());
+        item.setPrice(itemTextUpdateForm.getPrice());
     }
 
 //    public void deleteItem(Long id) {

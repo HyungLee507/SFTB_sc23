@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +23,9 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
 
-    private final String uploadFolder = "/Users/leedonghyun/Desktop/images";
+    //    private String uploadFolder = "/Users/leedonghyun/Desktop/images";
+    @Value("${imagePath}")
+    private String uploadFolder;
 
     private final Path rootLocation = Paths.get("/Users/leedonghyun/Desktop/images");
 

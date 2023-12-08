@@ -3,6 +3,7 @@ package CDProject.vfmarket.controller;
 import static CDProject.vfmarket.global.AuthenticationUserId.getAuthenticatedUser;
 
 import CDProject.vfmarket.domain.dto.itemDTO.ItemDetailDto;
+import CDProject.vfmarket.domain.dto.itemDTO.ItemTextUpdateForm;
 import CDProject.vfmarket.domain.dto.itemDTO.ItemViewDto;
 import CDProject.vfmarket.domain.dto.itemDTO.SalesItemDto;
 import CDProject.vfmarket.service.ImageService;
@@ -20,6 +21,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,12 +47,13 @@ public class ItemController {
         return new ArrayList<>(uniqueItemsMap.values());
     }
 
-    //    @PutMapping("/product-update")
-//    public void deleteItem(@RequestHeader("Authorization") String token , @ResponseBody ItemUpdateDto){
-//
-//    }
-    @GetMapping("/product-detail/{itemId}")
+    @PutMapping("/text-update")
     @PreAuthorize("isAuthenticated()")
+    public void textUpdate(@RequestBody ItemTextUpdateForm updateForm) {
+        itemService.updateText(updateForm);
+    }
+
+    @GetMapping("/product-detail/{itemId}")
     public ItemDetailDto itemDetail(@PathVariable Long itemId) {
         return itemService.itemDetailInfo(itemId);
     }
@@ -74,6 +77,7 @@ public class ItemController {
     }
 
     @PutMapping("/updateItem/image/{imageId}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> updateImage(@PathVariable Long imageId, @RequestParam("file") MultipartFile file) {
         try {
             imageService.updateImage(imageId, file);
