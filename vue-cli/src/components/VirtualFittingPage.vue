@@ -90,7 +90,8 @@ export default {
           });
     },
     getImageUrl(imageName) {
-      return `http://localhost:8080/vf/${imageName}`;
+      // return `http://localhost:8080/vf/${imageName}`;
+      return `https://vfmarket.store/vf/${imageName}`;
     },
     openModal(styleShot) {
       this.styleShotId = styleShot.styleShotId;
