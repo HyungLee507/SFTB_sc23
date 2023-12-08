@@ -8,6 +8,7 @@ import CDProject.vfmarket.service.CommentService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,17 +27,20 @@ public class CommentController {
 
     // 댓글 관련 프론트와 연결
     @PostMapping("/comment-upload")
+    @PreAuthorize("isAuthenticated()")
     public void commentUpload(@RequestHeader("Authorization") String token, CommentFormDto commentFormDto) {
         Long userId = tokenValueProvider.extractUserId(token);
         commentService.saveComment(userId, commentFormDto);
     }
 
     @PutMapping("/comment-update")
+    @PreAuthorize("isAuthenticated()")
     public void commentUpdate(CommentUpdateFormDto commentUpdateFormDto) {
         commentService.updateComment(commentUpdateFormDto);
     }
 
     @PutMapping("/comment-delete")
+    @PreAuthorize("isAuthenticated()")
     public void commentHide(CommentUpdateFormDto commentUpdateFormDto) {
         commentService.deleteComment(commentUpdateFormDto.getCommentId());
     }
