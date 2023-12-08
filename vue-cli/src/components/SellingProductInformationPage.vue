@@ -16,13 +16,13 @@
             <p style="margin-right: 300px;">[대표이미지]</p>
             <div v-for="(image, index) in editedProduct.images" :key="index">
               <img
-                  :src="image"
+                  :src="getImageUrl(image)"
                   alt="Product Image"
                   class="product-image"
                   style="width: 250px; height: 250px; border-radius: 0;"
               />
+              <input type="file" ref="fileEdit" style="display: none" />
               <b-button class="image-button" @click="editImage(index)">이미지 수정</b-button>
-              <b-button class="delete-button" @click="deleteImage(index)">이미지 삭제</b-button>
             </div>
             <div>
               <input type="file" ref="fileInput" style="display: none" @change="handleImageUpload"/>
@@ -85,11 +85,6 @@
   margin-right: 50px;
 }
 
-.delete-button {
-  background-color: rgb(207, 74, 86);
-  margin-left: 30px;
-  color: white;
-}
 
 .add-button {
   background-color: blue;
@@ -128,9 +123,9 @@ export default {
     };
   },
   created() {
-    const productId = this.$route.params.ProductId;
+    const productId = this.$route.params.productId;
 
-    axios.get(`/products/${productId}`)
+    axios.get(`/product-detail/${productId}`)
         .then(response => {
           this.editedProduct = response.data;
         });
@@ -144,26 +139,43 @@ export default {
       return Promise.reject(error);
     });
   },
+
   methods: {
     saveProductInformation() {
       // 서버에 저장하는 로직
     },
+        getImageUrl(imageName) {
+      return `/product/${imageName}`;
+    },
     editImage(index) {
-      this.selectedImageIndex = index;
-      this.$refs.fileInput.click();
+      const imageId = this.editedProduct.imageIds[index];
+      const fileEdit = this.$refs.fileEdit[index];
+      console.log(this.$refs.fileEdit);
+      fileEdit.click();
+      fileEdit.onchange = () => {
+        const file = fileEdit.files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+        axios
+          .put(`/updateItem/image/${imageId}`, formData)
+          .then(() => {
+              const productId = this.$route.params.productId;
+              axios.get(`/product-detail/${productId}`)
+              .then(response => {
+                this.editedProduct = response.data;
+              })
+          
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
     },
     addImage() {
       this.$refs.fileInput.click();
     },
     cancelProduct() {
       // 상품판매 취소
-    },
-    deleteImage(index) {
-      if (this.isRepresentativeImage(index)) {
-        alert("대표이미지는 삭제할 수 없습니다.");
-      } else {
-        this.editedProduct.images.splice(index, 1);
-      }
     },
     isRepresentativeImage(index) {
       return index === 0;
