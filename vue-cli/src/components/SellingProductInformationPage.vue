@@ -34,33 +34,42 @@
             <p>상품 가격:
               <b-input v-model="editedProduct.price" type="number" step="100"/>
             </p>
-            <p>상품 사이즈:
-              <b-input v-model="editedProduct.shoeSize" type="number" step="5"/>
-            </p>
             <p>상품 카테고리:</p>
             <b-form-group>
               <b-row>
                 <b-col>
-                  <b-form-radio v-model="editedProduct.category" value="운동화">운동화</b-form-radio>
+                  <b-form-radio v-model="editedProduct.category" value="상의">상의</b-form-radio>
                 </b-col>
                 <b-col>
-                  <b-form-radio v-model="editedProduct.category" value="단화">단화</b-form-radio>
+                  <b-form-radio v-model="editedProduct.category" value="아우터">아우터</b-form-radio>
                 </b-col>
                 <b-col>
-                  <b-form-radio v-model="editedProduct.category" value="캐주얼">캐주얼</b-form-radio>
+                  <b-form-radio v-model="editedProduct.category" value="드레스">드레스</b-form-radio>
                 </b-col>
                 <b-col>
-                  <b-form-radio v-model="editedProduct.category" value="스포츠">스포츠</b-form-radio>
+                  <b-form-radio v-model="editedProduct.category" value="운동복">운동복</b-form-radio>
                 </b-col>
                 <b-col>
                   <b-form-radio v-model="editedProduct.category" value="기타">기타</b-form-radio>
                 </b-col>
               </b-row>
             </b-form-group>
+
+          <b-form-group id="product-shoeSize" label="상품 사이즈" style="font-weight: bold;">
+          <b-form-radio-group v-model="editedProduct.shoeSize">
+            <b-form-radio value="85">85</b-form-radio>
+            <b-form-radio value="90">90</b-form-radio>
+            <b-form-radio value="95">95</b-form-radio>
+            <b-form-radio value="100">100</b-form-radio>
+            <b-form-radio value="105">105</b-form-radio>
+            <b-form-radio value="110">110</b-form-radio>
+          </b-form-radio-group>
+          </b-form-group>
+            
             <p>상품 설명:
               <b-textarea v-model="editedProduct.description"/>
             </p>
-            <b-button class=save-button @click="saveProductInformation">저장</b-button>
+            <b-button class=save-button @click="editText">저장</b-button>
             <b-button @click="cancelProduct">판매취소</b-button>
           </div>
         </b-col>
@@ -175,7 +184,18 @@ export default {
       this.$refs.fileInput.click();
     },
     cancelProduct() {
-      // 상품판매 취소
+      const formData = new FormData();
+      formData.append('itemId', this.editedProduct.id);
+      axios.put(`/product-remove`,
+      formData
+      ).then(() => {
+        alert('상품이 삭제되었습니다.');
+        this.$router.push('/user/mypage/saleshistory/selling');
+      
+      }).catch((error) => {
+        console.log(error);
+        alert('상품 삭제에 실패했습니다.');
+      })
     },
     isRepresentativeImage(index) {
       return index === 0;
@@ -200,6 +220,25 @@ export default {
         reader.readAsDataURL(file);
       }
     },
+    editText(){
+      const productId = this.$route.params.productId;
+      axios.put(`/updateItem/text/${productId}`, {
+        name: this.editedProduct.name,
+        price: this.editedProduct.price,
+        shoeSize: this.editedProduct.shoeSize,
+        category: this.editedProduct.category,
+        description: this.editedProduct.description,
+        itemId: this.editedProduct.id,
+      }).then(() => {
+        alert('상품 정보가 수정되었습니다.');
+        this.$router.push('/user/mypage/saleshistory/selling');
+      
+      }).catch((error) => {
+        console.log(error);
+        alert('상품 정보 수정에 실패했습니다.');
+        
+      });
+    }
   },
 };
 </script>
