@@ -47,7 +47,7 @@ public class ItemController {
         return new ArrayList<>(uniqueItemsMap.values());
     }
 
-    @PutMapping("/text-update")
+    @PutMapping("/updateItem/text/{itemId}")
     @PreAuthorize("isAuthenticated()")
     public void textUpdate(@RequestBody ItemTextUpdateForm updateForm) {
         itemService.updateText(updateForm);
@@ -88,6 +88,5 @@ public class ItemController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 
 }
