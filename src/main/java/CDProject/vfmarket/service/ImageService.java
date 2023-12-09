@@ -23,11 +23,10 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
 
-    //    private String uploadFolder = "/Users/leedonghyun/Desktop/images";
     @Value("${imagePath}")
     private String uploadFolder;
 
-    private final Path rootLocation = Paths.get("/Users/leedonghyun/Desktop/images");
+    private final Path rootLocation = Paths.get("C:/sw-capstone/images/");
 
 
     public void updateImage(Long imageId, MultipartFile file) throws IOException {
@@ -44,6 +43,13 @@ public class ImageService {
 
         image.setFileName(uploadFileName);
 
+    }
+
+    public void deleteImage(Long imageId) throws IOException{
+        Image image = imageRepository.findById(imageId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid image ID: " + imageId));
+
+        imageRepository.delete(image);
     }
 
     private void deleteExistingFile(String fileName) {
