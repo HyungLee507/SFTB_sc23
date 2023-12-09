@@ -24,6 +24,7 @@
               />
               <input type="file" ref="fileEdit" style="display: none" />
               <b-button class="image-button" @click="editImage(index)">이미지 수정</b-button>
+              <b-button class="delete-button" @click="deleteImage(index)" :disabled="editedProduct.images.length <= 2">이미지 삭제</b-button>
             </div>
             <div>
               <input type="file" ref="fileInput" style="display: none"/>
@@ -93,6 +94,11 @@
 .save-button {
   background-color: green;
   margin-right: 50px;
+}
+.delete-button {
+  background-color: rgb(207, 74, 86);
+  margin-left: 30px;
+  color: white;
 }
 
 
@@ -207,6 +213,21 @@ export default {
             console.log(error);
           });
       };
+    },
+    deleteImage(index) {
+      const imageId = this.editedProduct.imageIds[index];
+      axios
+        .delete(`/delete-image/${imageId}`)
+        .then(() => {
+          const productId = this.$route.params.productId;
+          axios.get(`/product-detail/${productId}`)
+            .then(response => {
+              this.editedProduct = response.data;
+            })
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     addImage() {
     this.$refs.fileInput.click();
