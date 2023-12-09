@@ -8,6 +8,7 @@ import CDProject.vfmarket.domain.entity.Image;
 import CDProject.vfmarket.domain.entity.Item;
 import CDProject.vfmarket.domain.entity.User;
 import CDProject.vfmarket.global.jwt.TokenValueProvider;
+import CDProject.vfmarket.repository.ImageRepository;
 import CDProject.vfmarket.repository.ItemRepository;
 import CDProject.vfmarket.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -35,6 +36,8 @@ public class UploadService {
     private final UserRepository userRepository;
 
     private final TokenValueProvider tokenValueProvider;
+
+    private final ImageRepository imageRepository;
 
     // 저장할 파일 위치 생성
     @Value("${imagePath}")
@@ -95,7 +98,7 @@ public class UploadService {
             uploadFileName = uuid + "_" + uploadFileName;
             File saveFile = new File(uploadFolder, uploadFileName);
             uploadFile.transferTo(saveFile);
-            new Image(uploadFileName, item);
+            imageRepository.save(new Image(uploadFileName, item));
         } catch (Exception e) {
             log.info("item image Update error is {}", e.getMessage());
         }
