@@ -1,3 +1,4 @@
+
 <template>
   <div class="sellingproductinformation">
     <b-container>
@@ -25,8 +26,8 @@
               <b-button class="image-button" @click="editImage(index)">이미지 수정</b-button>
             </div>
             <div>
-              <input type="file" ref="fileInput" style="display: none" @change="handleImageUpload"/>
-              <b-button class="add-button" @click="addImage">이미지 추가</b-button>
+              <input type="file" ref="fileInput" style="display: none"/>
+              <b-button class="add-button" @click="addImage()">이미지 추가</b-button>
             </div>
             <p>상품 이름:
               <b-input v-model="editedProduct.name"/>
@@ -181,7 +182,32 @@ export default {
       };
     },
     addImage() {
-      this.$refs.fileInput.click();
+      const fileInput = this.$refs.fileInput;
+      fileInput.click();
+      fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('itemId', this.editedProduct.id);
+
+        axios.post('/add-image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+          .then(response => {
+            const productId = this.$route.params.productId;
+            axios.get(`/product-detail/${productId}`)
+              .then(response => {
+                this.editedProduct = response.data;
+              })
+            console.log(response.data);
+          })
+          .catch(error => {
+            // Handle error response
+            console.error(error);
+          });
+      });
     },
     cancelProduct() {
       const formData = new FormData();
@@ -189,36 +215,16 @@ export default {
       axios.put(`/product-remove`,
       formData
       ).then(() => {
-        alert('상품이 삭제되었습니다.');
+        alert('판매가 취소되었습니다.');
         this.$router.push('/user/mypage/saleshistory/selling');
       
-      }).catch((error) => {
+      }).catch((error) => {+
         console.log(error);
-        alert('상품 삭제에 실패했습니다.');
+        alert('판매 취소에 실패했습니다.');
       })
     },
     isRepresentativeImage(index) {
       return index === 0;
-    },
-    handleImageUpload(event) {
-      const file = event.target.files[0];
-
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          if (!this.editedProduct.images) {
-            this.$set(this.editedProduct, "images", []);
-          }
-          if (this.selectedImageIndex !== null) {
-            this.editedProduct.images[this.selectedImageIndex] = reader.result;
-            this.selectedImageIndex = null;
-          } else {
-            this.editedProduct.images.push(reader.result);
-          }
-          this.$forceUpdate();
-        };
-        reader.readAsDataURL(file);
-      }
     },
     editText(){
       const productId = this.$route.params.productId;
