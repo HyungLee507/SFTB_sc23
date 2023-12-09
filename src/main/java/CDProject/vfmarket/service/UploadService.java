@@ -83,7 +83,7 @@ public class UploadService {
         }
     }
 
-    public void updateIamge(ImageUpdateForm imageUpdateFormDto) throws NoSuchFieldException {
+    public void updateImage(ImageUpdateForm imageUpdateFormDto) throws NoSuchFieldException {
 
         Item item = itemRepository.findById(imageUpdateFormDto.getItemId())
                 .orElseThrow(() -> new EntityNotFoundException("해당 아이템을 찾을 수 없습니다."));
