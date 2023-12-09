@@ -1,3 +1,4 @@
+
 <template>
   <div class="sellingproductinformation">
     <b-container>
@@ -26,7 +27,7 @@
             </div>
             <div>
               <input type="file" ref="fileInput" style="display: none"/>
-              <b-button class="add-button" @click="addImage()">이미지 추가</b-button>
+              <b-button class="add-button" @click="addImage()" :disabled="editedProduct.images.length >= 5">이미지 추가</b-button>
             </div>
             <p>상품 이름:
               <b-input v-model="editedProduct.name"/>
@@ -55,17 +56,17 @@
               </b-row>
             </b-form-group>
 
-            <b-form-group id="product-shoeSize" label="상품 사이즈" style="font-weight: bold;">
-              <b-form-radio-group v-model="editedProduct.shoeSize">
-                <b-form-radio value="85">85</b-form-radio>
-                <b-form-radio value="90">90</b-form-radio>
-                <b-form-radio value="95">95</b-form-radio>
-                <b-form-radio value="100">100</b-form-radio>
-                <b-form-radio value="105">105</b-form-radio>
-                <b-form-radio value="110">110</b-form-radio>
-              </b-form-radio-group>
-            </b-form-group>
-
+          <b-form-group id="product-shoeSize" label="상품 사이즈">
+          <b-form-radio-group v-model="editedProduct.shoeSize">
+            <b-form-radio value="85">85</b-form-radio>
+            <b-form-radio value="90">90</b-form-radio>
+            <b-form-radio value="95">95</b-form-radio>
+            <b-form-radio value="100">100</b-form-radio>
+            <b-form-radio value="105">105</b-form-radio>
+            <b-form-radio value="110">110</b-form-radio>
+          </b-form-radio-group>
+          </b-form-group>
+            
             <p>상품 설명:
               <b-textarea v-model="editedProduct.description"/>
             </p>
@@ -138,7 +139,7 @@ export default {
         .then(response => {
           this.editedProduct = response.data;
         });
-    axios.interceptors.response.use((config) => {
+            axios.interceptors.response.use((config) => {
       return config;
     }, function (error) {
       if (error.response && error.response.status === 401) {
@@ -148,12 +149,39 @@ export default {
       return Promise.reject(error);
     });
   },
+    mounted() {
+    const fileInput = this.$refs.fileInput;
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('itemId', this.editedProduct.id);
+
+      axios.post('/add-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+        .then(response => {
+          const productId = this.$route.params.productId;
+          axios.get(`/product-detail/${productId}`)
+            .then(response => {
+              this.editedProduct = response.data;
+            })
+          console.log(response.data);
+        })
+        .catch(error => {
+          // Handle error response
+          console.error(error);
+        });
+    });
+  },
 
   methods: {
     saveProductInformation() {
       // 서버에 저장하는 로직
     },
-    getImageUrl(imageName) {
+        getImageUrl(imageName) {
       return `/product/${imageName}`;
     },
     editImage(index) {
@@ -166,59 +194,34 @@ export default {
         const formData = new FormData();
         formData.append("file", file);
         axios
-            .put(`/updateItem/image/${imageId}`, formData)
-            .then(() => {
+          .put(`/updateItem/image/${imageId}`, formData)
+          .then(() => {
               const productId = this.$route.params.productId;
               axios.get(`/product-detail/${productId}`)
-                  .then(response => {
-                    this.editedProduct = response.data;
-                  })
-
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+              .then(response => {
+                this.editedProduct = response.data;
+              })
+          
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       };
     },
     addImage() {
-      const fileInput = this.$refs.fileInput;
-      fileInput.click();
-      fileInput.addEventListener('change', () => {
-        const file = fileInput.files[0];
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('itemId', this.editedProduct.id);
-
-        axios.post('/add-image', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-            .then(response => {
-              const productId = this.$route.params.productId;
-              axios.get(`/product-detail/${productId}`)
-                  .then(response => {
-                    this.editedProduct = response.data;
-                  })
-              console.log(response.data);
-            })
-            .catch(error => {
-              // Handle error response
-              console.error(error);
-            });
-      });
+    this.$refs.fileInput.click();
     },
     cancelProduct() {
       const formData = new FormData();
       formData.append('itemId', this.editedProduct.id);
       axios.put(`/product-remove`,
-          formData
+      formData
       ).then(() => {
         alert('판매가 취소되었습니다.');
         this.$router.push('/user/mypage/saleshistory/selling');
-
+      
       }).catch((error) => {
-          console.log(error);
+        console.log(error);
         alert('판매 취소에 실패했습니다.');
       })
     },
@@ -237,13 +240,14 @@ export default {
       }).then(() => {
         alert('상품 정보가 수정되었습니다.');
         this.$router.push('/user/mypage/saleshistory/selling');
-
+      
       }).catch((error) => {
         console.log(error);
         alert('상품 정보 수정에 실패했습니다.');
-
+        
       });
     }
   },
 };
 </script>
+
