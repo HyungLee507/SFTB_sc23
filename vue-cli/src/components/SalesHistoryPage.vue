@@ -25,7 +25,7 @@
 
 <script>
 import ButtonList from './ButtonList'
-
+import axios from "axios";
 export default {
   components: {
     ButtonList

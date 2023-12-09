@@ -55,6 +55,11 @@ export default {
           action: this.goToSalesHistoryPage,
           backgroundColor: "transparent",
         },
+        {
+          label: "후기관리",
+          action: this.goToCommentPage,
+          backgroundColor: "transparent",
+        }
       ],
     };
   },
@@ -91,6 +96,11 @@ export default {
     },
     goToSalesHistoryPage() {
       const targetRoute = "/user/mypage/saleshistory";
+      this.$router.push(targetRoute).catch(() => {
+      });
+    },
+    goToCommentPage() {
+      const targetRoute = "/user/mypage/comment";
       this.$router.push(targetRoute).catch(() => {
       });
     },

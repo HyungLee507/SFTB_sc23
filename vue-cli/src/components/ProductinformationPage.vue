@@ -63,6 +63,16 @@
                 <strong>{{ sellerReview.content }}</strong>
               </p>
             </div>
+            <div v-if="sellerReview.comments.length > 0" class="comment">
+              <p style="white-space: pre-line; word-break: break-all; margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+                ↳ 판매자 댓글: {{ sellerReview.comments[0].content }}
+              </p>
+            </div>
+            <div v-else class="comment">
+              <p style="white-space: pre-line; word-break: break-all; margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+                댓글이 없습니다.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -379,5 +389,13 @@ export default {
 .img-fluid {
   max-width: 400px;
   max-height: 300px;
+}
+
+.comment {
+  color: rgb(255, 255, 255);
+  border: 1px solid rgba(0, 0, 0, 0.63);
+  background-color: rgba(0, 0, 0, 0.712);
+  border-radius: 5px;
+  margin-top: 30px;
 }
 </style>
