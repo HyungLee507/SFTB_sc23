@@ -83,10 +83,12 @@ export default {
             } else if(response.status == 204){
               alert('로그인을 해야 가상피팅을 진행할 수 있습니다.');
             }
+            this.showModal = false;
           })
           .catch(error => {
             console.error(error);
             alert('이미지 합성에 실패했습니다!');
+            this.showModal = false;
           });
     },
     saveImage() {
