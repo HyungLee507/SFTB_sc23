@@ -153,24 +153,24 @@ export default {
   font-weight: bold;
 }
 .userPreview {
-  width: 250px;
-  height: 250px;
+  width: 240px;
+  height: 320px;
   border-radius: 0;
   margin-top: 30px;
   font-weight: bold;
 }
 
 .composedPreview {
-  width: 250px;
-  height: 250px;
+  width: 240px;
+  height: 320px;
   border-radius: 0;
   margin-top: 30px;
   font-weight: bold;
 }
 
 .representative{
-  width: 250px;
-  height: 250px;
+  width: 240px;
+  height: 320px;
   border-radius: 0;
   margin-top: 30px;
   font-weight: bold;
