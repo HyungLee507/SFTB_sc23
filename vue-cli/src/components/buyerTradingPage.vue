@@ -118,7 +118,7 @@ export default {
           });
     },
     getImageUrl(imageName) {
-      return `https://vfmarket.store/product/${imageName}`;
+      return `/product/${imageName}`;
     },
 
 
@@ -233,8 +233,8 @@ button {
 
 .completed-products {
   background-color: white;
-  color: gray;
-  border: 1px solid gray;
+  color: grey;
+  border: 1px solid grey;
   font-weight: bold;
 
 }

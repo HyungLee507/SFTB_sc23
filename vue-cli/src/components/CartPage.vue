@@ -117,7 +117,7 @@ export default {
     },
     getImageUrl(imageName) {
       // return `https://vfmarket.store/product/${imageName}`;
-      return `https://vfmarket.store/product/${imageName}`;
+      return `/product/${imageName}`;
 
     },
     removeItem(index) {

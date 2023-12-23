@@ -101,8 +101,8 @@ export default {
           });
     },
     getImageUrl(imageName) {
-      // return `https://localhost:8080/product/${imageName}`;
-      return `https://vfmarket.store/product/${imageName}`;
+      return `/product/${imageName}`;
+      // return `https://vfmarket.store/product/${imageName}`;
 
     },
 

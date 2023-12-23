@@ -68,7 +68,7 @@ export default {
       this.sortOrder = order;
     },
     getImageUrl(imageName) {
-      return `https://vfmarket.store/product/${imageName}`;
+      return `/product/${imageName}`;
     },
     formatPrice(price) {
       return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');

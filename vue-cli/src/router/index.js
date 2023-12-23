@@ -20,6 +20,7 @@ import ReviewPage from "@/components/ReviewPage.vue";
 import UploadPage from "@/components/UploadPage.vue";
 import TradingPage from "@/components/TradingPage.vue";
 import buyerTradingPage from "@/components/buyerTradingPage"
+import CommentPage from "@/components/CommentPage.vue";
 
 Vue.use(Router);
 export default new Router({
@@ -285,6 +286,20 @@ export default new Router({
                     alert('로그인이 필요합니다.')
                     next('/');
 
+                } else {
+                    next();
+                }
+            }
+        },
+        {
+            path: '/user/mypage/comment',
+            component: CommentPage,
+            name: 'CommentPage',
+            beforeEnter: (to, from, next) => {
+                const accessToken = localStorage.getItem('accessToken');
+                if (!accessToken) {
+                    alert('로그인이 필요합니다.')
+                    next('/');
                 } else {
                     next();
                 }

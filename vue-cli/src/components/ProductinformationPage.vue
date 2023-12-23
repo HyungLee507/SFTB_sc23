@@ -170,7 +170,7 @@ export default {
 
   methods: {
     getImageUrl(imageName) {
-      return `https://vfmarket.store/product/${imageName}`;
+      return `/product/${imageName}`;
     },
     addToCart() {
       axios.post('/save-item?itemId=' + this.product.id, {})

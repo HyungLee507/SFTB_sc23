@@ -121,7 +121,7 @@ export default {
       });
     },
     getImageUrl(imageName) {
-      return `https://vfmarket.store/product/${imageName}`;
+      return `/product/${imageName}`;
     },
     openCancelConfirmation(index) {
       this.selectedItemIndex = index;
